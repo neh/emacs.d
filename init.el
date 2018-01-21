@@ -245,6 +245,20 @@
   (unbind-key "C-n" evil-normal-state-map)
   (unbind-key "C-e" evil-motion-state-map)
 
+  ;; (setq evil-normal-state-tag   (propertize "N" 'face '((:background "green" :foreground "black")))
+  ;;       evil-emacs-state-tag    (propertize "E" 'face '((:background "orange" :foreground "black")))
+  ;;       evil-insert-state-tag   (propertize "I" 'face '((:background "red")))
+  ;;       evil-motion-state-tag   (propertize "M" 'face '((:background "blue")))
+  ;;       evil-visual-state-tag   (propertize "V" 'face '((:background "grey80" :foreground "black")))
+  ;;       evil-operator-state-tag (propertize "O" 'face '((:background "purple"))))
+  (setq evil-normal-state-tag   (propertize "N")
+        evil-emacs-state-tag    (propertize "E")
+        evil-insert-state-tag   (propertize "I")
+        evil-replace-state-tag  (propertize "R")
+        evil-motion-state-tag   (propertize "M")
+        evil-visual-state-tag   (propertize "V")
+        evil-operator-state-tag (propertize "O"))
+
   (defadvice evil-ex-search-next (after advice-for-evil-ex-search-next activate)
     (evil-scroll-line-to-center (line-number-at-pos)))
 
