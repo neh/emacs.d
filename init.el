@@ -653,6 +653,11 @@ Close: _c_
           ((buffer-modified-p) (propertize ""))
           (t "")
     ))
+
+  (spaceline-define-segment neh/hud
+  "A HUD that shows which part of the buffer is currently visible."
+    (powerline-hud highlight-face default-face)
+    :tight t)
   
   ;; fancy git icon
   (defadvice vc-mode-line (after strip-backend () activate)
@@ -668,7 +673,7 @@ Close: _c_
     '((version-control :when active)
       (major-mode)
       ((line column buffer-position) :priority 0)
-      (hud :priority 0)))
+      (neh/hud :priority 0)))
   (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main))))
 )
 
