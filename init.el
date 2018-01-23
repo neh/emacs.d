@@ -206,8 +206,10 @@
     "og" '(counsel-git :which-key "open git file")
     "oh" '(counsel-projectile :which-key "open file in project")
     "ol" '(org-open-at-point :which-key "follow link")
-    "oo" '(ivy-switch-buffer :which-key "switch buffer")
+    ;; "oo" '(ivy-switch-buffer :which-key "switch buffer")
+    "oo" '(persp-switch-to-buffer :which-key "switch buffer")
     "op" '(counsel-projectile-switch-project :which-key "switch project")
+    "ov" '(persp-switch :which-key "switch perspective")
 
     "pr" '(package-refresh-contents :which-key "refresh package info")
 
@@ -491,6 +493,22 @@ Close: _c_
   (setq projectile-completion-system 'ivy)
   (projectile-mode))
 
+(use-package persp-mode
+  :config
+  (persp-mode 1))
+(use-package persp-mode-projectile-bridge
+  :config
+  (with-eval-after-load "persp-mode-projectile-bridge-autoloads"
+  (add-hook 'persp-mode-projectile-bridge-mode-hook
+            #'(lambda ()
+                (if persp-mode-projectile-bridge-mode
+                    (persp-mode-projectile-bridge-find-perspectives-for-all-buffers)
+                  (persp-mode-projectile-bridge-kill-perspectives))))
+  (add-hook 'after-init-hook
+            #'(lambda ()
+                (persp-mode-projectile-bridge-mode 1))
+            t)))
+
 (use-package flycheck
   :diminish flycheck-mode
   :config
@@ -697,6 +715,7 @@ Close: _c_
   (spaceline-install
     'main
     '((evil-state :face highlight-face)
+      (persp-name)
       (buffer-id)
       (neh/buffer-status :face highlight-face))
     '((version-control :when active)
