@@ -873,27 +873,27 @@ Close: _c_
 ;;       '(powerline-evil-emacs-face ((t (:inherit powerline-evil-base-face :background "#8ec07c")))))))
 
 
-(use-package neotree
-  :init
-  (setq neo-theme 'arrow)
-  :general
-  (general-define-key
-   :keymaps 'neotree-mode-map
-   :states 'normal
-   "RET" 'neotree-enter
-   "o" 'neotree-enter
-   "q" 'neotree-hide
-   "C" 'neotree-change-root
-   "U" 'neotree-select-up-node
-   "R" 'neotree-refresh
-   "I" 'neotree-hidden-file-toggle
-   ;; "-" 'neotree-select-up-node
-   "M-n" 'neotree-create-node
-   "M-c" 'neotree-copy-node
-   "M-d" 'neotree-delete-node
-   "M-m" 'neotree-rename-node
-   )
-  )
+;; (use-package neotree
+;;   :init
+;;   (setq neo-theme 'arrow)
+;;   :general
+;;   (general-define-key
+;;    :keymaps 'neotree-mode-map
+;;    :states 'normal
+;;    "RET" 'neotree-enter
+;;    "o" 'neotree-enter
+;;    "q" 'neotree-hide
+;;    "C" 'neotree-change-root
+;;    "U" 'neotree-select-up-node
+;;    "R" 'neotree-refresh
+;;    "I" 'neotree-hidden-file-toggle
+;;    ;; "-" 'neotree-select-up-node
+;;    "M-n" 'neotree-create-node
+;;    "M-c" 'neotree-copy-node
+;;    "M-d" 'neotree-delete-node
+;;    "M-m" 'neotree-rename-node
+;;    )
+;;   )
 
 (use-package expand-region
   :general
