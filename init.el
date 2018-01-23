@@ -161,16 +161,13 @@
 (use-package general
   :config
   (general-define-key
-   :states '(normal motion emacs)
-   :prefix "SPC"
-   "b" '(:ignore t :which-key "buffer")
-   "bd" '(evil-delete-buffer :which-key "delete buffer")
-   )
-  (general-define-key
    :states '(normal visual insert emacs)
    :prefix "SPC"
    :non-normal-prefix "M-SPC"
     "<SPC>" '(save-buffer :which-key "save")
+
+    "b" '(:ignore t :which-key "buffer")
+    "bd" '(evil-delete-buffer :which-key "delete buffer")
 
     "cc" '(comment-or-uncomment-region-or-line :which-key "toggle comment")
 
