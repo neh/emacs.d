@@ -274,12 +274,13 @@
   (general-define-key
    :states '(normal visual)
    :prefix "j"
+   "c" '(avy-goto-char-timer :which-key "char")
+   "h" '(avy-org-goto-heading-timer :which-key "org heading")
    "l" '(avy-goto-line :which-key "line")
-   "c" '(avy-goto-char-2 :which-key "char")
    )
   :config
-  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
-  )
+  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
+
 (use-package smex)
 (use-package ivy
   :diminish ivy-mode
