@@ -504,6 +504,10 @@ Close: _c_
   (setq git-gutter+-modified-sign "◆")
   )
 
+;; disable annoying multi-line docs in echo area
+;; (global-eldoc-mode -1)
+(setq eldoc-echo-area-use-multiline-p nil)
+
 (use-package magit
   :general
   (general-define-key
