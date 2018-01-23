@@ -288,7 +288,7 @@
   :config
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 
-(use-package smex)
+(use-package amx)
 (use-package ivy
   :diminish ivy-mode
   :init
