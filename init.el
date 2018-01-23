@@ -18,7 +18,7 @@
 
 ;; this works, but I'm not sure I actually need it
 (let ((mydpi (/ (display-pixel-width) (/ (display-mm-width) 25.4)))
-      (myfont "Fira Mono"))
+      (myfont "mononoki"))
       ;;(myfont "Iosevka Light"))
   (if (> mydpi 160)
       (set-frame-font (format "%s-10" myfont))
