@@ -544,6 +544,7 @@ Close: _c_
                           :action (string-to-char "t") (string-to-char "g"))
 
   (setq magit-completing-read-function 'ivy-completing-read)
+  (add-hook 'git-commit-mode-hook 'evil-insert-state)
   )
 
 
