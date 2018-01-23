@@ -371,6 +371,7 @@
        ("m" ,(reloading (given-file #'rename-file "Move")) "move")
        ("b" counsel-find-file-cd-bookmark-action "cd bookmark")))
     )
+  (use-package counsel-projectile)
   )
 (use-package hydra)
 (use-package ivy-hydra
@@ -486,7 +487,7 @@ Close: _c_
 (use-package projectile
   :config
   (setq projectile-completion-system 'ivy)
-  )
+  (projectile-mode))
 
 (use-package flycheck
   :diminish flycheck-mode
