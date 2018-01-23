@@ -498,6 +498,12 @@ Close: _c_
 
 (use-package company
   :config
+  (with-eval-after-load 'company
+    (define-key company-active-map (kbd "M-n") nil)
+    (define-key company-active-map (kbd "M-p") nil)
+    (define-key company-active-map (kbd "C-t") #'company-select-next)
+    (define-key company-active-map (kbd "C-n") #'company-select-previous))
+
   (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package company-terraform
