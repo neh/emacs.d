@@ -100,10 +100,10 @@
 (use-package darktooth-theme :ensure t)
 (load-theme 'darktooth t)
 
-(use-package undo-tree
-  :diminish undo-tree-mode)
+(use-package undo-tree)
+  ;;:diminish undo-tree-mode)
 
-(diminish 'subword-mode)
+;;(diminish 'subword-mode)
 
 (use-package paren
   :init
@@ -153,7 +153,7 @@
 ;;   (linum-relative-global-mode))
 
 (use-package which-key
-  :diminish which-key-mode
+  ;;:diminish which-key-mode
   :config
   (which-key-mode)
   (setq which-key-idle-secondary-delay 0.25))
@@ -294,7 +294,7 @@
 
 (use-package amx)
 (use-package ivy
-  :diminish ivy-mode
+  ;;:diminish ivy-mode
   :init
   (defun reloading (cmd)
     (lambda (x)
@@ -355,7 +355,7 @@
   (setq ivy-initial-inputs-alist nil)
 
   (use-package counsel
-    :diminish counsel-mode
+    ;;:diminish counsel-mode
     :config
     (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s")
     (setq counsel-grep-base-command "grep -inE '%s' %s")
@@ -510,7 +510,7 @@ Close: _c_
             t)))
 
 (use-package flycheck
-  :diminish flycheck-mode
+  ;;:diminish flycheck-mode
   :config
   (add-hook 'after-init-hook 'global-flycheck-mode))
 
