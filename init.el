@@ -90,8 +90,15 @@
 
 
 ;; (use-package color-theme-sanityinc-tomorrow :ensure t)
-(use-package gruvbox-theme :ensure t)
-(load-theme 'gruvbox t)
+;; (use-package gruvbox-theme :ensure t)
+;; (load-theme 'gruvbox t)
+;; (use-package plan9-theme :ensure t)
+;; (load-theme 'plan9 t)
+(use-package material-theme :ensure t)
+(load-theme 'material t)
+;; (load-theme 'material-light t)
+(use-package darktooth-theme :ensure t)
+(load-theme 'darktooth t)
 
 (use-package undo-tree
   :diminish undo-tree-mode)
