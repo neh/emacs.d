@@ -204,8 +204,10 @@
     "oe" '(mode-line-other-buffer :which-key "previous buffer")
     "of" '(counsel-find-file :which-key "open file")
     "og" '(counsel-git :which-key "open git file")
+    "oh" '(counsel-projectile :which-key "open file in project")
     "ol" '(org-open-at-point :which-key "follow link")
     "oo" '(ivy-switch-buffer :which-key "switch buffer")
+    "op" '(counsel-projectile-switch-project :which-key "switch project")
 
     "pr" '(package-refresh-contents :which-key "refresh package info")
 
