@@ -496,6 +496,13 @@ Close: _c_
   :config
   (add-hook 'after-init-hook 'global-flycheck-mode))
 
+(use-package company
+  :config
+  (add-hook 'after-init-hook 'global-company-mode))
+
+(use-package company-terraform
+  :config
+  (company-terraform-init))
 
 (fringe-mode 8)
 ;; (use-package diff-hl
