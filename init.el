@@ -660,6 +660,8 @@ Close: _c_
 ;;(use-package adaptive-wrap)
 (use-package frames-only-mode)
 
+(use-package aggressive-indent)
+
 (use-package direnv
   :config
   (setq direnv-always-show-summary t)
