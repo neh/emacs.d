@@ -68,31 +68,26 @@
 
 (global-subword-mode 1)
 
-(require 'package)
-
-(add-to-list 'package-archives
-             '("org" . "https://orgmode.org/elpa/") t)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa-stable" . "http://stable.melpa.org/packages/"))
-
-(setq package-enable-at-startup nil)
-(package-initialize)
-
-(setq use-package-always-ensure t)
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(eval-when-compile
-  (require 'use-package))
 
 
 ;; (use-package color-theme-sanityinc-tomorrow :ensure t)
 ;; (use-package gruvbox-theme :ensure t)
 ;; (load-theme 'gruvbox t)
 ;; (use-package plan9-theme :ensure t)
+;; Bootstrap straight.el
+(let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
+      (bootstrap-version 3))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(setq straight-use-package-by-default t)
+(straight-use-package 'use-package)
 ;; (load-theme 'plan9 t)
 ;;(use-package material-theme :ensure t)
 ;;(load-theme 'material t)
@@ -133,10 +128,12 @@
   :config
   (whitespace-mode))
 
-(use-package uniquify
-  :ensure nil
-  :init
-  (setq uniquify-buffer-name-style 'forward))
+;; (use-package uniquify
+;;   :ensure nil
+;;   :straight nil
+;;   :init
+;;   (setq uniquify-buffer-name-style 'forward))
+(setq uniquify-buffer-name-style 'forward)
 
 ;; nlinum is supposed to be faster, but elpa is maybe broken? so can't install
 ;; (use-package nlinum-relative
@@ -546,7 +543,9 @@ Close: _c_
 ;; (global-eldoc-mode -1)
 (setq eldoc-echo-area-use-multiline-p nil)
 
+(straight-use-package 'magit)
 (use-package magit
+  :straight nil
   :general
   (general-define-key
    :keymaps 'magit-mode-map
@@ -589,8 +588,9 @@ Close: _c_
 ;; Installing org-plus-contrib as a lazy workaround for the built-in older
 ;; org-mode
 ;; https://github.com/jwiegley/use-package/issues/319
+(straight-use-package 'org-plus-contrib)
 (use-package org
-  :ensure org-plus-contrib
+  :straight nil
   :general
   (:keymaps 'org-mode-map
    :states '(normal emacs)
@@ -688,7 +688,7 @@ Close: _c_
   (setq spaceline-separator-dir-left '(left . left))
   (setq spaceline-separator-dir-right '(right . right)))
 (use-package spaceline-config
-  :ensure spaceline
+  :straight nil
   :config
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
 
