@@ -660,6 +660,11 @@ Close: _c_
 ;;(use-package adaptive-wrap)
 (use-package frames-only-mode)
 
+(use-package direnv
+  :config
+  (setq direnv-always-show-summary t)
+  (direnv-mode))
+
 (use-package yaml-mode
   :config
   (add-to-list 'auto-mode-alist '(".*\\(host\\|group\\)_vars.*" . yaml-mode))
