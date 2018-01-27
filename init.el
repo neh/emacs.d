@@ -235,15 +235,15 @@
 
   (general-define-key
    :states '(normal visual)
-    "h" 'evil-backward-char
-    "t" 'evil-next-visual-line
-    "n" 'evil-previous-visual-line
-    "s" 'evil-forward-char
+   "h" 'evil-backward-char
+   "t" 'evil-next-visual-line
+   "n" 'evil-previous-visual-line
+   "s" 'evil-forward-char
 
-    "l" 'evil-search-next
-    "L" 'evil-search-previous
-    "S" 'evil-window-bottom
-    )
+   "l" 'evil-search-next
+   "L" 'evil-search-previous
+   "S" 'evil-window-bottom
+   )
   )
 
 (use-package evil
