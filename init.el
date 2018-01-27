@@ -245,7 +245,7 @@
 
   (evil-set-initial-state 'ivy-occur-mode 'emacs)
 
-  (unbind-key "s" evil-normal-state-map)
+  ;; (unbind-key "s" evil-normal-state-map)
   (unbind-key "C-t" evil-normal-state-map)
   (unbind-key "C-n" evil-normal-state-map)
   (unbind-key "C-e" evil-motion-state-map)
