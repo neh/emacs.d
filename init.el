@@ -68,12 +68,6 @@
 
 (global-subword-mode 1)
 
-
-
-;; (use-package color-theme-sanityinc-tomorrow :ensure t)
-;; (use-package gruvbox-theme :ensure t)
-;; (load-theme 'gruvbox t)
-;; (use-package plan9-theme :ensure t)
 ;; Bootstrap straight.el
 (let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
       (bootstrap-version 3))
@@ -88,12 +82,28 @@
 
 (setq straight-use-package-by-default t)
 (straight-use-package 'use-package)
+
+
+;; (use-package color-theme-sanityinc-tomorrow)
+;; (load-theme sanityinc-tomorrow-night)
+;; (use-package gruvbox-theme)
+;; (load-theme 'gruvbox t)
+;; (use-package plan9-theme)
 ;; (load-theme 'plan9 t)
-;;(use-package material-theme :ensure t)
+(use-package material-theme)
 ;;(load-theme 'material t)
-;; (load-theme 'material-light t)
-(use-package darktooth-theme :ensure t)
-(load-theme 'darktooth t)
+(load-theme 'material-light t)
+;; (use-package darktooth-theme)
+;; (load-theme 'darktooth t)
+
+;; (straight-use-package 'ample-theme)
+;; (load-theme 'ample t t)
+;; (load-theme 'ample-flat t t)
+;; (load-theme 'ample-light t t)
+;; (enable-theme 'ample-flat)
+
+;; (straight-use-package 'alect-themes)
+;; (load-theme 'alect-dark-alt t)
 
 (use-package undo-tree)
   ;;:diminish undo-tree-mode)
