@@ -16,7 +16,7 @@
 
 (setq exec-path (append exec-path '("~/bin")))
 
-;; this works, but I'm not sure I actually need it
+;; Set font/size based on display DPI
 (let ((mydpi (/ (display-pixel-width) (/ (display-mm-width) 25.4)))
       (myfont "mononoki"))
       ;;(myfont "Iosevka Light"))
@@ -30,8 +30,7 @@
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 (setq scroll-step 1) ;; keyboard scroll one line at a time
-
-(setq scroll-conservatively 101)
+(setq scroll-conservatively 101) ;; Don't jump around when scrolling
 
 (setq delete-old-versions t)
 (setq coding-system-for-read 'utf-8)
@@ -44,8 +43,9 @@
 (setq enable-recursive-minibuffers t)
 (save-place-mode 1)
 (global-hl-line-mode t)
-;; TODO emacs loses its window title along with focus. why?
-(setq frame-title-format "%b")
+
+(setq frame-title-format "%b") ;; focused window title format
+(setq icon-title-format "%b") ;; unfocused window title format
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file 'no-error)
@@ -105,10 +105,9 @@
 ;; (straight-use-package 'alect-themes)
 ;; (load-theme 'alect-dark-alt t)
 
-(use-package undo-tree)
-  ;;:diminish undo-tree-mode)
-
-;;(diminish 'subword-mode)
+(use-package undo-tree
+  :config
+  (global-undo-tree-mode t))
 
 (use-package paren
   :init
@@ -123,10 +122,9 @@
   (setq-local comment-auto-fill-only-comments t)
   (auto-fill-mode nil))
 
-;; (auto-fill-mode 1)
 (setq-default fill-column 80)
 (setq comment-auto-fill-only-comments t)
-(setq-default auto-fill-function 'do-auto-fill)
+;; (setq-default auto-fill-function 'do-auto-fill)
 
 ;; uses the fill-column setting for visual-line-mode
 (use-package visual-fill-column)
@@ -138,13 +136,11 @@
   :config
   (whitespace-mode))
 
-;; (use-package uniquify
-;;   :ensure nil
-;;   :straight nil
-;;   :init
-;;   (setq uniquify-buffer-name-style 'forward))
 (setq uniquify-buffer-name-style 'forward)
 
+;; Will probably just not bother with line numbers until emacs 26, which has
+;; them built in.
+;;
 ;; nlinum is supposed to be faster, but elpa is maybe broken? so can't install
 ;; (use-package nlinum-relative
 ;;   :config
@@ -153,17 +149,10 @@
 ;;   (setq nlinum-relative-current-symbol ""))
 
 ;; (use-package linum-relative
-;;   :diminish linum-relative-mode
 ;;   :init
 ;;   (setq linum-relative-current-symbol "")
 ;;   :config
 ;;   (linum-relative-global-mode))
-
-(use-package which-key
-  ;;:diminish which-key-mode
-  :config
-  (which-key-mode)
-  (setq which-key-idle-secondary-delay 0.25))
 
 (use-package general
   :config
@@ -282,8 +271,15 @@
     (global-evil-surround-mode)))
 
 
+(use-package which-key
+  :config
+  (which-key-setup-side-window-right-bottom)
+  (setq which-key-idle-secondary-delay 0.25)
+  (which-key-mode))
+
+
 (use-package flx)
-;; like easymotion. we'll see.
+
 (use-package avy
   :general
   (general-define-key
@@ -298,7 +294,6 @@
 
 (use-package amx)
 (use-package ivy
-  ;;:diminish ivy-mode
   :init
   (defun reloading (cmd)
     (lambda (x)
@@ -316,7 +311,6 @@
   (defun neh-open-file-in-vsplit (f)
     (evil-window-vsplit 80 f)
     (balance-windows))
-
 
   :general
   (general-define-key
@@ -359,7 +353,6 @@
   (setq ivy-initial-inputs-alist nil)
 
   (use-package counsel
-    ;;:diminish counsel-mode
     :config
     (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s")
     (setq counsel-grep-base-command "grep -inE '%s' %s")
@@ -379,13 +372,13 @@
        ("m" ,(reloading (given-file #'rename-file "Move")) "move")
        ("b" counsel-find-file-cd-bookmark-action "cd bookmark")))
     )
-  (use-package counsel-projectile)
-  )
+  (use-package counsel-projectile))
+
 (use-package hydra)
 (use-package ivy-hydra
   :config
   (defhydra hydra-ivy (:hint nil
-                       :color pink)
+                             :color pink)
     "
     ^ ^ ^ ^ ^ ^ | ^Call^  | ^Cancel^ | ^Options^ | Action _r_/_c_/_a_: %-14s(ivy-action-name)
     ^-^-^-^-^-^-+----^-^--+-^-^------+-^-^-------+-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^---------------------------
@@ -410,7 +403,7 @@
     ("g" ivy-call)
     ("S" (ivy-exit-with-action
           (lambda (f) (evil-window-vsplit 80 f)
-                      (balance-windows)))
+            (balance-windows)))
      :exit t)
     ("C-m" ivy-done :exit t)
     ("C" ivy-toggle-calling)
@@ -452,8 +445,8 @@
         ))
 
 
-(use-package validate
-  :demand t)
+;; (use-package validate)
+;; :demand t)
 
 (defhydra hydra-windows (:hint nil)
   "
@@ -503,18 +496,17 @@ Close: _c_
 (use-package persp-mode-projectile-bridge
   :config
   (with-eval-after-load "persp-mode-projectile-bridge-autoloads"
-  (add-hook 'persp-mode-projectile-bridge-mode-hook
-            #'(lambda ()
-                (if persp-mode-projectile-bridge-mode
-                    (persp-mode-projectile-bridge-find-perspectives-for-all-buffers)
-                  (persp-mode-projectile-bridge-kill-perspectives))))
-  (add-hook 'after-init-hook
-            #'(lambda ()
-                (persp-mode-projectile-bridge-mode 1))
-            t)))
+    (add-hook 'persp-mode-projectile-bridge-mode-hook
+              #'(lambda ()
+                  (if persp-mode-projectile-bridge-mode
+                      (persp-mode-projectile-bridge-find-perspectives-for-all-buffers)
+                    (persp-mode-projectile-bridge-kill-perspectives))))
+    (add-hook 'after-init-hook
+              #'(lambda ()
+                  (persp-mode-projectile-bridge-mode 1))
+              t)))
 
 (use-package flycheck
-  ;;:diminish flycheck-mode
   :config
   (add-hook 'after-init-hook 'global-flycheck-mode))
 
@@ -591,8 +583,7 @@ Close: _c_
                           :action (string-to-char "t") (string-to-char "g"))
 
   (setq magit-completing-read-function 'ivy-completing-read)
-  (add-hook 'git-commit-mode-hook 'evil-insert-state)
-  )
+  (add-hook 'git-commit-mode-hook 'evil-insert-state))
 
 
 ;; Installing org-plus-contrib as a lazy workaround for the built-in older
@@ -654,18 +645,18 @@ Close: _c_
   (setq deft-recursive t)
   )
 
-(use-package focus)
-(use-package darkroom
-  :init
-  (setq darkroom-text-scale-increase 0)
-  :general
-  (general-define-key
-   :states '(normal visual insert emacs)
-   :prefix "SPC"
-   :non-normal-prefix "M-SPC"
-   "vd" '(darkroom-tentative-mode :which-key "darkroom")
-   )
-  )
+;; (use-package focus)
+;; (use-package darkroom
+;;   :init
+;;   (setq darkroom-text-scale-increase 0)
+;;   :general
+;;   (general-define-key
+;;    :states '(normal visual insert emacs)
+;;    :prefix "SPC"
+;;    :non-normal-prefix "M-SPC"
+;;    "vd" '(darkroom-tentative-mode :which-key "darkroom")
+;;    )
+;;   )
 
 ;;(use-package adaptive-wrap)
 (use-package frames-only-mode)
@@ -697,7 +688,7 @@ Close: _c_
              (setq ansible-doc--modules nil)
              (ansible-doc))
            :which-key "ansible docs refresh")
-  ))
+   ))
 
 (use-package spaceline
   :config
@@ -713,10 +704,10 @@ Close: _c_
     (cond (buffer-read-only (propertize ""))
           ((buffer-modified-p) (propertize ""))
           (t "")
-    ))
+          ))
 
   (spaceline-define-segment neh/hud
-  "A HUD that shows which part of the buffer is currently visible."
+    "A HUD that shows which part of the buffer is currently visible."
     (powerline-hud highlight-face default-face)
     :tight t)
   
@@ -737,7 +728,7 @@ Close: _c_
       ((line column buffer-position) :priority 0)
       (neh/hud :priority 0)))
   (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main))))
-)
+  )
 
 ;; ((main
 ;;   ((((((persp-name :fallback workspace-number)
@@ -854,45 +845,28 @@ Close: _c_
 ;;   (progn
 ;;     (add-hook 'js-mode-hook (lambda () (setq js-indent-level 2)))))
 
-;; (use-package smart-mode-line-powerline-theme
-  ;; :ensure t)
-
-;; (use-package smart-mode-line
-  ;; :ensure t
-  ;; :config
-;;   (require 'powerline)
-;;   (setq powerline-default-separator 'wave)
-  ;; (setq sml/theme 'powerline)
-  ;; (sml/setup))
-;;   ;; These colors are more pleasing (for gruvbox)
-;;   (custom-theme-set-faces
-;;    'user
-;;    '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "chartreuse3"))))
-;;    '(sml/folder ((t (:inherit sml/global :background "grey22" :foreground "grey50" :weight normal))) t)
-;;    '(sml/git ((t (:background "grey22" :foreground "chartreuse3"))) t)))
-
 
 (defun shorten-directory (dir max-length)
   "Show up to `max-length' characters of a directory name `dir'."
   (let ((path (reverse (split-string (abbreviate-file-name dir) "/")))
-               (output ""))
-       (when (and path (equal "" (car path)))
-         (setq path (cdr path)))
-       (while (and path (< (length output) (- max-length 4)))
-         (setq output (concat (car path) "/" output))
-         (setq path (cdr path)))
-       (when path
-         (setq output (concat "…/" output)))
-       output))
+        (output ""))
+    (when (and path (equal "" (car path)))
+      (setq path (cdr path)))
+    (while (and path (< (length output) (- max-length 4)))
+      (setq output (concat (car path) "/" output))
+      (setq path (cdr path)))
+    (when path
+      (setq output (concat "…/" output)))
+    output))
 
 (defun comment-or-uncomment-region-or-line ()
-    "Comments or uncomments the region or the current line if there's no active region."
-    (interactive)
-    (let (beg end)
-        (if (region-active-p)
-            (setq beg (region-beginning) end (region-end))
-            (setq beg (line-beginning-position) end (line-end-position)))
-        (comment-or-uncomment-region beg end)))
+  "Comments or uncomments the region or the current line if there's no active region."
+  (interactive)
+  (let (beg end)
+    (if (region-active-p)
+        (setq beg (region-beginning) end (region-end))
+      (setq beg (line-beginning-position) end (line-end-position)))
+    (comment-or-uncomment-region beg end)))
 
 
 ;; from https://www.reddit.com/r/emacs/comments/5rnpsm/nice_hydra_to_set_frame_transparency/
@@ -927,18 +901,18 @@ ALPHA : [ %(frame-parameter nil 'alpha) ]
   ;; with-selected-window
   (let ((wind (selected-window))
         m-width l-width)
-   (with-current-buffer "*Monospace Fonts*"
-     (set-window-buffer (selected-window) (current-buffer))
-     (text-scale-set 4)
-     (insert (propertize "l l l l l" 'face `((:family ,font-family))))
-     (goto-char (line-end-position))
-     (setq l-width (car (posn-x-y (posn-at-point))))
-     (newline)
-     (forward-line)
-     (insert (propertize "m m m m m" 'face `((:family ,font-family) italic)))
-     (goto-char (line-end-position))
-     (setq m-width (car (posn-x-y (posn-at-point))))
-     (eq l-width m-width))))
+    (with-current-buffer "*Monospace Fonts*"
+      (set-window-buffer (selected-window) (current-buffer))
+      (text-scale-set 4)
+      (insert (propertize "l l l l l" 'face `((:family ,font-family))))
+      (goto-char (line-end-position))
+      (setq l-width (car (posn-x-y (posn-at-point))))
+      (newline)
+      (forward-line)
+      (insert (propertize "m m m m m" 'face `((:family ,font-family) italic)))
+      (goto-char (line-end-position))
+      (setq m-width (car (posn-x-y (posn-at-point))))
+      (eq l-width m-width))))
 
 (defun compare-monospace-fonts ()
   "Display a list of all monospace font faces."
