@@ -19,7 +19,7 @@
 ;; Set font/size based on display DPI
 (let ((mydpi (/ (display-pixel-width) (/ (display-mm-width) 25.4)))
       (myfont "mononoki"))
-      ;;(myfont "Iosevka Light"))
+  ;;(myfont "Iosevka Light"))
   (if (> mydpi 160)
       (set-frame-font (format "%s-10" myfont))
     (set-frame-font (format "%s-10" myfont))))
@@ -209,94 +209,94 @@
   :after evil-collection
   :config
   (general-create-definer
-   neh/leader-keys
-   :keymaps 'override
-   :states '(emacs normal visual motion insert)
-   :non-normal-prefix "C-SPC"
-   :prefix "SPC")
+    neh/leader-keys
+    :keymaps 'override
+    :states '(emacs normal visual motion insert)
+    :non-normal-prefix "C-SPC"
+    :prefix "SPC")
 
   (general-override-mode)
 
   ;; (general-translate-key nil 'normal
-    ;; "t" "j"
-    ;; "n" "k")
+  ;; "t" "j"
+  ;; "n" "k")
   (dolist (keymap keymaps-with-hjkl-keybindings)
     (general-translate-key 'normal keymap
-    "t" "j"
-    "n" "k"))
+      "t" "j"
+      "n" "k"))
 
   (general-define-key
    :states '(normal visual)
-   "h" 'evil-backward-char
-   "t" 'evil-next-visual-line
-   "n" 'evil-previous-visual-line
-   "s" 'evil-forward-char
+    "h" 'evil-backward-char
+    "t" 'evil-next-visual-line
+    "n" 'evil-previous-visual-line
+    "s" 'evil-forward-char
 
-   "l" 'evil-search-next
-   "L" 'evil-search-previous
-   "S" 'evil-window-bottom)
+    "l" 'evil-search-next
+    "L" 'evil-search-previous
+    "S" 'evil-window-bottom)
 
   (neh/leader-keys
-   "<SPC>" '(save-buffer :which-key "save")
+    "<SPC>" '(save-buffer :which-key "save")
 
-   "b" '(:ignore t :which-key "buffer")
-   "bd" '(evil-delete-buffer :which-key "delete buffer")
+    "b" '(:ignore t :which-key "buffer")
+    "bd" '(evil-delete-buffer :which-key "delete buffer")
 
-   "cc" '(comment-or-uncomment-region-or-line :which-key "toggle comment")
+    "cc" '(comment-or-uncomment-region-or-line :which-key "toggle comment")
 
-   "f" '(:ignore t :which-key "formatting")
-   "fa" '(auto-fill-mode :which-key "auto fill")
-   "fi" '(indent-region :which-key "indent region")
-   "fp" '(fill-paragraph :which-key "paragraph")
-   "fr" '(fill-region :which-key "fill region")
-   "ft" '(toggle-truncate-lines :which-key "wrap lines")
-   "fw" '(whitespace-mode :which-key "show whitespace")
+    "f" '(:ignore t :which-key "formatting")
+    "fa" '(auto-fill-mode :which-key "auto fill")
+    "fi" '(indent-region :which-key "indent region")
+    "fp" '(fill-paragraph :which-key "paragraph")
+    "fr" '(fill-region :which-key "fill region")
+    "ft" '(toggle-truncate-lines :which-key "wrap lines")
+    "fw" '(whitespace-mode :which-key "show whitespace")
 
-   "g" '(:ignore t :which-key "git")
-   "gd" '(magit-diff-popup :which-key "diff")
-   "gl" '(magit-log-popup :which-key "log")
-   "gp" '(magit-dispatch-popup :which-key "menu")
-   "gs" '(magit-status :which-key "status")
+    "g" '(:ignore t :which-key "git")
+    "gd" '(magit-diff-popup :which-key "diff")
+    "gl" '(magit-log-popup :which-key "log")
+    "gp" '(magit-dispatch-popup :which-key "menu")
+    "gs" '(magit-status :which-key "status")
 
-   "h" '(help-command :which-key "help")
-   "ha" 'helm-apropos
-   "hf" '(counsel-describe-function :which-key "describe function")
-   "hv" '(counsel-describe-variable :which-key "describe variable")
+    "h" '(help-command :which-key "help")
+    "ha" 'helm-apropos
+    "hf" '(counsel-describe-function :which-key "describe function")
+    "hv" '(counsel-describe-variable :which-key "describe variable")
 
-   "i" '(:ignore t :which-key "insert")
-   "ip" '(clipboard-yank :which-key "paste from clipboard")
+    "i" '(:ignore t :which-key "insert")
+    "ip" '(clipboard-yank :which-key "paste from clipboard")
 
-   "nh" 'neotree-find
-   "nt" 'neotree-toggle
+    "nh" 'neotree-find
+    "nt" 'neotree-toggle
 
-   "o" '(:ignore t :which-key "open")
-   "oa" '(counsel-linux-app :which-key "app")
-   "oe" '(mode-line-other-buffer :which-key "previous buffer")
-   "of" '(counsel-find-file :which-key "open file")
-   "og" '(counsel-git :which-key "open git file")
-   "oh" '(counsel-projectile :which-key "open file in project")
-   "ol" '(org-open-at-point :which-key "follow link")
-   ;; "oo" '(ivy-switch-buffer :which-key "switch buffer")
-   "oo" '(persp-switch-to-buffer :which-key "switch buffer")
-   "op" '(counsel-projectile-switch-project :which-key "switch project")
-   "ov" '(persp-switch :which-key "switch perspective")
+    "o" '(:ignore t :which-key "open")
+    "oa" '(counsel-linux-app :which-key "app")
+    "oe" '(mode-line-other-buffer :which-key "previous buffer")
+    "of" '(counsel-find-file :which-key "open file")
+    "og" '(counsel-git :which-key "open git file")
+    "oh" '(counsel-projectile :which-key "open file in project")
+    "ol" '(org-open-at-point :which-key "follow link")
+    ;; "oo" '(ivy-switch-buffer :which-key "switch buffer")
+    "oo" '(persp-switch-to-buffer :which-key "switch buffer")
+    "op" '(counsel-projectile-switch-project :which-key "switch project")
+    "ov" '(persp-switch :which-key "switch perspective")
 
-   "pr" '(package-refresh-contents :which-key "refresh package info")
+    "pr" '(package-refresh-contents :which-key "refresh package info")
 
-   "s" '(:ignore t :which-key "search")
-   "sa" '(swiper-all :which-key "search all buffers")
-   "sf" '(counsel-ag :which-key "search files")
-   "sg" '(counsel-git-grep :which-key "search files in git")
-   "sh" '(counsel-grep-or-swiper :which-key "search buffer")
+    "s" '(:ignore t :which-key "search")
+    "sa" '(swiper-all :which-key "search all buffers")
+    "sf" '(counsel-ag :which-key "search files")
+    "sg" '(counsel-git-grep :which-key "search files in git")
+    "sh" '(counsel-grep-or-swiper :which-key "search buffer")
 
-   "v" '(:ignore t :which-key "view")
+    "v" '(:ignore t :which-key "view")
 
-   "x" '(:ignore t :which-key "execute")
-   "xa" '(ivy-resume :which-key "ivy resume")
-   "xb" '(eval-buffer :which-key "eval buffer")
-   "xe" '(eval-last-sexp :which-key "eval sexp")
-   "xr" '(eval-region :which-key "eval region")
-   "xx" '(counsel-M-x :which-key "M-x")))
+    "x" '(:ignore t :which-key "execute")
+    "xa" '(ivy-resume :which-key "ivy resume")
+    "xb" '(eval-buffer :which-key "eval buffer")
+    "xe" '(eval-last-sexp :which-key "eval sexp")
+    "xr" '(eval-region :which-key "eval region")
+    "xx" '(counsel-M-x :which-key "M-x")))
 
 (use-package which-key
   :config
@@ -312,10 +312,10 @@
   (general-define-key
    :states '(normal visual)
    :prefix "j"
-   "c" '(avy-goto-char-timer :which-key "char")
-   "h" '(avy-org-goto-heading-timer :which-key "org heading")
-   "l" '(avy-goto-line :which-key "line")
-   )
+    "c" '(avy-goto-char-timer :which-key "char")
+    "h" '(avy-org-goto-heading-timer :which-key "org heading")
+    "l" '(avy-goto-line :which-key "line")
+    )
   :config
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 
@@ -342,32 +342,32 @@
   :general
   (general-define-key
    :keymaps 'ivy-minibuffer-map
-   "<escape>" 'keyboard-escape-quit
-   "C-t" 'ivy-next-line
-   "C-n" 'ivy-previous-line
-   "C-M-t" 'ivy-next-line-and-call
-   "C-M-n" 'ivy-previous-line-and-call
-   "C-b" 'ivy-scroll-down-command
-   "C-f" 'ivy-scroll-up-command
-   "C-d" 'ivy-call
-   )
+    "<escape>" 'keyboard-escape-quit
+    "C-t" 'ivy-next-line
+    "C-n" 'ivy-previous-line
+    "C-M-t" 'ivy-next-line-and-call
+    "C-M-n" 'ivy-previous-line-and-call
+    "C-b" 'ivy-scroll-down-command
+    "C-f" 'ivy-scroll-up-command
+    "C-d" 'ivy-call
+    )
 
   (general-define-key
    :keymaps 'counsel-find-file-map
-   "TAB" 'ivy-alt-done
-   "C-s" 'neh-open-file-in-vsplit
-   )
+    "TAB" 'ivy-alt-done
+    "C-s" 'neh-open-file-in-vsplit
+    )
 
   (general-define-key
    :keymaps 'ivy-occur-mode-map
-   "t" 'ivy-occur-next-line
-   "n" 'ivy-occur-previous-line
-   "RET" 'ivy-occur-press
-   "a" 'ivy-occur-read-action
-   "c" 'ivy-occur-toggle-calling
-   "C-f" 'evil-scroll-page-down
-   "C-b" 'evil-scroll-page-up
-   )
+    "t" 'ivy-occur-next-line
+    "n" 'ivy-occur-previous-line
+    "RET" 'ivy-occur-press
+    "a" 'ivy-occur-read-action
+    "c" 'ivy-occur-toggle-calling
+    "C-f" 'evil-scroll-page-down
+    "C-b" 'evil-scroll-page-up
+    )
 
   :config
   (ivy-mode 1)
@@ -405,7 +405,7 @@
 (use-package ivy-hydra
   :config
   (defhydra hydra-ivy (:hint nil
-                             :color pink)
+                       :color pink)
     "
     ^ ^ ^ ^ ^ ^ | ^Call^  | ^Cancel^ | ^Options^ | Action _r_/_c_/_a_: %-14s(ivy-action-name)
     ^-^-^-^-^-^-+----^-^--+-^-^------+-^-^-------+-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^---------------------------
@@ -578,24 +578,24 @@ Close: _c_
   :general
   (general-define-key
    :keymaps 'magit-mode-map
-   "C-b" 'evil-scroll-page-up
-   "C-f" 'evil-scroll-page-down
-   "C-t" 'magit-section-forward
-   "C-n" 'magit-section-backward
-   "M-t" 'magit-section-forward-sibling
-   "M-n" 'magit-section-backward-sibling
-   "r" 'magit-refresh
-   "R" 'magit-rebase-popup
-   "g" 'magit-tag-popup
-   "t" 'evil-next-visual-line
-   "n" 'evil-previous-visual-line
-   )
+    "C-b" 'evil-scroll-page-up
+    "C-f" 'evil-scroll-page-down
+    "C-t" 'magit-section-forward
+    "C-n" 'magit-section-backward
+    "M-t" 'magit-section-forward-sibling
+    "M-n" 'magit-section-backward-sibling
+    "r" 'magit-refresh
+    "R" 'magit-rebase-popup
+    "g" 'magit-tag-popup
+    "t" 'evil-next-visual-line
+    "n" 'evil-previous-visual-line
+    )
   (general-define-key
    :keymaps 'magit-diff-mode-map
-   "/" 'evil-search-forward
-   "l" 'evil-search-next
-   "L" 'evil-search-previous
-   )
+    "/" 'evil-search-forward
+    "l" 'evil-search-next
+    "L" 'evil-search-previous
+    )
   :config
   ;; There doesn't seem to be a "nice" way to adjust magit popups, so I stole
   ;; this method from evil-magit
@@ -708,14 +708,14 @@ Close: _c_
    :states '(normal visual insert emacs)
    :prefix "SPC"
    :non-normal-prefix "M-SPC"
-   "hA" '(:ignore t :which-key "ansible")
-   "hAA" '(ansible-doc :which-key "ansible docs")
-   "hAR" '((lambda ()
-             (interactive)
-             (setq ansible-doc--modules nil)
-             (ansible-doc))
-           :which-key "ansible docs refresh")
-   ))
+    "hA" '(:ignore t :which-key "ansible")
+    "hAA" '(ansible-doc :which-key "ansible docs")
+    "hAR" '((lambda ()
+              (interactive)
+              (setq ansible-doc--modules nil)
+              (ansible-doc))
+            :which-key "ansible docs refresh")
+    ))
 
 (use-package spaceline
   :config
@@ -853,7 +853,7 @@ Close: _c_
   ;;  )
   (general-define-key
    :states 'visual
-   "v" 'er/expand-region))
+    "v" 'er/expand-region))
 
 (use-package markdown-mode)
 
