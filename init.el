@@ -154,89 +154,9 @@
 ;;   :config
 ;;   (linum-relative-global-mode))
 
-(use-package general
-  :config
-  (general-define-key
-   :states '(normal visual insert emacs)
-   :prefix "SPC"
-   :non-normal-prefix "M-SPC"
-    "<SPC>" '(save-buffer :which-key "save")
-
-    "b" '(:ignore t :which-key "buffer")
-    "bd" '(evil-delete-buffer :which-key "delete buffer")
-
-    "cc" '(comment-or-uncomment-region-or-line :which-key "toggle comment")
-
-    "f" '(:ignore t :which-key "formatting")
-    "fa" '(auto-fill-mode :which-key "auto fill")
-    "fi" '(indent-region :which-key "indent region")
-    "fp" '(fill-paragraph :which-key "paragraph")
-    "fr" '(fill-region :which-key "fill region")
-    "ft" '(toggle-truncate-lines :which-key "wrap lines")
-    "fw" '(whitespace-mode :which-key "show whitespace")
-
-    "g" '(:ignore t :which-key "git")
-    "gd" '(magit-diff-popup :which-key "diff")
-    "gl" '(magit-log-popup :which-key "log")
-    "gp" '(magit-dispatch-popup :which-key "menu")
-    "gs" '(magit-status :which-key "status")
-
-    "h" '(help-command :which-key "help")
-    "ha" 'helm-apropos
-    "hf" '(counsel-describe-function :which-key "describe function")
-    "hv" '(counsel-describe-variable :which-key "describe variable")
-
-    "i" '(:ignore t :which-key "insert")
-    "ip" '(clipboard-yank :which-key "paste from clipboard")
-
-    "nh" 'neotree-find
-    "nt" 'neotree-toggle
-
-    "o" '(:ignore t :which-key "open")
-    "oa" '(counsel-linux-app :which-key "app")
-    "oe" '(mode-line-other-buffer :which-key "previous buffer")
-    "of" '(counsel-find-file :which-key "open file")
-    "og" '(counsel-git :which-key "open git file")
-    "oh" '(counsel-projectile :which-key "open file in project")
-    "ol" '(org-open-at-point :which-key "follow link")
-    ;; "oo" '(ivy-switch-buffer :which-key "switch buffer")
-    "oo" '(persp-switch-to-buffer :which-key "switch buffer")
-    "op" '(counsel-projectile-switch-project :which-key "switch project")
-    "ov" '(persp-switch :which-key "switch perspective")
-
-    "pr" '(package-refresh-contents :which-key "refresh package info")
-
-    "s" '(:ignore t :which-key "search")
-    "sa" '(swiper-all :which-key "search all buffers")
-    "sf" '(counsel-ag :which-key "search files")
-    "sg" '(counsel-git-grep :which-key "search files in git")
-    "sh" '(counsel-grep-or-swiper :which-key "search buffer")
-
-    "v" '(:ignore t :which-key "view")
-
-    "x" '(:ignore t :which-key "execute")
-    "xa" '(ivy-resume :which-key "ivy resume")
-    "xb" '(eval-buffer :which-key "eval buffer")
-    "xe" '(eval-last-sexp :which-key "eval sexp")
-    "xr" '(eval-region :which-key "eval region")
-    "xx" '(counsel-M-x :which-key "M-x")
-    )
-
-  (general-define-key
-   :states '(normal visual)
-   "h" 'evil-backward-char
-   "t" 'evil-next-visual-line
-   "n" 'evil-previous-visual-line
-   "s" 'evil-forward-char
-
-   "l" 'evil-search-next
-   "L" 'evil-search-previous
-   "S" 'evil-window-bottom
-   )
-  )
-
 (use-package evil
   :init
+  (setq evil-want-integration nil)
   (setq evil-move-cursor-back t)
   (setq evil-vsplit-window-right t)
   :config
@@ -270,6 +190,113 @@
     :config
     (global-evil-surround-mode)))
 
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
+;; (use-package evil-dvorak
+;;   :straight (evil-dvorak :type git :host github :repo "neh/evil-dvorak")
+;;   :after evil
+;;   :config 
+;;   (global-evil-dvorak-mode 1))
+
+(use-package dired
+  :straight nil)
+
+(setq keymaps-with-hjkl-keybindings '(dired-mode-map))
+(use-package general
+  :after evil-collection
+  :config
+  (general-create-definer
+   neh/leader-keys
+   :keymaps 'override
+   :states '(emacs normal visual motion insert)
+   :non-normal-prefix "C-SPC"
+   :prefix "SPC")
+
+  (general-override-mode)
+
+  ;; (general-translate-key nil 'normal
+    ;; "t" "j"
+    ;; "n" "k")
+  (dolist (keymap keymaps-with-hjkl-keybindings)
+    (general-translate-key 'normal keymap
+    "t" "j"
+    "n" "k"))
+
+  (general-define-key
+   :states '(normal visual)
+   "h" 'evil-backward-char
+   "t" 'evil-next-visual-line
+   "n" 'evil-previous-visual-line
+   "s" 'evil-forward-char
+
+   "l" 'evil-search-next
+   "L" 'evil-search-previous
+   "S" 'evil-window-bottom)
+
+  (neh/leader-keys
+   "<SPC>" '(save-buffer :which-key "save")
+
+   "b" '(:ignore t :which-key "buffer")
+   "bd" '(evil-delete-buffer :which-key "delete buffer")
+
+   "cc" '(comment-or-uncomment-region-or-line :which-key "toggle comment")
+
+   "f" '(:ignore t :which-key "formatting")
+   "fa" '(auto-fill-mode :which-key "auto fill")
+   "fi" '(indent-region :which-key "indent region")
+   "fp" '(fill-paragraph :which-key "paragraph")
+   "fr" '(fill-region :which-key "fill region")
+   "ft" '(toggle-truncate-lines :which-key "wrap lines")
+   "fw" '(whitespace-mode :which-key "show whitespace")
+
+   "g" '(:ignore t :which-key "git")
+   "gd" '(magit-diff-popup :which-key "diff")
+   "gl" '(magit-log-popup :which-key "log")
+   "gp" '(magit-dispatch-popup :which-key "menu")
+   "gs" '(magit-status :which-key "status")
+
+   "h" '(help-command :which-key "help")
+   "ha" 'helm-apropos
+   "hf" '(counsel-describe-function :which-key "describe function")
+   "hv" '(counsel-describe-variable :which-key "describe variable")
+
+   "i" '(:ignore t :which-key "insert")
+   "ip" '(clipboard-yank :which-key "paste from clipboard")
+
+   "nh" 'neotree-find
+   "nt" 'neotree-toggle
+
+   "o" '(:ignore t :which-key "open")
+   "oa" '(counsel-linux-app :which-key "app")
+   "oe" '(mode-line-other-buffer :which-key "previous buffer")
+   "of" '(counsel-find-file :which-key "open file")
+   "og" '(counsel-git :which-key "open git file")
+   "oh" '(counsel-projectile :which-key "open file in project")
+   "ol" '(org-open-at-point :which-key "follow link")
+   ;; "oo" '(ivy-switch-buffer :which-key "switch buffer")
+   "oo" '(persp-switch-to-buffer :which-key "switch buffer")
+   "op" '(counsel-projectile-switch-project :which-key "switch project")
+   "ov" '(persp-switch :which-key "switch perspective")
+
+   "pr" '(package-refresh-contents :which-key "refresh package info")
+
+   "s" '(:ignore t :which-key "search")
+   "sa" '(swiper-all :which-key "search all buffers")
+   "sf" '(counsel-ag :which-key "search files")
+   "sg" '(counsel-git-grep :which-key "search files in git")
+   "sh" '(counsel-grep-or-swiper :which-key "search buffer")
+
+   "v" '(:ignore t :which-key "view")
+
+   "x" '(:ignore t :which-key "execute")
+   "xa" '(ivy-resume :which-key "ivy resume")
+   "xb" '(eval-buffer :which-key "eval buffer")
+   "xe" '(eval-last-sexp :which-key "eval sexp")
+   "xr" '(eval-region :which-key "eval region")
+   "xx" '(counsel-M-x :which-key "M-x")))
 
 (use-package which-key
   :config
