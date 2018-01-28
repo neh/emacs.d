@@ -688,7 +688,9 @@ Close: _c_
 ;;(use-package adaptive-wrap)
 (use-package frames-only-mode)
 
-(use-package aggressive-indent)
+(use-package aggressive-indent
+  :config
+  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
 
 (use-package direnv
   :config
