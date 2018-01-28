@@ -449,12 +449,12 @@
   )
 
 (use-package ace-window
-  :general
-  (general-define-key
-   :states '(normal motion emacs)
-   :prefix "SPC"
-   "w" 'ace-window
-   )
+  ;; :general
+  ;; (general-define-key
+  ;;  :states '(normal motion emacs)
+  ;;  :prefix "SPC"
+  ;;  "w" 'ace-window
+  ;;  )
   :config
   ;; need some window moving keys here
   (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)
