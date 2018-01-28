@@ -90,11 +90,11 @@
 ;; (load-theme 'gruvbox t)
 ;; (use-package plan9-theme)
 ;; (load-theme 'plan9 t)
-(use-package material-theme)
+;; (use-package material-theme)
 ;;(load-theme 'material t)
-(load-theme 'material-light t)
-;; (use-package darktooth-theme)
-;; (load-theme 'darktooth t)
+;; (load-theme 'material-light t)
+(use-package darktooth-theme)
+(load-theme 'darktooth t)
 
 ;; (straight-use-package 'ample-theme)
 ;; (load-theme 'ample t t)
@@ -104,6 +104,11 @@
 
 ;; (straight-use-package 'alect-themes)
 ;; (load-theme 'alect-dark-alt t)
+
+;; (straight-use-package 'solarized-theme)
+;; (load-theme 'solarized-light)
+;; (setq solarized-distinct-fringe-background t)
+;; (setq solarized-use-more-italic t)
 
 (use-package undo-tree
   :config
