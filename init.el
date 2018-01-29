@@ -198,12 +198,6 @@
   :config
   (evil-collection-init))
 
-;; (use-package evil-dvorak
-;;   :straight (evil-dvorak :type git :host github :repo "neh/evil-dvorak")
-;;   :after evil
-;;   :config 
-;;   (global-evil-dvorak-mode 1))
-
 (use-package dired
   :straight nil
   :general
@@ -214,7 +208,6 @@
    :states 'normal
    :keymaps 'dired-mode-map
     "U" '(dired-up-directory :which-key "go to parent directory")))
-
 
 (use-package dired-sidebar
   :general
@@ -232,6 +225,7 @@
   (add-hook 'dired-after-readin-hook #'dired-k-no-revert))
 
 (setq keymaps-with-jk-keybindings '(dired-mode-map))
+
 (use-package general
   :after evil-collection
   :config
@@ -244,9 +238,6 @@
 
   (general-override-mode)
 
-  ;; (general-translate-key nil 'normal
-  ;; "t" "j"
-  ;; "n" "k")
   (dolist (keymap keymaps-with-jk-keybindings)
     (general-translate-key 'normal keymap
       "t" "j"
@@ -341,8 +332,7 @@
    :prefix "j"
     "c" '(avy-goto-char-timer :which-key "char")
     "h" '(avy-org-goto-heading-timer :which-key "org heading")
-    "l" '(avy-goto-line :which-key "line")
-    )
+    "l" '(avy-goto-line :which-key "line"))
   :config
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 
@@ -380,14 +370,12 @@
     "C-M-n" 'ivy-previous-line-and-call
     "C-b" 'ivy-scroll-down-command
     "C-f" 'ivy-scroll-up-command
-    "C-d" 'ivy-call
-    )
+    "C-d" 'ivy-call)
 
   (general-define-key
    :keymaps 'counsel-find-file-map
     "TAB" 'ivy-alt-done
-    "C-s" 'neh-open-file-in-vsplit
-    )
+    "C-s" 'neh-open-file-in-vsplit)
 
   (general-define-key
    :keymaps 'ivy-occur-mode-map
@@ -397,8 +385,7 @@
     "a" 'ivy-occur-read-action
     "c" 'ivy-occur-toggle-calling
     "C-f" 'evil-scroll-page-down
-    "C-b" 'evil-scroll-page-up
-    )
+    "C-b" 'evil-scroll-page-up)
 
   :config
   (ivy-mode 1)
@@ -408,29 +395,30 @@
   (setq ivy-height 10)
   (setq ivy-re-builders-alist
         '((t . ivy--regex-fuzzy)))
-  (setq ivy-initial-inputs-alist nil)
+  (setq ivy-initial-inputs-alist nil))
 
-  (use-package counsel
-    :config
-    (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s")
-    (setq counsel-grep-base-command "grep -inE '%s' %s")
-    (counsel-mode 1)
-    ;; These don't work on a fresh load, but seem to start working at some
-    ;; point. Strange.
-    (ivy-add-actions
-     'counsel-find-file
-     `(("c" ,(given-file #'copy-file "Copy") "copy")
-       ("d" ,(reloading #'confirm-delete-file) "delete")
-       ("s" neh-open-file-in-vsplit "vsplit")
-       ("m" ,(reloading (given-file #'rename-file "Move")) "move")))
-    (ivy-add-actions
-     'counsel-projectile-find-file
-     `(("c" ,(given-file #'copy-file "Copy") "copy")
-       ("d" ,(reloading #'confirm-delete-file) "delete")
-       ("m" ,(reloading (given-file #'rename-file "Move")) "move")
-       ("b" counsel-find-file-cd-bookmark-action "cd bookmark")))
-    )
-  (use-package counsel-projectile))
+(use-package counsel
+  :after ivy
+  :config
+  (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s")
+  (setq counsel-grep-base-command "grep -inE '%s' %s")
+  (counsel-mode 1)
+  ;; These don't work on a fresh load, but seem to start working at some
+  ;; point. Strange.
+  (ivy-add-actions
+   'counsel-find-file
+   `(("c" ,(given-file #'copy-file "Copy") "copy")
+     ("d" ,(reloading #'confirm-delete-file) "delete")
+     ("s" neh-open-file-in-vsplit "vsplit")
+     ("m" ,(reloading (given-file #'rename-file "Move")) "move")))
+  (ivy-add-actions
+   'counsel-projectile-find-file
+   `(("c" ,(given-file #'copy-file "Copy") "copy")
+     ("d" ,(reloading #'confirm-delete-file) "delete")
+     ("m" ,(reloading (given-file #'rename-file "Move")) "move")
+     ("b" counsel-find-file-cd-bookmark-action "cd bookmark"))))
+
+(use-package counsel-projectile)
 
 (use-package historian
   :config
@@ -489,8 +477,7 @@
     ("u" ivy-occur :exit t)
     ("D" (ivy-exit-with-action
           (lambda (_) (find-function 'hydra-ivy/body)))
-     :exit t))
-  )
+     :exit t)))
 
 (use-package ace-window
   ;; :general
@@ -516,9 +503,6 @@
         ))
 
 
-;; (use-package validate)
-;; :demand t)
-
 (defhydra hydra-windows (:hint nil)
   "
    Go: _h_ _t_ _n_ _s_
@@ -542,19 +526,8 @@ Close: _c_
   ("o" delete-other-windows)
   ("c" evil-window-delete)
 
-  ("q" nil)
-  )
+  ("q" nil))
 
-;; (use-package helm
-;;   :init
-;;   (setq helm-M-x-fuzzy-match t)
-;;   :config
-;;   (helm-mode 1)
-;;   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-;;   (define-key helm-map (kbd "<backtab>") 'helm-select-action)
-
-;;   (use-package helm-ag)
-;;   (use-package helm-projectile))
 
 (use-package projectile
   :config
@@ -690,14 +663,14 @@ Close: _c_
     "R" 'magit-rebase-popup
     "g" 'magit-tag-popup
     "t" 'evil-next-visual-line
-    "n" 'evil-previous-visual-line
-    )
+    "n" 'evil-previous-visual-line)
+
   (general-define-key
    :keymaps 'magit-diff-mode-map
     "/" 'evil-search-forward
     "l" 'evil-search-next
-    "L" 'evil-search-previous
-    )
+    "L" 'evil-search-previous)
+
   :config
   ;; There doesn't seem to be a "nice" way to adjust magit popups, so I stole
   ;; this method from evil-magit
@@ -715,8 +688,7 @@ Close: _c_
   (add-hook 'git-commit-mode-hook 'evil-insert-state))
 
 
-;; Installing org-plus-contrib as a lazy workaround for the built-in older
-;; org-mode
+;; Installing org-plus-contrib as a lazy workaround for the built-in older org-mode
 ;; https://github.com/jwiegley/use-package/issues/319
 (straight-use-package 'org-plus-contrib)
 (use-package org
@@ -745,14 +717,14 @@ Close: _c_
   (setq org-todo-keywords
         '((sequence "TODO" "INPROGRESS" "WAITING" "|" "DONE" "CANCELED")))
   (add-hook 'org-mode-hook 'visual-line-mode)
-  (add-hook 'org-mode-hook 'visual-fill-column-mode)
-  )
-(use-package org-evil
-  ;; :general
-  ;; (:states 'normal
-  ;;  "M-h" 'org-promote
-  ;;  )
-  )
+  (add-hook 'org-mode-hook 'visual-fill-column-mode))
+
+;; (use-package org-evil
+;; :general
+;; (:states 'normal
+;;  "M-h" 'org-promote
+;;  )
+;; )
 
 (defun neh-org-jira-hook ()
   "Personal settings for org-jira."
@@ -771,8 +743,7 @@ Close: _c_
   :init
   (setq deft-directory "~/notes")
   (setq deft-extensions '("txt" "org" ""))
-  (setq deft-recursive t)
-  )
+  (setq deft-recursive t))
 
 ;; (use-package focus)
 ;; (use-package darkroom
@@ -788,6 +759,7 @@ Close: _c_
 ;;   )
 
 ;;(use-package adaptive-wrap)
+
 (use-package frames-only-mode)
 
 (use-package aggressive-indent
@@ -801,11 +773,12 @@ Close: _c_
 
 (use-package yaml-mode
   :config
-  (add-to-list 'auto-mode-alist '(".*\\(host\\|group\\)_vars.*" . yaml-mode))
-  )
+  (add-to-list 'auto-mode-alist '(".*\\(host\\|group\\)_vars.*" . yaml-mode)))
+
 (use-package ansible
   :init
   (setq ansible::vault-password-file "~/freshgrade/vaultpass"))
+
 (use-package ansible-doc
   :general
   (general-define-key
@@ -834,8 +807,7 @@ Close: _c_
   (spaceline-define-segment neh/buffer-status
     (cond (buffer-read-only (propertize ""))
           ((buffer-modified-p) (propertize ""))
-          (t "")
-          ))
+          (t "")))
 
   (spaceline-define-segment neh/hud
     "A HUD that shows which part of the buffer is currently visible."
@@ -858,8 +830,7 @@ Close: _c_
       (major-mode)
       ((line column buffer-position) :priority 0)
       (neh/hud :priority 0)))
-  (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main))))
-  )
+  (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
 
 ;; ((main
 ;;   ((((((persp-name :fallback workspace-number)
@@ -894,10 +865,6 @@ Close: _c_
 ;;   (buffer-position :priority 0)
 ;;   (hud :priority 0)))
 
-
-;; (setenv "MPD_HOST" "localhost")
-;; (setenv "MPD_PORT" "6600")
-
 ;; (defvar mode-line-directory
 ;;   '(:propertize
 ;;     (:eval (if (buffer-file-name) (concat " " (shorten-directory default-directory 20)) " "))
@@ -905,56 +872,8 @@ Close: _c_
 ;;   "Formats the current directory.")
 ;; (put 'mode-line-directory 'risky-local-variable t)
 
-;; (setq-default mode-line-format
-;;       '("%e"
-;;         mode-line-front-space
-;;         ;; mode-line-mule-info -- I'm always on utf-8
-;;         mode-line-client
-;;         mode-line-modified
-;;         ;; mode-line-remote -- no need to indicate this specially
-;;         ;; mode-line-frame-identification -- this is for text-mode emacs only
-;;         " "
-;;         mode-line-directory
-;;         mode-line-buffer-identification
-;;         " "
-;;         mode-line-position
-;;         ;; (vc-mode vc-mode)  -- I use magit, not vc-mode
-;;         (flycheck-mode flycheck-mode-line)
-;;         " "
-;;         mode-line-modes
-;;         mode-line-misc-info
-;;         mode-line-end-spaces))
-
-;; (use-package neotree
-;;   :init
-;;   (setq neo-theme 'arrow)
-;;   :general
-;;   (general-define-key
-;;    :keymaps 'neotree-mode-map
-;;    :states 'normal
-;;    "RET" 'neotree-enter
-;;    "o" 'neotree-enter
-;;    "q" 'neotree-hide
-;;    "C" 'neotree-change-root
-;;    "U" 'neotree-select-up-node
-;;    "R" 'neotree-refresh
-;;    "I" 'neotree-hidden-file-toggle
-;;    ;; "-" 'neotree-select-up-node
-;;    "M-n" 'neotree-create-node
-;;    "M-c" 'neotree-copy-node
-;;    "M-d" 'neotree-delete-node
-;;    "M-m" 'neotree-rename-node
-;;    )
-;;   )
-
 (use-package expand-region
   :general
-  ;; (general-define-key
-  ;;  :states '(normal visual insert emacs)
-  ;;  :prefix "SPC"
-  ;;  :non-normal-prefix "M-SPC"
-  ;;  "v" '(er/expand-region :which-key "expand region")
-  ;;  )
   (general-define-key
    :states 'visual
     "v" 'er/expand-region))
@@ -965,16 +884,10 @@ Close: _c_
   :mode ("\\.rs\\'" . rust-mode))
 
 (use-package hcl-mode)
+
 (use-package terraform-mode
   :config
-  (terraform-format-on-save-mode t)
-  )
-
-;; (use-package js-mode
-;;   :mode ("\\.json$" . js-mode)
-;;   :init
-;;   (progn
-;;     (add-hook 'js-mode-hook (lambda () (setq js-indent-level 2)))))
+  (terraform-format-on-save-mode t))
 
 
 (defun shorten-directory (dir max-length)
@@ -1020,12 +933,6 @@ ALPHA : [ %(frame-parameter nil 'alpha) ]
   ("T" (lambda () (interactive) (my--set-transparency -10)) "-- less")
   ("=" (lambda (value) (interactive "nTransparency Value 0 - 100 opaque:")
          (set-frame-parameter (selected-frame) 'alpha value)) "Set to ?" :color blue))
-
-;; (defun switch-to-previous-buffer ()
-;;   "Switch to previously open buffer.
-;; Repeated invocations toggle between the two most recently open buffers."
-;;   (interactive)
-;;   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 ;; these two font functions make emacs crashy
 (defun font-is-mono-p (font-family)
