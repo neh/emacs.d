@@ -896,6 +896,8 @@ Close: _c_
   :config
   (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
 
+(use-package groovy-mode)
+
 
 (setq keymaps-with-jk-keybindings '(dired-mode-map))
 (dolist (keymap keymaps-with-jk-keybindings)
