@@ -4,8 +4,6 @@
 
 ;; -*- lexical-binding: t -*-
 
-;; TODO global-eldoc mode messing with echo area
-
 (setq inhibit-splash-screen t
       inhibit-startup-message t
       initial-scratch-message nil
