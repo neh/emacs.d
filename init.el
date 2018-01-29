@@ -205,7 +205,31 @@
 ;;   (global-evil-dvorak-mode 1))
 
 (use-package dired
-  :straight nil)
+  :straight nil
+  :general
+  (general-define-key
+   :states 'normal
+    "U" '(dired-jump :which-key "dired"))
+  (general-define-key
+   :states 'normal
+   :keymaps 'dired-mode-map
+    "U" '(dired-up-directory :which-key "go to parent directory")))
+
+
+(use-package dired-sidebar
+  :general
+  (neh/leader-keys
+    "ot" 'dired-sidebar-toggle-sidebar)
+  :config
+  (setq dired-sidebar-theme 'nerd)
+  (add-hook 'dired-load-hook
+            (function (lambda () (load "dired-x")))))
+
+(use-package dired-k
+  :after dired
+  :config
+  (add-hook 'dired-initial-position-hook 'dired-k)
+  (add-hook 'dired-after-readin-hook #'dired-k-no-revert))
 
 (setq keymaps-with-jk-keybindings '(dired-mode-map))
 (use-package general
