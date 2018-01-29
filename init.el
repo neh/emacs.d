@@ -324,7 +324,11 @@
   :config
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 
-(use-package amx)
+(use-package amx
+  :after ivy
+  :config
+  (amx-mode))
+
 (use-package ivy
   :init
   (defun reloading (cmd)
@@ -405,6 +409,19 @@
        ("b" counsel-find-file-cd-bookmark-action "cd bookmark")))
     )
   (use-package counsel-projectile))
+
+(use-package historian
+  :config
+  (historian-mode))
+
+(use-package ivy-historian
+  :after ivy
+  :config
+  (setq ivy-historian-freq-boost-factor 300)
+  (setq ivy-historian-recent-boost 300)
+  (setq ivy-historian-recent-decrement 50)
+
+  (ivy-historian-mode))
 
 (use-package hydra)
 (use-package ivy-hydra
@@ -605,6 +622,10 @@ Close: _c_
     (define-key company-active-map (kbd "C-n") #'company-select-previous))
 
   (add-hook 'after-init-hook 'global-company-mode))
+
+(use-package company-statistics
+  :config
+  (company-statistics-mode))
 
 (use-package company-terraform
   :config
