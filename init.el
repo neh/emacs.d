@@ -198,34 +198,6 @@
   :config
   (evil-collection-init))
 
-(use-package dired
-  :straight nil
-  :general
-  (general-define-key
-   :states 'normal
-    "U" '(dired-jump :which-key "dired"))
-  (general-define-key
-   :states 'normal
-   :keymaps 'dired-mode-map
-    "U" '(dired-up-directory :which-key "go to parent directory")))
-
-(use-package dired-sidebar
-  :general
-  (neh/leader-keys
-    "ot" 'dired-sidebar-toggle-sidebar)
-  :config
-  (setq dired-sidebar-theme 'nerd)
-  (add-hook 'dired-load-hook
-            (function (lambda () (load "dired-x")))))
-
-(use-package dired-k
-  :after dired
-  :config
-  (add-hook 'dired-initial-position-hook 'dired-k)
-  (add-hook 'dired-after-readin-hook #'dired-k-no-revert))
-
-(setq keymaps-with-jk-keybindings '(dired-mode-map))
-
 (use-package general
   :after evil-collection
   :config
@@ -237,11 +209,6 @@
     :prefix "SPC")
 
   (general-override-mode)
-
-  (dolist (keymap keymaps-with-jk-keybindings)
-    (general-translate-key 'normal keymap
-      "t" "j"
-      "n" "k"))
 
   (general-define-key
    :states '(normal visual)
@@ -321,6 +288,33 @@
   (which-key-setup-side-window-right-bottom)
   (setq which-key-idle-secondary-delay 0.25)
   (which-key-mode))
+
+
+(use-package dired
+  :straight nil
+  :general
+  (general-define-key
+   :states 'normal
+    "U" '(dired-jump :which-key "dired"))
+  (general-define-key
+   :states 'normal
+   :keymaps 'dired-mode-map
+    "U" '(dired-up-directory :which-key "go to parent directory")))
+
+(use-package dired-sidebar
+  :general
+  (neh/leader-keys
+    "ot" 'dired-sidebar-toggle-sidebar)
+  :config
+  (setq dired-sidebar-theme 'nerd)
+  (add-hook 'dired-load-hook
+            (function (lambda () (load "dired-x")))))
+
+(use-package dired-k
+  :after dired
+  :config
+  (add-hook 'dired-initial-position-hook 'dired-k)
+  (add-hook 'dired-after-readin-hook #'dired-k-no-revert))
 
 
 (use-package flx)
@@ -888,6 +882,13 @@ Close: _c_
 (use-package terraform-mode
   :config
   (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
+
+
+(setq keymaps-with-jk-keybindings '(dired-mode-map))
+(dolist (keymap keymaps-with-jk-keybindings)
+  (general-translate-key 'normal keymap
+    "t" "j"
+    "n" "k"))
 
 
 (defun shorten-directory (dir max-length)
