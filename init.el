@@ -207,7 +207,7 @@
 (use-package dired
   :straight nil)
 
-(setq keymaps-with-hjkl-keybindings '(dired-mode-map))
+(setq keymaps-with-jk-keybindings '(dired-mode-map))
 (use-package general
   :after evil-collection
   :config
@@ -223,7 +223,7 @@
   ;; (general-translate-key nil 'normal
   ;; "t" "j"
   ;; "n" "k")
-  (dolist (keymap keymaps-with-hjkl-keybindings)
+  (dolist (keymap keymaps-with-jk-keybindings)
     (general-translate-key 'normal keymap
       "t" "j"
       "n" "k"))
