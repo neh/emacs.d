@@ -621,21 +621,34 @@ Close: _c_
   (company-terraform-init))
 
 (fringe-mode 8)
+
 ;; (use-package diff-hl
 ;;   :config
-;;   (diff-hl-mode)
-;;   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
-(use-package git-gutter-fringe+
+;;   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+
+;;   (diff-hl-flydiff-mode)
+;;   (global-diff-hl-mode))
+
+(use-package git-gutter+
+  :general
+  (general-define-key
+   :states '(normal visual)
+    "gp" 'git-gutter+-previous-hunk
+    "gn" 'git-gutter+-next-hunk
+    "gs" 'git-gutter+-show-hunk
+    "gS" 'git-gutter+-stage-hunks
+    "gU" 'git-gutter+-revert-hunks)
+
+  :init
+  (global-git-gutter+-mode)
+
   :config
-  ;; (global-git-gutter+-mode)
-  ;; (setq git-gutter+-window-width 2)
-  ;; (setq git-gutter+-added-sign ">")
-  ;; (setq git-gutter+-deleted-sign "<")
-  ;; (setq git-gutter+-modified-sign "*")
-  (setq git-gutter+-added-sign "▶")
-  (setq git-gutter+-deleted-sign "◀")
-  (setq git-gutter+-modified-sign "◆")
-  )
+  (setq git-gutter+-added-sign " ")
+  (setq git-gutter+-deleted-sign " ")
+  (setq git-gutter+-modified-sign " ")
+  (set-face-background 'git-gutter+-modified "gold")
+  (set-face-foreground 'git-gutter+-added "forestgreen")
+  (set-face-foreground 'git-gutter+-deleted "red4"))
 
 ;; disable annoying multi-line docs in echo area
 ;; (global-eldoc-mode -1)
