@@ -251,9 +251,6 @@
     "i" '(:ignore t :which-key "insert")
     "ip" '(clipboard-yank :which-key "paste from clipboard")
 
-    "nh" 'neotree-find
-    "nt" 'neotree-toggle
-
     "o" '(:ignore t :which-key "open")
     "oa" '(counsel-linux-app :which-key "app")
     "oe" '(mode-line-other-buffer :which-key "previous buffer")
@@ -279,8 +276,9 @@
     "x" '(:ignore t :which-key "execute")
     "xa" '(ivy-resume :which-key "ivy resume")
     "xb" '(eval-buffer :which-key "eval buffer")
-    "xe" '(eval-last-sexp :which-key "eval sexp")
+    "xe" '(eval-expression :which-key "eval expression")
     "xr" '(eval-region :which-key "eval region")
+    "xs" '(eval-last-sexp :which-key "eval sexp")
     "xx" '(counsel-M-x :which-key "M-x")))
 
 (use-package which-key
