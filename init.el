@@ -887,7 +887,7 @@ Close: _c_
 
 (use-package terraform-mode
   :config
-  (terraform-format-on-save-mode t))
+  (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
 
 
 (defun shorten-directory (dir max-length)
