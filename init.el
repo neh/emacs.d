@@ -894,7 +894,10 @@ Close: _c_
   :config
   (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
 
-(use-package groovy-mode)
+(use-package groovy-mode
+  :config
+  (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . groovy-mode)))
+
 
 
 (setq keymaps-with-jk-keybindings '(dired-mode-map))
