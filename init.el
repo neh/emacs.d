@@ -902,6 +902,10 @@ Close: _c_
   :config
   (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
+(use-package docker
+  :config
+  (setenv "DOCKER_HOST" "tcp://127.0.0.1:2375"))
+
 
 (setq keymaps-with-jk-keybindings '(dired-mode-map))
 (dolist (keymap keymaps-with-jk-keybindings)
