@@ -898,6 +898,9 @@ Close: _c_
   :config
   (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . groovy-mode)))
 
+(use-package dockerfile-mode
+  :config
+  (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
 
 (setq keymaps-with-jk-keybindings '(dired-mode-map))
