@@ -22,8 +22,8 @@
       (set-frame-font (format "%s-10" myfont))
     (set-frame-font (format "%s-10" myfont))))
 
-;; TODO to set comments to always be italic:
-;; (set-face-italic 'font-lock-comment-face t)
+;; set comments to always be italic
+(set-face-italic 'font-lock-comment-face t)
 
 (setq confirm-kill-emacs 'yes-or-no-p)
 
