@@ -241,9 +241,13 @@
     "fw" '(whitespace-mode :which-key "show whitespace")
 
     "g" '(:ignore t :which-key "git")
+    "gc" '(magit-commit :which-key "commit")
     "gd" '(magit-diff-popup :which-key "diff")
+    "gf" '(magit-stage-file :which-key "stage file")
+    "gh" '(git-gutter+-stage-hunks :which-key "stage hunk")
     "gl" '(magit-log-popup :which-key "log")
-    "gp" '(magit-dispatch-popup :which-key "menu")
+    "gm" '(magit-dispatch-popup :which-key "menu")
+    "gP" '(magit-push-popup :which-key "push")
     "gs" '(magit-status :which-key "status")
 
     "h" '(help-command :which-key "help")
