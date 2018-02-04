@@ -728,6 +728,8 @@ Close: _c_
   (setq org-src-fontify-natively t)
   (setq org-todo-keywords
         '((sequence "TODO" "INPROGRESS" "WAITING" "|" "DONE" "CANCELED")))
+
+  (add-hook 'org-mode-hook 'org-indent-mode)
   (add-hook 'org-mode-hook 'visual-line-mode)
   (add-hook 'org-mode-hook 'visual-fill-column-mode))
 
