@@ -733,12 +733,19 @@ Close: _c_
   (add-hook 'org-mode-hook 'visual-line-mode)
   (add-hook 'org-mode-hook 'visual-fill-column-mode))
 
-;; (use-package org-evil
-;; :general
-;; (:states 'normal
-;;  "M-h" 'org-promote
-;;  )
-;; )
+(use-package evil-org
+  :after evil
+  :config
+  (setq evil-org-movement-bindings '((up . "n")
+                                     (down . "t")
+                                     (left . "h")
+                                     (right . "s")))
+
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme))))
+
 
 (defun neh-org-jira-hook ()
   "Personal settings for org-jira."
