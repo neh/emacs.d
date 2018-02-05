@@ -741,6 +741,8 @@ Close: _c_
                                      (left . "h")
                                      (right . "s")))
 
+  (add-to-list 'evil-org-key-theme 'shift)
+
   (add-hook 'org-mode-hook 'evil-org-mode)
   (add-hook 'evil-org-mode-hook
             (lambda ()
