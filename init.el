@@ -22,9 +22,6 @@
       (set-frame-font (format "%s-10" myfont))
     (set-frame-font (format "%s-10" myfont))))
 
-;; set comments to always be italic
-(set-face-italic 'font-lock-comment-face t)
-
 (setq confirm-kill-emacs 'yes-or-no-p)
 
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))) ;; one line at a time
@@ -110,6 +107,9 @@
 ;; (load-theme 'solarized-light)
 ;; (setq solarized-distinct-fringe-background t)
 ;; (setq solarized-use-more-italic t)
+
+;; set comments to always be italic (must be after theming)
+(set-face-italic 'font-lock-comment-face t)
 
 (use-package undo-tree
   :config
