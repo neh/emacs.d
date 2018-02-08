@@ -108,6 +108,18 @@
 ;; (setq solarized-distinct-fringe-background t)
 ;; (setq solarized-use-more-italic t)
 
+;; (straight-use-package 'monotropic-theme)
+;; (use-package eink-theme
+;;   :config
+;;   (load-theme 'eink t)
+;;   (custom-theme-set-faces
+;;    'eink
+;;    `(mode-line ((t (:height 1.0))))
+;;    `(mode-line-inactive ((t (:height 1.0))))
+;;    `(modeline ((t (:height 1.0))))))
+
+;; (straight-use-package 'nordless-theme)
+
 ;; set comments to always be italic (must be after theming)
 (set-face-italic 'font-lock-comment-face t)
 
