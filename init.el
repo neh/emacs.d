@@ -899,7 +899,8 @@ Close: _c_
   :general
   (general-define-key
    :states 'visual
-    "v" 'er/expand-region))
+    "v" 'er/expand-region
+    "V" 'er/contract-region))
 
 (use-package markdown-mode)
 
