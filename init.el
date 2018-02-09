@@ -743,7 +743,13 @@ Close: _c_
 
   (add-hook 'org-mode-hook 'org-indent-mode)
   (add-hook 'org-mode-hook 'visual-line-mode)
-  (add-hook 'org-mode-hook 'visual-fill-column-mode))
+  (add-hook 'org-mode-hook 'visual-fill-column-mode)
+
+  (setq org-confirm-babel-evaluate nil)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((shell . t)
+     (emacs-lisp . t))))
 
 (use-package evil-org
   :after evil
