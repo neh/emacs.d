@@ -738,7 +738,8 @@ Close: _c_
   ;;  "C-s" 'org-shiftright
   ;;  )
   :init
-  (setq org-ellipsis " …")
+  (setq org-ellipsis " ↴")
+  (set-face-underline 'org-ellipsis nil)
   (setq org-hide-emphasis-markers t)
   (setq org-src-fontify-natively t)
   (setq org-todo-keywords
