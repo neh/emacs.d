@@ -775,6 +775,13 @@ Close: _c_
   (setq org-todo-keywords
         '((sequence "TO-DO" "IN-PROGRESS" "QA" "CODE-REVIEW" "|" "DONE" "WONTFIX"))))
 
+
+(use-package org-bullets
+  :after org
+  :config
+  (setq org-bullets-bullet-list '("•"))
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
 (use-package org-jira
   :init
   (add-hook 'org-jira-mode-hook 'neh-org-jira-hook)
