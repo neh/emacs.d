@@ -657,6 +657,7 @@ Close: _c_
     "gU" 'git-gutter+-revert-hunks)
 
   :init
+  (setq git-gutter+-disabled-modes '(org-mode))
   (global-git-gutter+-mode)
 
   :config
