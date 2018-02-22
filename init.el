@@ -754,7 +754,7 @@ Close: _c_
 
     (custom-theme-set-faces 'user
                             `(fixed-pitch ((t (,@fixed-tuple))))
-                            `(variable-pitch ((t (,@variable-tuple))))
+                            `(variable-pitch ((t (,@variable-tuple :font "Noto Serif Light"))))
                             `(org-ellipsis ((t (:underline nil :weight normal))))
                             `(org-indent ((t (:inherit org-hide :inherit (org-hide fixed-pitch)))))
                             `(org-code ((t (:inherit fixed-pitch :foreground "#87afaf"))))
