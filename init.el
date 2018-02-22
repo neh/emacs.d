@@ -40,7 +40,6 @@
 (setq ring-bell-function 'ignore)
 (setq enable-recursive-minibuffers t)
 (save-place-mode 1)
-(global-hl-line-mode t)
 
 (setq frame-title-format "%b") ;; focused window title format
 (setq icon-title-format "%b") ;; unfocused window title format
@@ -788,12 +787,12 @@ Close: _c_
 
   (set-face-attribute 'org-ellipsis '(:underline nil :weight normal))
 
-  (add-hook 'org-mode-hook (lambda ()
-                             (setq-local global-hl-line-mode
-                                         nil)))
   (add-hook 'org-mode-hook 'org-indent-mode)
   ;; (add-hook 'org-mode-hook 'visual-fill-column-mode)
   (add-hook 'org-mode-hook 'set-buffer-variable-pitch)
+  ;; (add-hook 'org-mode-hook (lambda ()
+  ;;                            (setq-local global-hl-line-mode
+  ;;                                        nil)))
   (add-hook 'org-mode-hook 'visual-line-mode)
 
   (setq org-confirm-babel-evaluate nil)
@@ -801,6 +800,11 @@ Close: _c_
    'org-babel-load-languages
    '((shell . t)
      (emacs-lisp . t))))
+
+(use-package hl-line+
+  :config
+  (setq hl-line-inhibit-highlighting-for-modes '(org-mode))
+  (toggle-hl-line-when-idle 1))
 
 (defun set-buffer-variable-pitch ()
   (interactive)
