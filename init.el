@@ -749,7 +749,7 @@ Close: _c_
          ;; (done               `(:inherit default :weight normal :height 0.9 :foreground "#bdae93"))
          ;; (variable           `(:inherit default :foreground ,base-font-color)))
          (headline           `(:weight bold :foreground ,base-font-color))
-         (done               `(:weight normal :height 0.9 :foreground "#bdae93"))
+         (done               `(:weight normal :foreground "#7c6f64"))
          (variable           `(:foreground ,base-font-color)))
 
     (custom-theme-set-faces 'user
