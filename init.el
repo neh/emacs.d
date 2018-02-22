@@ -738,7 +738,7 @@ Close: _c_
   ;;  "C-s" 'org-shiftright
   ;;  )
   :init
-  (let* ((variable-tuple (cond ((x-list-fonts "ETBembo") '(:font "ETBembo" :height 1.2))
+  (let* ((variable-tuple (cond ((x-list-fonts "Noto Serif") '(:font "Noto Serif" :height 1.0))
                                ((x-list-fonts "Noto Sans") '(:font "Noto Sans"))
                                ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
                                (nil (warn "Cannot find a Sans Serif Font. Install Source Sans Pro."))))
@@ -755,6 +755,7 @@ Close: _c_
     (custom-theme-set-faces 'user
                             `(fixed-pitch ((t (,@fixed-tuple))))
                             `(variable-pitch ((t (,@variable-tuple))))
+                            `(org-ellipsis ((t (:underline nil :weight normal))))
                             `(org-indent ((t (:inherit org-hide :inherit (org-hide fixed-pitch)))))
                             `(org-code ((t (:inherit fixed-pitch :foreground "#87afaf"))))
                             ;; `(org-link ((t (:inherit default :foreground "#f4e8ba"))))
@@ -763,7 +764,7 @@ Close: _c_
                             `(org-level-7 ((t (,@headline ,@variable-tuple))))
                             `(org-level-6 ((t (,@headline ,@variable-tuple))))
                             `(org-level-5 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+                            `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.0))))
                             `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
                             `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.1))))
                             `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.2 :slant italic))))
@@ -783,14 +784,16 @@ Close: _c_
         org-fontify-done-headline t
         org-hide-emphasis-markers t
         org-pretty-entities t)
-  ;; (set-face-underline 'org-ellipsis nil)
-  (set-face-attribute 'org-ellipsis '(:underline nil :weight normal))
-  (set-face-attribute 'org-ellipsis '(:weight normal))
 
+  (set-face-attribute 'org-ellipsis '(:underline nil :weight normal))
+
+  (add-hook 'org-mode-hook (lambda ()
+                             (setq-local global-hl-line-mode
+                                         nil)))
   (add-hook 'org-mode-hook 'org-indent-mode)
-  (add-hook 'org-mode-hook 'visual-line-mode)
   ;; (add-hook 'org-mode-hook 'visual-fill-column-mode)
   (add-hook 'org-mode-hook 'set-buffer-variable-pitch)
+  (add-hook 'org-mode-hook 'visual-line-mode)
 
   (setq org-confirm-babel-evaluate nil)
   (org-babel-do-load-languages
@@ -801,7 +804,7 @@ Close: _c_
 (defun set-buffer-variable-pitch ()
   (interactive)
   (variable-pitch-mode t)
-  (setq line-spacing 3)
+  (setq line-spacing 0.1)
   (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
   (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
   (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
