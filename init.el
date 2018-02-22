@@ -806,6 +806,8 @@ Close: _c_
   (setq hl-line-inhibit-highlighting-for-modes '(org-mode))
   (toggle-hl-line-when-idle 1))
 
+(use-package centered-cursor-mode)
+
 (defun set-buffer-variable-pitch ()
   (interactive)
   (variable-pitch-mode t)
