@@ -738,43 +738,74 @@ Close: _c_
   ;;  "C-s" 'org-shiftright
   ;;  )
   :init
-  (let* ((variable-tuple (cond ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-                               ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-                               ((x-list-fonts "Verdana")         '(:font "Verdana"))
-                               ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-                               (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+  (let* ((variable-tuple (cond ((x-list-fonts "ETBembo") '(:font "ETBembo" :height 1.2))
+                               ((x-list-fonts "Noto Sans") '(:font "Noto Sans"))
+                               ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
+                               (nil (warn "Cannot find a Sans Serif Font. Install Source Sans Pro."))))
+         (fixed-tuple (cond ((x-list-fonts "mononoki") '(:font "mononoki"))
+                            (nil (warn "Cannot find a fixed width font."))))
          (base-font-color     (face-foreground 'default nil 'default))
-         (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+         ;; (headline           `(:inherit default :weight bold :foreground ,base-font-color))
+         ;; (done               `(:inherit default :weight normal :height 0.9 :foreground "#bdae93"))
+         ;; (variable           `(:inherit default :foreground ,base-font-color)))
+         (headline           `(:weight bold :foreground ,base-font-color))
+         (done               `(:weight normal :height 0.9 :foreground "#bdae93"))
+         (variable           `(:foreground ,base-font-color)))
 
     (custom-theme-set-faces 'user
+                            `(fixed-pitch ((t (,@fixed-tuple))))
+                            `(variable-pitch ((t (,@variable-tuple))))
+                            `(org-indent ((t (:inherit org-hide :inherit (org-hide fixed-pitch)))))
+                            `(org-code ((t (:inherit fixed-pitch :foreground "#87afaf"))))
+                            ;; `(org-link ((t (:inherit default :foreground "#f4e8ba"))))
+                            `(org-link ((t (:inherit default :foreground "#f4e8ba" :height 0.9))))
                             `(org-level-8 ((t (,@headline ,@variable-tuple))))
                             `(org-level-7 ((t (,@headline ,@variable-tuple))))
                             `(org-level-6 ((t (,@headline ,@variable-tuple))))
                             `(org-level-5 ((t (,@headline ,@variable-tuple))))
                             `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
                             `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
-                            `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.2))))
-                            `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.3))))
+                            `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.1))))
+                            `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.2 :slant italic))))
+                            `(org-todo ((t (,@headline ,@variable-tuple :foreground "#fabd2f"))))
+                            `(org-done ((t (,@done ,@variable-tuple :strike-through t))))
+                            `(org-headline-done ((t (,@done ,@variable-tuple))))
                             `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
 
   :config
   (setq org-todo-keywords
         '((sequence "TODO" "INPROGRESS" "WAITING" "|" "DONE" "CANCELED")))
 
-  (setq org-ellipsis " ↴")
-  (set-face-underline 'org-ellipsis nil)
-  (setq org-hide-emphasis-markers t)
-  (setq org-src-fontify-natively t)
+  (setq org-startup-indented t
+        org-ellipsis "  "
+        org-src-fontify-natively t
+        ;; org-fontify-whole-heading-line t
+        org-fontify-done-headline t
+        org-hide-emphasis-markers t
+        org-pretty-entities t)
+  ;; (set-face-underline 'org-ellipsis nil)
+  (set-face-attribute 'org-ellipsis '(:underline nil :weight normal))
+  (set-face-attribute 'org-ellipsis '(:weight normal))
 
   (add-hook 'org-mode-hook 'org-indent-mode)
   (add-hook 'org-mode-hook 'visual-line-mode)
-  (add-hook 'org-mode-hook 'visual-fill-column-mode)
+  ;; (add-hook 'org-mode-hook 'visual-fill-column-mode)
+  (add-hook 'org-mode-hook 'set-buffer-variable-pitch)
 
   (setq org-confirm-babel-evaluate nil)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)
      (emacs-lisp . t))))
+
+(defun set-buffer-variable-pitch ()
+  (interactive)
+  (variable-pitch-mode t)
+  (setq line-spacing 3)
+  (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-block-background nil :inherit 'fixed-pitch))
 
 (use-package evil-org
   :after evil
@@ -801,7 +832,8 @@ Close: _c_
 (use-package org-bullets
   :after org
   :config
-  (setq org-bullets-bullet-list '("•"))
+  ;; (setq org-bullets-bullet-list '("•"))
+  (setq org-bullets-bullet-list '(" "))
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package org-jira
