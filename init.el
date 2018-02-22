@@ -753,7 +753,7 @@ Close: _c_
          (variable           `(:foreground ,base-font-color)))
 
     (custom-theme-set-faces 'user
-                            `(fixed-pitch ((t (,@fixed-tuple))))
+                            `(fixed-pitch ((t (,@fixed-tuple :height 1.04))))
                             `(variable-pitch ((t (,@variable-tuple :font "Noto Serif Light"))))
                             `(org-ellipsis ((t (:underline nil :weight normal))))
                             `(org-indent ((t (:inherit org-hide :inherit (org-hide fixed-pitch)))))
