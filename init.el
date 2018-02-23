@@ -737,7 +737,7 @@ Close: _c_
   ;;  "C-s" 'org-shiftright
   ;;  )
   :init
-  (let* ((variable-tuple (cond ((x-list-fonts "Noto Serif") '(:font "Noto Serif" :height 1.0))
+  (let* ((variable-tuple (cond ((x-list-fonts "Noto Serif") '(:font "Noto Serif"))
                                ((x-list-fonts "Noto Sans") '(:font "Noto Sans"))
                                ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
                                (nil (warn "Cannot find a Sans Serif Font. Install Source Sans Pro."))))
