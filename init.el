@@ -146,6 +146,8 @@
 ;; uses the fill-column setting for visual-line-mode
 (use-package visual-fill-column)
 
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+
 (use-package whitespace
   :init
   (setq whitespace-line-column 80)
@@ -245,11 +247,13 @@
 
     "f" '(:ignore t :which-key "formatting")
     "fa" '(auto-fill-mode :which-key "auto fill")
+    "fc" '(visual-fill-column-mode :which-key "visual fill column")
     "fi" '(indent-region :which-key "indent region")
     "fp" '(fill-paragraph :which-key "paragraph")
     "fr" '(fill-region :which-key "fill region")
-    "ft" '(toggle-truncate-lines :which-key "wrap lines")
+    "ft" '(toggle-truncate-lines :which-key "truncate lines")
     "fw" '(whitespace-mode :which-key "show whitespace")
+    "fv" '(visual-line-mode :which-key "visual line mode")
 
     "g" '(:ignore t :which-key "git")
     "gc" '(magit-commit :which-key "commit")
