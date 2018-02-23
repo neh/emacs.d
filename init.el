@@ -297,7 +297,9 @@
     "xe" '(eval-expression :which-key "eval expression")
     "xr" '(eval-region :which-key "eval region")
     "xs" '(eval-last-sexp :which-key "eval sexp")
-    "xx" '(counsel-M-x :which-key "M-x")))
+    "xx" '(counsel-M-x :which-key "M-x")
+
+    "zt" '(hydra-zoom/body :which-key "zoom text")))
 
 (use-package which-key
   :config
@@ -489,6 +491,14 @@
           (lambda (_) (find-function 'hydra-ivy/body)))
      :exit t)))
 
+(defhydra hydra-zoom ()
+  "zoom"
+  ("+" text-scale-increase "in")
+  ("-" text-scale-decrease "out")
+  ("0" (text-scale-adjust 0) "reset")
+  ("q" nil "quit" :color blue))
+
+(defhydra hydra-org (:color red :columns 3)
 (use-package ace-window
   ;; :general
   ;; (general-define-key
