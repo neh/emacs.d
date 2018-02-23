@@ -783,7 +783,8 @@ Close: _c_
         ;; org-fontify-whole-heading-line t
         org-fontify-done-headline t
         org-hide-emphasis-markers t
-        org-pretty-entities t)
+        org-pretty-entities t
+        org-M-RET-may-split-line '((default . nil)))
 
   (set-face-attribute 'org-ellipsis '(:underline nil :weight normal))
 
