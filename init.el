@@ -784,6 +784,7 @@ Close: _c_
         org-fontify-done-headline t
         org-hide-emphasis-markers t
         org-pretty-entities t
+        org-cycle-separator-lines 1
         org-M-RET-may-split-line '((default . nil)))
 
   (set-face-attribute 'org-ellipsis '(:underline nil :weight normal))
