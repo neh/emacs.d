@@ -273,6 +273,14 @@
     "i" '(:ignore t :which-key "insert")
     "ip" '(clipboard-yank :which-key "paste from clipboard")
 
+    "nb" '(org-narrow-to-block :which-key "narrow to block")
+    "nd" '(narrow-to-defun-include-comments :which-key "narrow to defun")
+    "ne" '(org-narrow-to-element :which-key "narrow to element")
+    "ns" '(org-narrow-to-subtree :which-key "narrow to subtree")
+    "np" '(narrow-to-page :which-key "narrow to page")
+    "nr" '(narrow-to-region :which-key "narrow to region")
+    "nw" '(widen :which-key "widen")
+
     "o" '(:ignore t :which-key "open")
     "oa" '(counsel-linux-app :which-key "app")
     "oe" '(mode-line-other-buffer :which-key "previous buffer")
