@@ -202,8 +202,11 @@
         evil-visual-state-tag   (propertize "V")
         evil-operator-state-tag (propertize "O"))
 
-  (defadvice evil-ex-search-next (after advice-for-evil-ex-search-next activate)
-    (evil-scroll-line-to-center (line-number-at-pos)))
+  (evil-define-operator evil-narrow-indirect (beg end type)
+    "Indirectly narrow the region from BEG to END."
+    (interactive "<R>")
+    (evil-normal-state)
+    (narrow-to-region-indirect beg end))
 
   (use-package evil-surround
     :config
@@ -226,6 +229,14 @@
 
   (general-override-mode)
 
+  ;; (defadvice evil-search-next (after advice-for-evil-search-next activate)
+  ;;   (evil-scroll-line-to-center (line-number-at-pos)))
+  (general-add-advice (list #'evil-search-previous
+                            #'evil-search-next
+                            #'git-gutter+-previous-hunk
+                            #'git-gutter+-next-hunk)
+                      :after #'evil-scroll-line-to-center)
+
   (general-define-key
    :states '(normal visual)
     "h" 'evil-backward-char
@@ -235,7 +246,9 @@
 
     "l" 'evil-search-next
     "L" 'evil-search-previous
-    "S" 'evil-window-bottom)
+    "S" 'evil-window-bottom
+
+    "N" 'evil-narrow-indirect)
 
   (neh/leader-keys
     "<SPC>" '(save-buffer :which-key "save")
@@ -1048,6 +1061,15 @@ Close: _c_
     "t" "j"
     "n" "k"))
 
+
+(defun narrow-to-region-indirect (start end)
+  "Restrict editing in this buffer to the current region, indirectly."
+  (interactive "r")
+  (deactivate-mark)
+  (let ((buf (clone-indirect-buffer nil nil)))
+    (with-current-buffer buf
+      (narrow-to-region start end))
+    (switch-to-buffer buf)))
 
 (defun shorten-directory (dir max-length)
   "Show up to `max-length' characters of a directory name `dir'."
