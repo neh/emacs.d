@@ -255,6 +255,7 @@
 
     "b" '(:ignore t :which-key "buffer")
     "bd" '(evil-delete-buffer :which-key "delete buffer")
+    "bg" '(hydra-git-gutter/body :which-key "browse git hunks")
 
     "cc" '(comment-or-uncomment-region-or-line :which-key "toggle comment")
 
@@ -521,6 +522,16 @@
   ("+" text-scale-increase "in")
   ("-" text-scale-decrease "out")
   ("0" (text-scale-adjust 0) "reset")
+  ("q" nil "quit" :color blue))
+
+(defhydra hydra-git-gutter ()
+  "Browse/stage/revert git hunks"
+  ("p" (progn (git-gutter+-previous-hunk 1)
+              (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
+  ("n" (progn (git-gutter+-next-hunk 1)
+              (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
+  ("s" git-gutter+-stage-hunks "stage hunk")
+  ("r" git-gutter+-revert-hunk "revert hunk")
   ("q" nil "quit" :color blue))
 
 (defhydra hydra-org (:color red :columns 3)
