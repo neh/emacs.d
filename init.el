@@ -302,6 +302,7 @@
     "og" '(counsel-git :which-key "open git file")
     "oh" '(counsel-projectile :which-key "open file in project")
     "ol" '(org-open-at-point :which-key "follow link")
+    "om" '(hydra-org/body :which-key "org tour")
     ;; "oo" '(ivy-switch-buffer :which-key "switch buffer")
     "oo" '(persp-switch-to-buffer :which-key "switch buffer")
     "op" '(counsel-projectile-switch-project :which-key "switch project")
@@ -535,6 +536,14 @@
   ("q" nil "quit" :color blue))
 
 (defhydra hydra-org (:color red :columns 3)
+  "Org Mode Movements"
+  ("t" outline-next-visible-heading "next heading")
+  ("n" outline-previous-visible-heading "prev heading")
+  ("T" org-forward-heading-same-level "next heading at same level")
+  ("N" org-backward-heading-same-level "prev heading at same level")
+  ("H" outline-up-heading "up heading")
+  ("g" org-goto "goto" :exit t))
+
 (use-package ace-window
   ;; :general
   ;; (general-define-key
