@@ -468,7 +468,34 @@
 
   (ivy-historian-mode))
 
-(use-package hydra)
+(use-package hydra
+  :config
+  (defhydra hydra-zoom ()
+    "zoom"
+    ("+" text-scale-increase "in")
+    ("-" text-scale-decrease "out")
+    ("0" (text-scale-adjust 0) "reset")
+    ("q" nil "quit" :color blue))
+
+  (defhydra hydra-git-gutter ()
+    "Browse/stage/revert git hunks"
+    ("p" (progn (git-gutter+-previous-hunk 1)
+                (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
+    ("n" (progn (git-gutter+-next-hunk 1)
+                (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
+    ("s" git-gutter+-stage-hunks "stage hunk")
+    ("r" git-gutter+-revert-hunk "revert hunk")
+    ("q" nil "quit" :color blue))
+
+  (defhydra hydra-org (:color red :columns 3)
+    "Org Mode Movements"
+    ("t" outline-next-visible-heading "next heading")
+    ("n" outline-previous-visible-heading "prev heading")
+    ("T" org-forward-heading-same-level "next heading at same level")
+    ("N" org-backward-heading-same-level "prev heading at same level")
+    ("H" outline-up-heading "up heading")
+    ("g" org-goto "goto" :exit t)))
+
 (use-package ivy-hydra
   :config
   (defhydra hydra-ivy (:hint nil
@@ -513,32 +540,6 @@
     ("D" (ivy-exit-with-action
           (lambda (_) (find-function 'hydra-ivy/body)))
      :exit t)))
-
-(defhydra hydra-zoom ()
-  "zoom"
-  ("+" text-scale-increase "in")
-  ("-" text-scale-decrease "out")
-  ("0" (text-scale-adjust 0) "reset")
-  ("q" nil "quit" :color blue))
-
-(defhydra hydra-git-gutter ()
-  "Browse/stage/revert git hunks"
-  ("p" (progn (git-gutter+-previous-hunk 1)
-              (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
-  ("n" (progn (git-gutter+-next-hunk 1)
-              (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
-  ("s" git-gutter+-stage-hunks "stage hunk")
-  ("r" git-gutter+-revert-hunk "revert hunk")
-  ("q" nil "quit" :color blue))
-
-(defhydra hydra-org (:color red :columns 3)
-  "Org Mode Movements"
-  ("t" outline-next-visible-heading "next heading")
-  ("n" outline-previous-visible-heading "prev heading")
-  ("T" org-forward-heading-same-level "next heading at same level")
-  ("N" org-backward-heading-same-level "prev heading at same level")
-  ("H" outline-up-heading "up heading")
-  ("g" org-goto "goto" :exit t))
 
 (use-package ace-window
   ;; :general
