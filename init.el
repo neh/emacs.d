@@ -229,12 +229,8 @@
 
   (general-override-mode)
 
-  ;; (defadvice evil-search-next (after advice-for-evil-search-next activate)
-  ;;   (evil-scroll-line-to-center (line-number-at-pos)))
   (general-add-advice (list #'evil-search-previous
-                            #'evil-search-next
-                            #'git-gutter+-previous-hunk
-                            #'git-gutter+-next-hunk)
+                            #'evil-search-next)
                       :after #'evil-scroll-line-to-center)
 
   (general-define-key
