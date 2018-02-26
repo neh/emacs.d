@@ -847,7 +847,6 @@ Close: _c_
   ;; (add-hook 'org-mode-hook (lambda ()
   ;;                            (setq-local global-hl-line-mode
   ;;                                        nil)))
-  (add-hook 'org-mode-hook 'visual-line-mode)
 
   (setq org-confirm-babel-evaluate nil)
   (org-babel-do-load-languages
