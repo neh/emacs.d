@@ -782,7 +782,11 @@ Close: _c_
    :prefix  "g"
    "x" 'org-open-at-point
    )
-  ;; :general
+  (:keymaps 'org-mode-map
+   :states '(normal emacs)
+   "<RET>" 'org-tree-to-indirect-buffer
+   "ze" 'outline-show-branches
+   )
   ;; (:keymaps 'org-mode-map
   ;;  "H" 'org-shiftleft
   ;;  "T" 'org-shiftdown
