@@ -234,6 +234,11 @@
                       :after #'evil-scroll-line-to-center)
 
   (general-define-key
+   "C-M-t" 'scroll-other-window
+   "C-M-n" 'scroll-other-window-down
+   )
+
+  (general-define-key
    :states '(normal visual)
     "h" 'evil-backward-char
     "t" 'evil-next-visual-line
