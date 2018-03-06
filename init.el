@@ -786,6 +786,8 @@ Close: _c_
    :states '(normal emacs)
    "<RET>" 'org-tree-to-indirect-buffer
    "ze" 'outline-show-branches
+   "C-M-t" 'scroll-other-window
+   "C-M-n" 'scroll-other-window-down
    )
   ;; (:keymaps 'org-mode-map
   ;;  "H" 'org-shiftleft
