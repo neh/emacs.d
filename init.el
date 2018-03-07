@@ -47,6 +47,10 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file 'no-error)
 
+;; Allow the confusing narrowings
+(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
+
 ;; from http://www.jethrokuan.com/init.html
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
