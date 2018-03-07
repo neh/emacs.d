@@ -289,7 +289,7 @@
     "ip" '(clipboard-yank :which-key "paste from clipboard")
 
     "nb" '(org-narrow-to-block :which-key "narrow to block")
-    "nd" '(narrow-to-defun-include-comments :which-key "narrow to defun")
+    "nd" '(narrow-to-defun :which-key "narrow to defun")
     "ne" '(org-narrow-to-element :which-key "narrow to element")
     "ns" '(org-narrow-to-subtree :which-key "narrow to subtree")
     "np" '(narrow-to-page :which-key "narrow to page")
