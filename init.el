@@ -311,6 +311,8 @@
 
     "pr" '(package-refresh-contents :which-key "refresh package info")
 
+    "Q" #'bury-buffer
+
     "s" '(:ignore t :which-key "search")
     "sa" '(swiper-all :which-key "search all buffers")
     "sf" '(counsel-ag :which-key "search files")
