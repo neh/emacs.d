@@ -143,7 +143,7 @@
   (setq-local comment-auto-fill-only-comments t)
   (auto-fill-mode nil))
 
-(setq-default fill-column 80)
+(setq-default fill-column 110)
 (setq comment-auto-fill-only-comments t)
 ;; (setq-default auto-fill-function 'do-auto-fill)
 
