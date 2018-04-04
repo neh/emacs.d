@@ -305,7 +305,7 @@
     "oe" '(mode-line-other-buffer :which-key "previous buffer")
     "of" '(counsel-find-file :which-key "open file")
     "og" '(counsel-git :which-key "open git file")
-    "oh" '(counsel-projectile :which-key "open file in project")
+    "oh" '(counsel-projectile-find-file :which-key "open file in project")
     "ol" '(org-open-at-point :which-key "follow link")
     "om" '(hydra-org/body :which-key "org tour")
     "oo" '(ivy-switch-buffer :which-key "switch buffer")
