@@ -829,7 +829,7 @@ Close: _c_
                             `(org-code ((t (:inherit fixed-pitch :foreground "#87afaf"))))
                             `(org-table ((t (:inherit fixed-pitch :foreground "#8ec07c"))))
                             ;; `(org-link ((t (:inherit default :foreground "#f4e8ba"))))
-                            `(org-link ((t (:inherit default :foreground "#f4e8ba" :height 0.9))))
+                            `(org-link ((t (:inherit default :foreground "#f4e8ba"))))
                             `(org-level-8 ((t (,@headline ,@variable-tuple))))
                             `(org-level-7 ((t (,@headline ,@variable-tuple))))
                             `(org-level-6 ((t (,@headline ,@variable-tuple))))
