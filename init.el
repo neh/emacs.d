@@ -454,6 +454,7 @@
   (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s")
   (setq counsel-grep-base-command "grep -inE '%s' %s")
   (counsel-mode 1)
+
   ;; These don't work on a fresh load, but seem to start working at some
   ;; point. Strange.
   (ivy-add-actions
@@ -461,15 +462,22 @@
    `(("c" ,(given-file #'copy-file "Copy") "copy")
      ("d" ,(reloading #'confirm-delete-file) "delete")
      ("s" neh-open-file-in-vsplit "vsplit")
-     ("m" ,(reloading (given-file #'rename-file "Move")) "move")))
+     ("m" ,(reloading (given-file #'rename-file "Move")) "move"))))
+
+(use-package counsel-projectile
+  :after (counsel projectile)
+  :config
+  ;; Set the default switch project action to find files so that paths are included in the search list
+  (counsel-projectile-modify-action 'counsel-projectile-switch-project-action
+                                    '((default counsel-projectile-switch-project-action-find-file)))
+
   (ivy-add-actions
    'counsel-projectile-find-file
    `(("c" ,(given-file #'copy-file "Copy") "copy")
      ("d" ,(reloading #'confirm-delete-file) "delete")
      ("m" ,(reloading (given-file #'rename-file "Move")) "move")
-     ("b" counsel-find-file-cd-bookmark-action "cd bookmark"))))
-
-(use-package counsel-projectile)
+     ("b" counsel-find-file-cd-bookmark-action "cd bookmark")))
+  )
 
 (use-package historian
   :config
