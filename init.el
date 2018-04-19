@@ -819,7 +819,7 @@ Close: _c_
   ;;  "C-s" 'org-shiftright
   ;;  )
   :init
-  (let* ((variable-tuple (cond ((x-list-fonts "Noto Serif") '(:font "Noto Serif"))
+  (let* ((variable-tuple (cond ((x-list-fonts "DejaVu Serif") '(:font "DejaVu Serif"))
                                ((x-list-fonts "Noto Sans") '(:font "Noto Sans"))
                                ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
                                (nil (warn "Cannot find a Sans Serif Font. Install Source Sans Pro."))))
@@ -834,24 +834,25 @@ Close: _c_
          (variable           `(:foreground ,base-font-color)))
 
     (custom-theme-set-faces 'user
-                            `(fixed-pitch ((t (,@fixed-tuple :height 1.04))))
-                            `(variable-pitch ((t (,@variable-tuple :font "Noto Serif Light"))))
+                            `(fixed-pitch ((t (,@fixed-tuple :height 1.05))))
+                            `(variable-pitch ((t (,@variable-tuple :font "DejaVu Sans"))))
                             `(org-ellipsis ((t (:underline nil :weight normal))))
                             `(org-indent ((t (:inherit org-hide :inherit (org-hide fixed-pitch)))))
                             `(org-code ((t (:inherit fixed-pitch :foreground "#87afaf"))))
                             `(org-table ((t (:inherit fixed-pitch :foreground "#8ec07c"))))
                             ;; `(org-link ((t (:inherit default :foreground "#f4e8ba"))))
                             `(org-link ((t (:inherit default :foreground "#f4e8ba"))))
-                            `(org-level-8 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-7 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-6 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-5 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.0))))
-                            `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
-                            `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.1))))
+                            `(org-level-8 ((t (,@headline ,@variable-tuple :slant italic))))
+                            `(org-level-7 ((t (,@headline ,@variable-tuple :slant italic))))
+                            `(org-level-6 ((t (,@headline ,@variable-tuple :slant italic))))
+                            `(org-level-5 ((t (,@headline ,@variable-tuple :slant italic))))
+                            `(org-level-4 ((t (,@headline ,@variable-tuple :slant italic))))
+                            `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1 :slant italic))))
+                            `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.1 :slant italic))))
                             `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.2 :slant italic))))
                             `(org-todo ((t (,@headline ,@variable-tuple :foreground "#fabd2f"))))
                             `(org-done ((t (,@done ,@variable-tuple :strike-through t))))
+                            `(org-archived ((t (,@done ,@variable-tuple :strike-through t))))
                             `(org-headline-done ((t (,@done ,@variable-tuple))))
                             `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
 
@@ -866,7 +867,7 @@ Close: _c_
         org-fontify-done-headline t
         org-hide-emphasis-markers t
         org-pretty-entities t
-        org-cycle-separator-lines 1
+        org-cycle-separator-lines 2
         org-M-RET-may-split-line '((default . nil)))
 
   (set-face-attribute 'org-ellipsis '(:underline nil :weight normal))
