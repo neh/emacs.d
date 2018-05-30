@@ -215,6 +215,10 @@
   :config
   (evil-collection-init))
 
+(use-package evil-indent-plus
+  :config
+  (evil-indent-plus-default-bindings))
+
 (use-package general
   :after evil-collection
   :config
