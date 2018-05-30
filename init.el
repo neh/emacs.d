@@ -165,21 +165,11 @@
 
 (setq uniquify-buffer-name-style 'forward)
 
-;; Will probably just not bother with line numbers until emacs 26, which has
-;; them built in.
-;;
-;; nlinum is supposed to be faster, but elpa is maybe broken? so can't install
-;; (use-package nlinum-relative
-;;   :config
-;;   (nlinum-relative-setup-evil)
-;;   (add-hook 'prog-mode-hook 'nlinum-relative-mode)
-;;   (setq nlinum-relative-current-symbol ""))
 
-;; (use-package linum-relative
-;;   :init
-;;   (setq linum-relative-current-symbol "")
-;;   :config
-;;   (linum-relative-global-mode))
+(defun my-prog-mode-hook ()
+  (setq display-line-numbers 'relative))
+(add-hook 'prog-mode-hook #'my-prog-mode-hook)
+
 
 (use-package evil
   :init
