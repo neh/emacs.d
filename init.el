@@ -686,6 +686,11 @@ Close: _c_
 ;;                   (persp-mode-projectile-bridge-mode 1))
 ;;               t)))
 
+(use-package elec-pair
+  :ensure nil
+  :commands electric-pair-mode
+  :hook (prog-mode . electric-pair-mode))
+
 (use-package flycheck
   :config
   (add-hook 'after-init-hook 'global-flycheck-mode))
