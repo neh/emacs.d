@@ -690,18 +690,20 @@ Close: _c_
   (add-hook 'after-init-hook 'global-flycheck-mode))
 
 (use-package company
+  :bind (:map company-active-map
+         ("M-n" . nil)
+         ("M-p" . nil)
+         ("C-t" . #'company-select-next)
+         ("C-n" . #'company-select-previous)
+         ("TAB" . #'company-complete)
+         ("<tab>" . #'company-complete)
+         ("RET" . #'company-complete-selection))
   :config
-  (with-eval-after-load 'company
-    (define-key company-active-map (kbd "M-n") nil)
-    (define-key company-active-map (kbd "M-p") nil)
-    (define-key company-active-map (kbd "C-t") #'company-select-next)
-    (define-key company-active-map (kbd "C-n") #'company-select-previous))
-
   (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package company-statistics
-  :config
-  (company-statistics-mode))
+  :init
+  (add-hook 'company-mode-hook #'company-statistics-mode))
 
 (use-package company-terraform
   :config
