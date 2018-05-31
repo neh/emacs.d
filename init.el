@@ -321,6 +321,7 @@
     "sf" '(counsel-ag :which-key "search files")
     "sg" '(counsel-git-grep :which-key "search files in git")
     "sh" '(counsel-grep-or-swiper :which-key "search buffer")
+    "sp" '(counsel-projectile-rg :which-key "search project")
 
     "v" '(:ignore t :which-key "view")
 
