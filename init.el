@@ -962,6 +962,11 @@ Close: _c_
   :config
   (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
 
+(use-package dtrt-indent
+  :commands dtrt-indent-mode
+  :config
+  (dtrt-indent-mode 1))
+
 (use-package direnv
   :config
   (setq direnv-always-show-summary nil)
