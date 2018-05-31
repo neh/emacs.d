@@ -26,7 +26,8 @@
       (set-frame-font (format "%s-10" myfont))
     (set-frame-font (format "%s-10" myfont))))
 
-(setq confirm-kill-emacs 'yes-or-no-p)
+(setq confirm-kill-emacs 'y-or-n-p)
+(fset 'yes-or-no-p #'y-or-n-p)
 
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
