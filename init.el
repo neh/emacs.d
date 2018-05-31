@@ -242,16 +242,16 @@
 
   (general-define-key
    :states '(normal visual)
-    "h" 'evil-backward-char
-    "t" 'evil-next-visual-line
-    "n" 'evil-previous-visual-line
-    "s" 'evil-forward-char
+   "h" 'evil-backward-char
+   "t" 'evil-next-visual-line
+   "n" 'evil-previous-visual-line
+   "s" 'evil-forward-char
 
-    "l" 'evil-search-next
-    "L" 'evil-search-previous
-    "S" 'evil-window-bottom
+   "l" 'evil-search-next
+   "L" 'evil-search-previous
+   "S" 'evil-window-bottom
 
-    "N" 'evil-narrow-indirect)
+   "N" 'evil-narrow-indirect)
 
   (neh/leader-keys
     "<SPC>" '(save-buffer :which-key "save")
@@ -408,29 +408,29 @@
   :general
   (general-define-key
    :keymaps 'ivy-minibuffer-map
-    "<escape>" 'keyboard-escape-quit
-    "C-t" 'ivy-next-line
-    "C-n" 'ivy-previous-line
-    "C-M-t" 'ivy-next-line-and-call
-    "C-M-n" 'ivy-previous-line-and-call
-    "C-b" 'ivy-scroll-down-command
-    "C-f" 'ivy-scroll-up-command
-    "C-d" 'ivy-call)
+   "<escape>" 'keyboard-escape-quit
+   "C-t" 'ivy-next-line
+   "C-n" 'ivy-previous-line
+   "C-M-t" 'ivy-next-line-and-call
+   "C-M-n" 'ivy-previous-line-and-call
+   "C-b" 'ivy-scroll-down-command
+   "C-f" 'ivy-scroll-up-command
+   "C-d" 'ivy-call)
 
   (general-define-key
    :keymaps 'counsel-find-file-map
-    "TAB" 'ivy-alt-done
-    "C-s" 'neh-open-file-in-vsplit)
+   "TAB" 'ivy-alt-done
+   "C-s" 'neh-open-file-in-vsplit)
 
   (general-define-key
    :keymaps 'ivy-occur-mode-map
-    "t" 'ivy-occur-next-line
-    "n" 'ivy-occur-previous-line
-    "RET" 'ivy-occur-press
-    "a" 'ivy-occur-read-action
-    "c" 'ivy-occur-toggle-calling
-    "C-f" 'evil-scroll-page-down
-    "C-b" 'evil-scroll-page-up)
+   "t" 'ivy-occur-next-line
+   "n" 'ivy-occur-previous-line
+   "RET" 'ivy-occur-press
+   "a" 'ivy-occur-read-action
+   "c" 'ivy-occur-toggle-calling
+   "C-f" 'evil-scroll-page-down
+   "C-b" 'evil-scroll-page-up)
 
   :config
   (ivy-mode 1)
@@ -978,14 +978,14 @@ Close: _c_
    :states '(normal visual insert emacs)
    :prefix "SPC"
    :non-normal-prefix "M-SPC"
-    "hA" '(:ignore t :which-key "ansible")
-    "hAA" '(ansible-doc :which-key "ansible docs")
-    "hAR" '((lambda ()
-              (interactive)
-              (setq ansible-doc--modules nil)
-              (ansible-doc))
-            :which-key "ansible docs refresh")
-    ))
+   "hA" '(:ignore t :which-key "ansible")
+   "hAA" '(ansible-doc :which-key "ansible docs")
+   "hAR" '((lambda ()
+             (interactive)
+             (setq ansible-doc--modules nil)
+             (ansible-doc))
+           :which-key "ansible docs refresh")
+   ))
 
 (use-package spaceline
   :config
