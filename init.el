@@ -448,6 +448,13 @@
         '((t . ivy--regex-fuzzy)))
   (setq ivy-initial-inputs-alist nil))
 
+(use-package ivy-posframe
+  :after ivy
+  :config
+  ;; (setq ivy-display-function #'ivy-posframe-display)
+  (setq ivy-display-function #'ivy-posframe-display-at-window-center)
+  (ivy-posframe-enable))
+
 (use-package smex)
 
 (use-package counsel
@@ -706,6 +713,10 @@ Close: _c_
   :config
   (add-hook 'after-init-hook 'global-flycheck-mode))
 
+(use-package flycheck-posframe
+  :after flycheck
+  :hook (flycheck-mode . flycheck-posframe-mode))
+
 (use-package company
   :bind (:map company-active-map
          ("M-n" . nil)
@@ -725,6 +736,10 @@ Close: _c_
 (use-package company-terraform
   :config
   (company-terraform-init))
+
+(use-package company-box
+  :after company
+  :hook (company-mode . company-box-mode))
 
 (fringe-mode 8)
 
