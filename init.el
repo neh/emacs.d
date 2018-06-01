@@ -29,25 +29,23 @@
 (setq confirm-kill-emacs 'y-or-n-p)
 (fset 'yes-or-no-p #'y-or-n-p)
 
-(setq mouse-wheel-scroll-amount '(2 ((shift) . 1))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-(setq scroll-step 1) ;; keyboard scroll one line at a time
-(setq scroll-conservatively 101) ;; Don't jump around when scrolling
+(setq mouse-wheel-scroll-amount '(2 ((shift) . 1)) ;; one line at a time
+      mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
+      mouse-wheel-follow-mouse 't ;; scroll window under mouse
+      scroll-step 1 ;; keyboard scroll one line at a time
+      scroll-conservatively 101) ;; Don't jump around when scrolling
 
-(setq delete-old-versions t)
-(setq coding-system-for-read 'utf-8)
-(setq coding-system-for-write 'utf-8)
+(setq coding-system-for-read 'utf-8
+      coding-system-for-write 'utf-8)
 (setq-default indent-tabs-mode nil)
 ;; (setq-default show-trailing-whitespace t)
-(setq make-backup-files nil)
 (setq sentence-end-double-space nil)
 (setq ring-bell-function 'ignore)
 (setq enable-recursive-minibuffers t)
 (save-place-mode 1)
 
-(setq frame-title-format "%b") ;; focused window title format
-(setq icon-title-format "%b") ;; unfocused window title format
+(setq frame-title-format "%b" ;; focused window title format
+      icon-title-format "%b") ;; unfocused window title format
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file 'no-error)
@@ -57,9 +55,11 @@
 (put 'narrow-to-page 'disabled nil)
 
 ;; from http://www.jethrokuan.com/init.html
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
+(setq make-backup-files nil
+      delete-old-versions t
+      backup-directory-alist
+      `((".*" . ,temporary-file-directory))
+      auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
 (message "Deleting old backup files...")
@@ -137,8 +137,8 @@
 
 (use-package paren
   :init
-  (setq show-paren-delay 0)
-  (setq show-paren-style 'parenthesis)
+  (setq show-paren-delay 0
+        show-paren-style 'parenthesis)
   :config
   (show-paren-mode 1))
 
@@ -159,8 +159,8 @@
 
 (use-package whitespace
   :init
-  (setq whitespace-line-column 80)
-  (setq whitespace-style '(face trailing tabs lines-tail))
+  (setq whitespace-line-column 80
+        whitespace-style '(face trailing tabs lines-tail))
   :config
   (whitespace-mode))
 
@@ -174,9 +174,9 @@
 
 (use-package evil
   :init
-  (setq evil-want-integration nil)
-  (setq evil-move-cursor-back t)
-  (setq evil-vsplit-window-right t)
+  (setq evil-want-integration nil
+        evil-move-cursor-back t
+        evil-vsplit-window-right t)
   :config
   (evil-mode 1)
 
@@ -440,14 +440,14 @@
 
   :config
   (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "%d/%d ")
-  (setq ivy-format-function #'ivy-format-function-arrow)
-  (setq ivy-extra-directories nil)
-  (setq ivy-height 15)
-  (setq ivy-re-builders-alist
-        '((t . ivy--regex-fuzzy)))
-  (setq ivy-initial-inputs-alist nil))
+  (setq ivy-use-virtual-buffers t
+        ivy-count-format "%d/%d "
+        ivy-format-function #'ivy-format-function-arrow
+        ivy-extra-directories nil
+        ivy-height 15
+        ivy-re-builders-alist
+        '((t . ivy--regex-fuzzy))
+        ivy-initial-inputs-alist nil))
 
 (use-package ivy-posframe
   :after ivy
@@ -461,8 +461,8 @@
 (use-package counsel
   :after ivy
   :config
-  (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s")
-  (setq counsel-grep-base-command "grep -inE '%s' %s")
+  (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s"
+        counsel-grep-base-command "grep -inE '%s' %s")
   (counsel-mode 1)
 
   ;; These don't work on a fresh load, but seem to start working at some
@@ -496,9 +496,9 @@
 (use-package ivy-historian
   :after ivy
   :config
-  (setq ivy-historian-freq-boost-factor 100)
-  (setq ivy-historian-recent-boost 100)
-  (setq ivy-historian-recent-decrement 5)
+  (setq ivy-historian-freq-boost-factor 100
+        ivy-historian-recent-boost 100
+        ivy-historian-recent-decrement 5)
 
   (ivy-historian-mode 1))
 
@@ -755,20 +755,20 @@ Close: _c_
   :general
   (general-define-key
    :states '(normal visual)
-    "gp" 'git-gutter+-previous-hunk
-    "gn" 'git-gutter+-next-hunk
-    "gs" 'git-gutter+-show-hunk
-    "gS" 'git-gutter+-stage-hunks
-    "gU" 'git-gutter+-revert-hunks)
+   "gp" 'git-gutter+-previous-hunk
+   "gn" 'git-gutter+-next-hunk
+   "gs" 'git-gutter+-show-hunk
+   "gS" 'git-gutter+-stage-hunks
+   "gU" 'git-gutter+-revert-hunks)
 
   :init
   (setq git-gutter+-disabled-modes '(org-mode))
   (global-git-gutter+-mode)
 
   :config
-  (setq git-gutter+-added-sign " ")
-  (setq git-gutter+-deleted-sign " ")
-  (setq git-gutter+-modified-sign " ")
+  (setq git-gutter+-added-sign " "
+        git-gutter+-deleted-sign " "
+        git-gutter+-modified-sign " ")
   (set-face-background 'git-gutter+-modified "gold")
   (set-face-foreground 'git-gutter+-added "forestgreen")
   (set-face-foreground 'git-gutter+-deleted "red4"))
@@ -964,16 +964,16 @@ Close: _c_
 (use-package org-jira
   :init
   (add-hook 'org-jira-mode-hook 'neh-org-jira-hook)
-  (setq jiralib-host "fresh-grade.atlassian.net")
-  (setq jiralib-user-login-name "nathan.howell")
-  (setq org-jira-use-status-as-todo t)
-  (setq jiralib-url "https://fresh-grade.atlassian.net"))
+  (setq jiralib-host "fresh-grade.atlassian.net"
+        jiralib-user-login-name "nathan.howell"
+        org-jira-use-status-as-todo t
+        jiralib-url "https://fresh-grade.atlassian.net"))
 
 (use-package deft
   :init
-  (setq deft-directory "~/notes")
-  (setq deft-extensions '("txt" "org" ""))
-  (setq deft-recursive t))
+  (setq deft-directory "~/notes"
+        deft-extensions '("txt" "org" "")
+        deft-recursive t)
 
 ;; (use-package focus)
 ;; (use-package darkroom
@@ -1032,8 +1032,9 @@ Close: _c_
 (use-package spaceline
   :config
   (setq-default powerline-default-separator 'slant)
-  (setq spaceline-separator-dir-left '(left . left))
-  (setq spaceline-separator-dir-right '(right . right)))
+  (setq spaceline-separator-dir-left '(left . left)
+        spaceline-separator-dir-right '(right . right))
+
 (use-package spaceline-config
   :straight nil
   :config
@@ -1111,8 +1112,8 @@ Close: _c_
   :general
   (general-define-key
    :states 'visual
-    "v" 'er/expand-region
-    "V" 'er/contract-region))
+   "v" 'er/expand-region
+   "V" 'er/contract-region))
 
 (use-package markdown-mode)
 
