@@ -288,6 +288,10 @@
     "hf" '(counsel-describe-function :which-key "describe function")
     "hv" '(counsel-describe-variable :which-key "describe variable")
 
+    "hl" '(highlight-lines-matching-regexp :which-key "highlight line")
+    "hr" '(highlight-regexp :which-key "highlight regexp")
+    "hu" '(unhighlight-regexp :which-key "unhighlight regexp")
+
     "i" '(:ignore t :which-key "insert")
     "ip" '(clipboard-yank :which-key "paste from clipboard")
 
