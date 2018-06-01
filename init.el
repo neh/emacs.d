@@ -488,11 +488,11 @@
 (use-package ivy-historian
   :after ivy
   :config
-  (setq ivy-historian-freq-boost-factor 300)
-  (setq ivy-historian-recent-boost 300)
-  (setq ivy-historian-recent-decrement 50)
+  (setq ivy-historian-freq-boost-factor 100)
+  (setq ivy-historian-recent-boost 100)
+  (setq ivy-historian-recent-decrement 5)
 
-  (ivy-historian-mode))
+  (ivy-historian-mode 1))
 
 (use-package hydra
   :config
