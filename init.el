@@ -976,7 +976,7 @@ Close: _c_
   :init
   (setq deft-directory "~/notes"
         deft-extensions '("txt" "org" "")
-        deft-recursive t)
+        deft-recursive t))
 
 ;; (use-package focus)
 ;; (use-package darkroom
@@ -1036,7 +1036,7 @@ Close: _c_
   :config
   (setq-default powerline-default-separator 'slant)
   (setq spaceline-separator-dir-left '(left . left)
-        spaceline-separator-dir-right '(right . right))
+        spaceline-separator-dir-right '(right . right)))
 
 (use-package spaceline-config
   :straight nil
