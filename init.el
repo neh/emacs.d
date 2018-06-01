@@ -442,6 +442,7 @@
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "%d/%d ")
+  (setq ivy-format-function #'ivy-format-function-arrow)
   (setq ivy-extra-directories nil)
   (setq ivy-height 15)
   (setq ivy-re-builders-alist
