@@ -453,7 +453,10 @@
   :after ivy
   :config
   ;; (setq ivy-display-function #'ivy-posframe-display)
-  (setq ivy-display-function #'ivy-posframe-display-at-window-center)
+  (setq ivy-display-function #'ivy-posframe-display-at-window-center
+        ivy-posframe-parameters
+        '((left-fringe . 10)
+          (right-fringe . 10)))
   (ivy-posframe-enable))
 
 (use-package smex)
