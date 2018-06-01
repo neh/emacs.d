@@ -448,6 +448,8 @@
         '((t . ivy--regex-fuzzy)))
   (setq ivy-initial-inputs-alist nil))
 
+(use-package smex)
+
 (use-package counsel
   :after ivy
   :config
