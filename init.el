@@ -697,6 +697,11 @@ Close: _c_
   :commands electric-pair-mode
   :hook (prog-mode . electric-pair-mode))
 
+(use-package executable
+  :ensure nil
+  :commands executable-make-buffer-file-executable-if-script-p
+  :hook (after-save . executable-make-buffer-file-executable-if-script-p))
+
 (use-package flycheck
   :config
   (add-hook 'after-init-hook 'global-flycheck-mode))
