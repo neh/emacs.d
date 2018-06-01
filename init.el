@@ -790,7 +790,8 @@ Close: _c_
   (setq magit-completing-read-function 'ivy-completing-read)
   (add-hook 'git-commit-mode-hook 'evil-insert-state))
 
-(setq auto-revert-check-vc-info t)
+(setq auto-revert-check-vc-info t
+      vc-follow-symlinks t)
 
 
 ;; Installing org-plus-contrib as a lazy workaround for the built-in older org-mode
