@@ -459,7 +459,20 @@
           (right-fringe . 10)))
   (ivy-posframe-enable))
 
-(use-package smex)
+;; (use-package smex)
+(use-package prescient
+  :config
+  (prescient-persist-mode))
+
+(use-package ivy-prescient
+  :after (prescient ivy)
+  :config
+  (ivy-prescient-mode))
+
+(use-package company-prescient
+  :after (prescient company)
+  :config
+  (company-prescient-mode))
 
 (use-package counsel
   :after ivy
