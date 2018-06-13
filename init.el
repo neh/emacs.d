@@ -342,7 +342,7 @@
 
 (use-package which-key
   :config
-  (which-key-setup-side-window-right-bottom)
+  (which-key-setup-side-window-bottom)
   (setq which-key-idle-secondary-delay 0.25)
   (which-key-mode))
 
