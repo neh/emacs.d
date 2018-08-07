@@ -99,8 +99,13 @@
 ;; (use-package material-theme)
 ;;(load-theme 'material t)
 ;; (load-theme 'material-light t)
-(use-package darktooth-theme)
-(load-theme 'darktooth t)
+;; (use-package darktooth-theme)
+;; (load-theme 'darktooth t)
+
+(use-package poet-theme)
+(load-theme 'poet t)
+
+(use-package olivetti)
 
 ;; (straight-use-package 'ample-theme)
 ;; (load-theme 'ample t t)
