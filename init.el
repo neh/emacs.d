@@ -721,6 +721,9 @@ Close: _c_
 ;;                   (persp-mode-projectile-bridge-mode 1))
 ;;               t)))
 
+(use-package wgrep)
+(use-package multiple-cursors)
+
 (use-package elec-pair
   :ensure nil
   :commands electric-pair-mode
@@ -1031,6 +1034,9 @@ Close: _c_
   :config
   (add-to-list 'auto-mode-alist '(".*\\(host\\|group\\)_vars.*" . yaml-mode)))
 
+(use-package json-mode
+  :mode (("\\.json\\'" . json-mode)))
+
 (use-package ansible
   :init
   (setq ansible::vault-password-file "~/freshgrade/vaultpass"))
@@ -1138,6 +1144,9 @@ Close: _c_
 
 (use-package markdown-mode)
 
+(use-package lua-mode
+  :mode ("\\.lua\\'" . lua-mode))
+
 (use-package rust-mode
   :mode ("\\.rs\\'" . rust-mode))
 
@@ -1158,6 +1167,20 @@ Close: _c_
 (use-package docker
   :config
   (setenv "DOCKER_HOST" "tcp://127.0.0.1:2375"))
+
+(use-package go-mode
+  :mode "\\.go\\'")
+
+(use-package go-eldoc
+  :commands go-eldoc-setup
+  :hook (go-mode . go-eldoc-setup))
+
+(use-package csv-mode
+  :mode "\\.csv\\'")
+
+(use-package elf-mode
+  :commands elf-mode
+  :magic ("ELF" . elf-mode))
 
 
 (setq keymaps-with-jk-keybindings '(dired-mode-map))
