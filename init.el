@@ -89,6 +89,9 @@
 (setq straight-use-package-by-default t)
 (straight-use-package 'use-package)
 
+;; set man page width, also put in olivetti-mode set to same width?
+(setenv "MANWIDTH" "100")
+
 
 ;; (use-package color-theme-sanityinc-tomorrow)
 ;; (load-theme sanityinc-tomorrow-night)
