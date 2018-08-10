@@ -92,6 +92,10 @@
 ;; set man page width, also put in olivetti-mode set to same width?
 (setenv "MANWIDTH" "100")
 
+(use-package exec-path-from-shell
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 
 ;; (use-package color-theme-sanityinc-tomorrow)
 ;; (load-theme sanityinc-tomorrow-night)
