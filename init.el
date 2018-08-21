@@ -184,6 +184,7 @@
 (defun my-prog-mode-hook ()
   (setq display-line-numbers 'relative))
 (add-hook 'prog-mode-hook #'my-prog-mode-hook)
+(add-hook 'yaml-mode-hook #'my-prog-mode-hook)
 
 
 (use-package evil
