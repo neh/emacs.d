@@ -292,7 +292,7 @@
     "gc" '(magit-commit :which-key "commit")
     "gd" '(magit-diff-popup :which-key "diff")
     "gf" '(magit-stage-file :which-key "stage file")
-    "gh" '(git-gutter+-stage-hunks :which-key "stage hunk")
+    "gh" '(git-gutter:stage-hunk :which-key "stage hunk")
     "gl" '(magit-log-popup :which-key "log")
     "gm" '(magit-dispatch-popup :which-key "menu")
     "gP" '(magit-push-popup :which-key "push")
@@ -544,12 +544,12 @@
 
   (defhydra hydra-git-gutter ()
     "Browse/stage/revert git hunks"
-    ("p" (progn (git-gutter+-previous-hunk 1)
+    ("p" (progn (git-gutter:previous-hunk 1)
                 (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
-    ("n" (progn (git-gutter+-next-hunk 1)
+    ("n" (progn (git-gutter:next-hunk 1)
                 (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
-    ("s" git-gutter+-stage-hunks "stage hunk")
-    ("r" git-gutter+-revert-hunk "revert hunk")
+    ("s" git-gutter:stage-hunk "stage hunk")
+    ("r" git-gutter:revert-hunk "revert hunk")
     ("q" nil "quit" :color blue))
 
   (defhydra hydra-org (:color red :columns 3)
