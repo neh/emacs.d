@@ -816,23 +816,23 @@ Close: _c_
   :general
   (general-define-key
    :keymaps 'magit-mode-map
-    "C-b" 'evil-scroll-page-up
-    "C-f" 'evil-scroll-page-down
-    "C-t" 'magit-section-forward
-    "C-n" 'magit-section-backward
-    "M-t" 'magit-section-forward-sibling
-    "M-n" 'magit-section-backward-sibling
-    "r" 'magit-refresh
-    "R" 'magit-rebase-popup
-    "g" 'magit-tag-popup
-    "t" 'evil-next-visual-line
-    "n" 'evil-previous-visual-line)
+   "C-b" 'evil-scroll-page-up
+   "C-f" 'evil-scroll-page-down
+   "C-t" 'magit-section-forward
+   "C-n" 'magit-section-backward
+   "M-t" 'magit-section-forward-sibling
+   "M-n" 'magit-section-backward-sibling
+   "r" 'magit-refresh
+   "R" 'magit-rebase-popup
+   "g" 'magit-tag-popup
+   "t" 'evil-next-visual-line
+   "n" 'evil-previous-visual-line)
 
   (general-define-key
    :keymaps 'magit-diff-mode-map
-    "/" 'evil-search-forward
-    "l" 'evil-search-next
-    "L" 'evil-search-previous)
+   "/" 'evil-search-forward
+   "l" 'evil-search-next
+   "L" 'evil-search-previous)
 
   :config
   ;; There doesn't seem to be a "nice" way to adjust magit popups, so I stole
