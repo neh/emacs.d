@@ -35,6 +35,8 @@
       scroll-step 1 ;; keyboard scroll one line at a time
       scroll-conservatively 101) ;; Don't jump around when scrolling
 
+(setq-default auto-hscroll-mode 'current-line)
+
 (setq coding-system-for-read 'utf-8
       coding-system-for-write 'utf-8)
 (setq-default indent-tabs-mode nil)
