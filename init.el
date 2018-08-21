@@ -782,27 +782,29 @@ Close: _c_
 ;;   (diff-hl-flydiff-mode)
 ;;   (global-diff-hl-mode))
 
-(use-package git-gutter+
+(use-package git-gutter
   :general
   (general-define-key
    :states '(normal visual)
-   "gp" 'git-gutter+-previous-hunk
-   "gn" 'git-gutter+-next-hunk
-   "gs" 'git-gutter+-show-hunk
-   "gS" 'git-gutter+-stage-hunks
-   "gU" 'git-gutter+-revert-hunks)
+   "gp" 'git-gutter:previous-hunk
+   "gn" 'git-gutter:next-hunk
+   "gs" 'git-gutter:popup-hunk
+   "gS" 'git-gutter:stage-hunk
+   "gU" 'git-gutter:revert-hunk)
 
   :init
-  (setq git-gutter+-disabled-modes '(org-mode))
-  (global-git-gutter+-mode)
+  (setq git-gutter:disabled-modes '(org-mode))
+  (global-git-gutter-mode +1)
 
   :config
-  (setq git-gutter+-added-sign " "
-        git-gutter+-deleted-sign " "
-        git-gutter+-modified-sign " ")
-  (set-face-background 'git-gutter+-modified "gold")
-  (set-face-foreground 'git-gutter+-added "forestgreen")
-  (set-face-foreground 'git-gutter+-deleted "red4"))
+  (setq git-gutter:added-sign "▊"
+        git-gutter:deleted-sign "▊"
+        git-gutter:modified-sign "▊")
+  (set-face-foreground 'git-gutter:modified "gold")
+  (set-face-foreground 'git-gutter:added "forestgreen")
+  (set-face-foreground 'git-gutter:deleted "red4")
+  )
+
 
 ;; disable annoying multi-line docs in echo area
 ;; (global-eldoc-mode -1)
