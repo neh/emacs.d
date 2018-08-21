@@ -108,9 +108,11 @@
 ;; (load-theme 'material-light t)
 ;; (use-package darktooth-theme)
 ;; (load-theme 'darktooth t)
+(use-package ample-theme)
+(load-theme 'ample-light t)
 
-(use-package poet-theme)
-(load-theme 'poet t)
+;; (use-package poet-theme)
+;; (load-theme 'poet t)
 
 (use-package olivetti)
 
