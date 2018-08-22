@@ -933,7 +933,7 @@ Close: _c_
   (setq org-startup-indented t
         org-ellipsis "  "
         org-src-fontify-natively t
-        ;; org-fontify-whole-heading-line t
+        org-fontify-whole-heading-line t
         org-fontify-done-headline t
         org-hide-emphasis-markers t
         org-pretty-entities t
