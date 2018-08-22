@@ -462,6 +462,7 @@
         ivy-format-function #'ivy-format-function-arrow
         ivy-extra-directories nil
         ivy-height 15
+        ivy-use-selectable-prompt t
         ivy-re-builders-alist
         '((t . ivy--regex-fuzzy))
         ivy-initial-inputs-alist nil))
