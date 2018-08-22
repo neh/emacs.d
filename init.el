@@ -805,7 +805,8 @@ Close: _c_
   :config
   (setq git-gutter:added-sign "▊"
         git-gutter:deleted-sign "▊"
-        git-gutter:modified-sign "▊")
+        git-gutter:modified-sign "▊"
+        git-gutter:ask-p nil)
   (set-face-foreground 'git-gutter:modified "gold")
   (set-face-foreground 'git-gutter:added "forestgreen")
   (set-face-foreground 'git-gutter:deleted "red4")
