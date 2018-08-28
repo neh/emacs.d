@@ -1076,7 +1076,7 @@ Close: _c_
 
 (use-package spaceline
   :config
-  (setq-default powerline-default-separator 'slant)
+  (setq-default powerline-default-separator 'wave)
   (setq spaceline-separator-dir-left '(left . left)
         spaceline-separator-dir-right '(right . right)))
 
