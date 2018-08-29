@@ -929,6 +929,24 @@ Close: _c_
                             `(org-headline-done ((t (,@done ,@variable-tuple))))
                             `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
 
+  (defmacro my-org-in-calendar (command)
+    (let ((name (intern (format "my-org-in-calendar-%s" command))))
+      `(progn
+         (defun ,name ()
+           (interactive)
+           (org-eval-in-calendar '(call-interactively #',command)))
+         #',name)))
+
+  (general-def org-read-date-minibuffer-local-map
+    "M-h" (my-org-in-calendar calendar-backward-day)
+    "M-s" (my-org-in-calendar calendar-forward-day)
+    "M-n" (my-org-in-calendar calendar-backward-week)
+    "M-t" (my-org-in-calendar calendar-forward-week)
+    "M-H" (my-org-in-calendar calendar-backward-month)
+    "M-S" (my-org-in-calendar calendar-forward-month)
+    "M-N" (my-org-in-calendar calendar-backward-year)
+    "M-T" (my-org-in-calendar calendar-forward-year))
+
   :config
   (setq org-todo-keywords
         '((sequence "TODO" "INPROGRESS" "WAITING" "|" "DONE" "CANCELED")))
