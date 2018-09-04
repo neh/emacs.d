@@ -33,6 +33,12 @@
       mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
       mouse-wheel-follow-mouse 't ;; scroll window under mouse
       scroll-step 1 ;; keyboard scroll one line at a time
+      scroll-margin 5
+      hscroll-step 5
+      hscroll-margin 5
+      scroll-preserve-screen-position t
+      scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01
       scroll-conservatively 101) ;; Don't jump around when scrolling
 
 (setq-default auto-hscroll-mode 'current-line)
