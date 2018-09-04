@@ -981,7 +981,7 @@ Close: _c_
 (use-package hl-line+
   :config
   (setq hl-line-inhibit-highlighting-for-modes '(org-mode))
-  (toggle-hl-line-when-idle 1))
+  (toggle-hl-line-when-idle -1))
 
 (use-package centered-cursor-mode)
 
