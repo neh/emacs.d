@@ -747,7 +747,10 @@ Close: _c_
 
 (use-package flycheck-posframe
   :after flycheck
-  :hook (flycheck-mode . flycheck-posframe-mode))
+  :hook (flycheck-mode . flycheck-posframe-mode)
+  :config
+  (set-face-attribute 'flycheck-posframe-warning-face nil :height 0.6 :foreground "#111111" :background "#ffd700" :inherit 'warning)
+  (set-face-attribute 'flycheck-posframe-error-face nil :height 0.6 :foreground "#eeeeee" :background "#b22222" :inherit 'error))
 
 (use-package company
   :bind (:map company-active-map
