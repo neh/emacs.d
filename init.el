@@ -1038,7 +1038,7 @@ Close: _c_
 ;;    )
 ;;   )
 
-;;(use-package adaptive-wrap)
+(use-package adaptive-wrap)
 
 (use-package frames-only-mode)
 
