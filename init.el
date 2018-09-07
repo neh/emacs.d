@@ -771,7 +771,13 @@ Close: _c_
 
 (use-package company-box
   :after company
-  :hook (company-mode . company-box-mode))
+  :hook (company-mode . company-box-mode)
+  :config
+  (setq company-box-enable-icon nil)
+  (add-to-list 'company-box-frame-parameters
+               '(font . "-CYEL-Iosevka-normal-normal-normal-*-13-*-*-*-d-0-iso10646-1"))
+  (add-to-list 'company-box-frame-parameters
+               '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-13-*-*-*-d-0-iso10646-1")))
 
 (fringe-mode 8)
 
