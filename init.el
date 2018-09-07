@@ -20,8 +20,7 @@
 
 ;; Set font/size based on display DPI
 (let ((mydpi (/ (display-pixel-width) (/ (display-mm-width) 25.4)))
-      (myfont "mononoki"))
-  ;;(myfont "Iosevka Light"))
+      (myfont "Iosevka"))
   (if (> mydpi 160)
       (set-frame-font (format "%s-10" myfont))
     (set-frame-font (format "%s-10" myfont))))
