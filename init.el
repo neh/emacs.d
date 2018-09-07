@@ -978,11 +978,9 @@ Close: _c_
 (defun set-buffer-variable-pitch ()
   (interactive)
   (variable-pitch-mode t)
-  (setq line-spacing 0.1)
   (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
   (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-block-background nil :inherit 'fixed-pitch))
+  (set-face-attribute 'org-block nil :inherit 'fixed-pitch))
 
 (use-package evil-org
   :after evil
