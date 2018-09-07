@@ -135,6 +135,8 @@
 
 ;; set comments to always be italic (must be after theming)
 (set-face-italic 'font-lock-comment-face t)
+(set-face-attribute 'mode-line nil :height 1.0)
+(set-face-attribute 'mode-line-inactive nil :height 1.0)
 
 (use-package undo-tree
   :config
