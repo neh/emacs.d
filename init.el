@@ -886,7 +886,7 @@ Close: _c_
                                ((x-list-fonts "Noto Sans") '(:font "Noto Sans"))
                                ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
                                (nil (warn "Cannot find a Sans Serif Font. Install Source Sans Pro."))))
-         (fixed-tuple (cond ((x-list-fonts "mononoki") '(:font "mononoki"))
+         (fixed-tuple (cond ((x-list-fonts "Iosevka") '(:font "Iosevka"))
                             (nil (warn "Cannot find a fixed width font."))))
          (base-font-color     (face-foreground 'default nil 'default))
          ;; (headline           `(:inherit default :weight bold :foreground ,base-font-color))
