@@ -360,11 +360,11 @@
   :general
   (general-define-key
    :states 'normal
-    "U" '(dired-jump :which-key "dired"))
+   "U" '(dired-jump :which-key "dired"))
   (general-define-key
    :states 'normal
    :keymaps 'dired-mode-map
-    "U" '(dired-up-directory :which-key "go to parent directory")))
+   "U" '(dired-jump :which-key "go to parent directory")))
 
 (use-package dired-sidebar
   :general
