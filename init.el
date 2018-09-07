@@ -406,9 +406,10 @@
   (general-define-key
    :states '(normal visual)
    :prefix "j"
-    "c" '(avy-goto-char-timer :which-key "char")
-    "h" '(avy-org-goto-heading-timer :which-key "org heading")
-    "l" '(avy-goto-line :which-key "line"))
+   "j" '(avy-goto-char-2 :which-key "char(2)")
+   "c" '(avy-goto-char-timer :which-key "char")
+   "h" '(avy-org-goto-heading-timer :which-key "org heading")
+   "l" '(avy-goto-line :which-key "line"))
   :config
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 
