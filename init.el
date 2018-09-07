@@ -122,7 +122,9 @@
 ;; (use-package poet-theme)
 ;; (load-theme 'poet t)
 
-(use-package olivetti)
+(use-package olivetti
+  :config
+  (setq-default olivetti-body-width 100))
 
 ;; (use-package eink-theme
 ;;   :config
