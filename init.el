@@ -1067,7 +1067,12 @@ Close: _c_
   (setq direnv-always-show-summary nil)
   (direnv-mode))
 
+(defun my-evil-indent-setup ()
+  "Set evil-shift-width to the relevant language indent level (but yaml only, so far)."
+  (setq evil-shift-width yaml-indent-offset))
+
 (use-package yaml-mode
+  :gfhook #'my-evil-indent-setup
   :config
   (add-to-list 'auto-mode-alist '(".*\\(host\\|group\\)_vars.*" . yaml-mode)))
 
