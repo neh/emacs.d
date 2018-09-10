@@ -778,9 +778,9 @@ Close: _c_
   :config
   (setq company-box-enable-icon nil)
   (add-to-list 'company-box-frame-parameters
-               '(font . "-CYEL-Iosevka-normal-normal-normal-*-13-*-*-*-d-0-iso10646-1"))
+               '(font . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
   (add-to-list 'company-box-frame-parameters
-               '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-13-*-*-*-d-0-iso10646-1")))
+               '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1")))
 
 (fringe-mode 8)
 
