@@ -151,9 +151,8 @@
   :config
   (show-paren-mode 1))
 
-;; A fun to call from programming mode hooks to deal with auto-fill if
-;; the below config doesn't work well.
 (defun comment-auto-fill ()
+  "Comment/fill settings to use in 'prog-mode'."
   (setq-local comment-auto-fill-only-comments t)
   (auto-fill-mode nil))
 
@@ -177,6 +176,7 @@
 
 
 (defun my-prog-mode-hook ()
+  "Set line-numbers settings for 'prog-mode'."
   (setq display-line-numbers 'relative))
 (add-hook 'prog-mode-hook #'my-prog-mode-hook)
 (add-hook 'yaml-mode-hook #'my-prog-mode-hook)
@@ -987,6 +987,7 @@ Close: _c_
 (use-package centered-cursor-mode)
 
 (defun set-buffer-variable-pitch ()
+  "Set this buffer to variable pitch mode, keeping some `org-mode' parts in fixed pitch."
   (interactive)
   (variable-pitch-mode t)
   (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
@@ -1233,7 +1234,7 @@ Close: _c_
 
 
 (defun narrow-to-region-indirect (start end)
-  "Restrict editing in this buffer to the current region, indirectly."
+  "Restrict editing in this buffer to the current region (from START to END), indirectly."
   (interactive "r")
   (deactivate-mark)
   (let ((buf (clone-indirect-buffer nil nil)))
@@ -1242,7 +1243,7 @@ Close: _c_
     (switch-to-buffer buf)))
 
 (defun shorten-directory (dir max-length)
-  "Show up to `max-length' characters of a directory name `dir'."
+  "Show up to MAX-LENGTH characters of a directory name DIR."
   (let ((path (reverse (split-string (abbreviate-file-name dir) "/")))
         (output ""))
     (when (and path (equal "" (car path)))
@@ -1266,7 +1267,7 @@ Close: _c_
 
 ;; from https://www.reddit.com/r/emacs/comments/5rnpsm/nice_hydra_to_set_frame_transparency/
 (defun my--set-transparency (inc)
-  "Increase or decrease the selected frame transparency"
+  "Increase or decrease the selected frame transparency by INC."
   (let* ((alpha (frame-parameter (selected-frame) 'alpha))
          (next-alpha (cond ((not alpha) 100)
                            ((> (- alpha inc) 100) 100)
@@ -1285,39 +1286,6 @@ ALPHA : [ %(frame-parameter nil 'alpha) ]
   ("=" (lambda (value) (interactive "nTransparency Value 0 - 100 opaque:")
          (set-frame-parameter (selected-frame) 'alpha value)) "Set to ?" :color blue))
 
-;; these two font functions make emacs crashy
-(defun font-is-mono-p (font-family)
-  ;; with-selected-window
-  (let ((wind (selected-window))
-        m-width l-width)
-    (with-current-buffer "*Monospace Fonts*"
-      (set-window-buffer (selected-window) (current-buffer))
-      (text-scale-set 4)
-      (insert (propertize "l l l l l" 'face `((:family ,font-family))))
-      (goto-char (line-end-position))
-      (setq l-width (car (posn-x-y (posn-at-point))))
-      (newline)
-      (forward-line)
-      (insert (propertize "m m m m m" 'face `((:family ,font-family) italic)))
-      (goto-char (line-end-position))
-      (setq m-width (car (posn-x-y (posn-at-point))))
-      (eq l-width m-width))))
-
-(defun compare-monospace-fonts ()
-  "Display a list of all monospace font faces."
-  (interactive)
-  (pop-to-buffer "*Monospace Fonts*")
-
-  (erase-buffer)
-  (dolist (font-family (font-family-list))
-    (when (font-is-mono-p font-family)
-      (let ((str font-family))
-        (newline)
-        (insert
-         (propertize (concat "The quick brown fox jumps over the lazy dog 1 l; 0 O o ("
-                             font-family ")\n") 'face `((:family ,font-family)))
-         (propertize (concat "The quick brown fox jumps over the lazy dog 1 l; 0 O o ("
-                             font-family ")\n") 'face `((:family ,font-family) italic)))))))
 
 ;; https://github.com/noctuid/general.el#use-package-keyword
 ;; https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
@@ -1403,7 +1371,7 @@ Lisp function does not specify a special indentation."
 
 
 (defun aj-toggle-fold ()
-  "Toggle fold all lines larger than indentation on current line"
+  "Toggle fold all lines larger than indentation on current line."
   (interactive)
   (let ((col 1))
     (save-excursion
