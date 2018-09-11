@@ -1415,3 +1415,7 @@ Lisp function does not specify a special indentation."
 
 (provide 'init)
 ;;; init.el ends here
+
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars)
+;; End:
