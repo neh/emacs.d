@@ -825,7 +825,7 @@ Close: _c_
         git-gutter:modified-sign "▊"
         git-gutter:ask-p nil)
   (set-face-foreground 'git-gutter:modified "SteelBlue1")
-  (set-face-foreground 'git-gutter:added "forestgreen")
+  (set-face-foreground 'git-gutter:added "ForestGreen")
   (set-face-foreground 'git-gutter:deleted "red4")
   )
 
