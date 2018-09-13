@@ -735,12 +735,12 @@ Close: _c_
   :config
   (set-face-attribute 'rainbow-delimiters-depth-1-face nil :height 1.0)
   (set-face-attribute 'rainbow-delimiters-depth-2-face nil :height 1.0)
-  (set-face-attribute 'rainbow-delimiters-depth-3-face nil :height 1.2)
+  (set-face-attribute 'rainbow-delimiters-depth-3-face nil :height 1.3)
   (set-face-attribute 'rainbow-delimiters-depth-4-face nil :height 1.4)
-  (set-face-attribute 'rainbow-delimiters-depth-5-face nil :height 1.6)
-  (set-face-attribute 'rainbow-delimiters-depth-6-face nil :height 1.8)
-  (set-face-attribute 'rainbow-delimiters-depth-7-face nil :height 2.0)
-  (set-face-attribute 'rainbow-delimiters-depth-8-face nil :height 2.2))
+  (set-face-attribute 'rainbow-delimiters-depth-5-face nil :height 1.5)
+  (set-face-attribute 'rainbow-delimiters-depth-6-face nil :height 1.6)
+  (set-face-attribute 'rainbow-delimiters-depth-7-face nil :height 1.7)
+  (set-face-attribute 'rainbow-delimiters-depth-8-face nil :height 1.9))
 
 (use-package wgrep)
 (use-package multiple-cursors)
