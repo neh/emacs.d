@@ -977,7 +977,10 @@ Close: _c_
    '((shell . t)
      (emacs-lisp . t))))
 
-(use-package rainbow-mode)
+(use-package rainbow-mode
+  :general
+  (neh/leader-keys
+    "vc" '(rainbow-mode :which-key "colours")))
 
 (use-package hl-line+
   :config
