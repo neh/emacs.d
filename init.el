@@ -338,6 +338,7 @@
     "sg" '(counsel-git-grep :which-key "search files in git")
     "sh" '(counsel-grep-or-swiper :which-key "search buffer")
     "sp" '(counsel-projectile-rg :which-key "search project")
+    "st" '(counsel-semantic-or-imenu :which-key "search tags")
 
     "v" '(:ignore t :which-key "view")
     "vw" '(whitespace-mode :which-key "whitespace")
