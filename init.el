@@ -1209,6 +1209,16 @@ Close: _c_
 (use-package lua-mode
   :mode ("\\.lua\\'" . lua-mode))
 
+(defun neh/python-mode-hook ()
+  "My python mode settings."
+  (add-to-list 'company-backends 'company-jedi))
+(use-package elpy
+  :config
+  (elpy-enable))
+(use-package company-jedi
+  :after company
+  :hook (python-mode . neh/python-mode-hook))
+
 (use-package rust-mode
   :mode ("\\.rs\\'" . rust-mode))
 
