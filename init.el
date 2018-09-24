@@ -325,7 +325,7 @@
     "oo" '(ivy-switch-buffer :which-key "switch buffer")
     ;; "oo" '(persp-switch-to-buffer :which-key "switch buffer")
     "op" '(counsel-projectile-switch-project :which-key "switch project")
-    "ov" '(persp-switch :which-key "switch perspective")
+    "os" '(imenu-list-smart-toggle :which-key "code structure")
     ;; "ov" '(persp-switch :which-key "switch perspective")
 
     "pr" '(package-refresh-contents :which-key "refresh package info")
@@ -802,6 +802,8 @@ Close: _c_
                '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1")))
 
 (fringe-mode 8)
+
+(use-package imenu-list)
 
 ;; (use-package diff-hl
 ;;   :config
