@@ -177,7 +177,8 @@
 
 (defun my-prog-mode-hook ()
   "Set line-numbers settings for 'prog-mode'."
-  (setq display-line-numbers 'relative))
+  (setq display-line-numbers 'relative)
+  (visual-fill-column-mode))
 (add-hook 'prog-mode-hook #'my-prog-mode-hook)
 (add-hook 'yaml-mode-hook #'my-prog-mode-hook)
 
