@@ -909,7 +909,8 @@ Close: _c_
   ;;  "C-s" 'org-shiftright
   ;;  )
   :init
-  (let* ((variable-tuple (cond ((x-list-fonts "DejaVu Serif") '(:font "DejaVu Serif"))
+  (let* ((variable-tuple (cond ((x-list-fonts "DejaVu Sans") '(:font "DejaVu Sans"))
+                               ((x-list-fonts "DejaVu Serif") '(:font "DejaVu Serif"))
                                ((x-list-fonts "Noto Sans") '(:font "Noto Sans"))
                                ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
                                (nil (warn "Cannot find a Sans Serif Font. Install Source Sans Pro."))))
@@ -923,15 +924,18 @@ Close: _c_
          (done               `(:weight normal :foreground "#7c6f64"))
          (variable           `(:foreground ,base-font-color)))
 
+    (defface org-inprogress
+      '((default :inherit default))
+      "Face for INPROGRESS org tasks")
     (custom-theme-set-faces 'user
                             `(fixed-pitch ((t (,@fixed-tuple))))
-                            `(variable-pitch ((t (,@variable-tuple :font "DejaVu Sans"))))
+                            `(variable-pitch ((t (,@variable-tuple))))
                             `(org-ellipsis ((t (:underline nil :weight normal))))
-                            `(org-indent ((t (:inherit org-hide :inherit (org-hide fixed-pitch)))))
+                            `(org-indent ((t (:inherit (org-hide fixed-pitch)))))
                             `(org-code ((t (:inherit fixed-pitch))))
                             `(org-table ((t (:inherit fixed-pitch))))
                             ;; `(org-link ((t (:inherit default :foreground "#f4e8ba"))))
-                            `(org-link ((t (:inherit default))))
+                            ;; `(org-link ((t (:inherit default))))
                             ;; `(org-level-8 ((t (,@headline ,@variable-tuple :slant italic))))
                             ;; `(org-level-7 ((t (,@headline ,@variable-tuple :slant italic))))
                             ;; `(org-level-6 ((t (,@headline ,@variable-tuple :slant italic))))
@@ -940,11 +944,15 @@ Close: _c_
                             ;; `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1 :slant italic))))
                             ;; `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.1 :slant italic))))
                             ;; `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.2 :slant italic))))
-                            `(org-todo ((t (,@headline ,@variable-tuple))))
+                            `(org-todo ((t (,@headline ,@variable-tuple :background "#ddbb00"))))
+                            `(org-inprogress ((t (,@headline ,@variable-tuple :foreground "white" :background "ForestGreen"))))
                             `(org-done ((t (,@done ,@variable-tuple :strike-through t))))
                             `(org-archived ((t (,@done ,@variable-tuple :strike-through t))))
                             `(org-headline-done ((t (,@done ,@variable-tuple))))
-                            `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+                            `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil)))))
+    (setq org-todo-keyword-faces
+          '(("TODO" . org-todo)
+            ("INPROGRESS" . org-inprogress))))
 
   (defmacro my-org-in-calendar (command)
     (let ((name (intern (format "my-org-in-calendar-%s" command))))
