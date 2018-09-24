@@ -300,6 +300,7 @@
 
     "hl" '(highlight-lines-matching-regexp :which-key "highlight line")
     "hr" '(highlight-regexp :which-key "highlight regexp")
+    "hs" '(highlight-symbol-at-point :which-key "highlight symbol at point")
     "hu" '(unhighlight-regexp :which-key "unhighlight regexp")
 
     "i" '(:ignore t :which-key "insert")
