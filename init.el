@@ -281,7 +281,6 @@
     "fp" '(fill-paragraph :which-key "paragraph")
     "fr" '(fill-region :which-key "fill region")
     "ft" '(toggle-truncate-lines :which-key "truncate lines")
-    "fw" '(whitespace-mode :which-key "show whitespace")
     "fv" '(visual-line-mode :which-key "visual line mode")
 
     "g" '(:ignore t :which-key "git")
@@ -340,6 +339,7 @@
     "sp" '(counsel-projectile-rg :which-key "search project")
 
     "v" '(:ignore t :which-key "view")
+    "vw" '(whitespace-mode :which-key "whitespace")
 
     "x" '(:ignore t :which-key "execute")
     "xa" '(ivy-resume :which-key "ivy resume")
