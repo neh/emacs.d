@@ -178,6 +178,8 @@
 (defun my-prog-mode-hook ()
   "Set line-numbers settings for 'prog-mode'."
   (setq display-line-numbers 'relative)
+  (diff-hl-mode)
+  (diff-hl-flydiff-mode)
   (visual-fill-column-mode))
 (add-hook 'prog-mode-hook #'my-prog-mode-hook)
 (add-hook 'yaml-mode-hook #'my-prog-mode-hook)
@@ -805,12 +807,11 @@ Close: _c_
 
 (use-package imenu-list)
 
-;; (use-package diff-hl
-;;   :config
-;;   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-
-;;   (diff-hl-flydiff-mode)
-;;   (global-diff-hl-mode))
+(use-package diff-hl
+  :config
+  (set-face-attribute 'diff-hl-change nil :foreground "medium blue" :background "DodgerBlue1")
+  (set-face-attribute 'diff-hl-insert nil :foreground "dark green" :background "ForestGreen")
+  (set-face-attribute 'diff-hl-delete nil :foreground "dark red" :background "red4"))
 
 (use-package git-gutter
   :general
@@ -827,9 +828,9 @@ Close: _c_
   (global-git-gutter-mode +1)
 
   :config
-  (setq git-gutter:added-sign "▊"
-        git-gutter:deleted-sign "▊"
-        git-gutter:modified-sign "▊"
+  (setq git-gutter:added-sign ""
+        git-gutter:deleted-sign ""
+        git-gutter:modified-sign ""
         git-gutter:ask-p nil)
   (set-face-foreground 'git-gutter:modified "DeepSkyBlue2")
   (set-face-foreground 'git-gutter:added "ForestGreen")
