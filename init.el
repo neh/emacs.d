@@ -289,7 +289,6 @@
     "gc" '(magit-commit :which-key "commit")
     "gd" '(magit-diff-popup :which-key "diff")
     "gf" '(magit-stage-file :which-key "stage file")
-    "gh" '(git-gutter:stage-hunk :which-key "stage hunk")
     "gl" '(magit-log-popup :which-key "log")
     "gm" '(magit-dispatch-popup :which-key "menu")
     "gP" '(magit-push-popup :which-key "push")
