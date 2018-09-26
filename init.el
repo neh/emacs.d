@@ -272,7 +272,6 @@
 
     "b" '(:ignore t :which-key "buffer")
     "bd" '(evil-delete-buffer :which-key "delete buffer")
-    "bg" '(hydra-git-gutter/body :which-key "browse git hunks")
 
     "cc" '(comment-or-uncomment-region-or-line :which-key "toggle comment")
 
@@ -319,10 +318,9 @@
     "oa" '(counsel-linux-app :which-key "app")
     "oe" '(mode-line-other-buffer :which-key "previous buffer")
     "of" '(counsel-find-file :which-key "open file")
-    "og" '(counsel-git :which-key "open git file")
+    "og" '(org-agenda :which-key "agenda")
     "oh" '(counsel-projectile-find-file :which-key "open file in project")
     "ol" '(org-open-at-point :which-key "follow link")
-    "om" '(hydra-org/body :which-key "org tour")
     "oo" '(ivy-switch-buffer :which-key "switch buffer")
     ;; "oo" '(persp-switch-to-buffer :which-key "switch buffer")
     "op" '(counsel-projectile-switch-project :which-key "switch project")
@@ -338,6 +336,10 @@
     "sh" '(counsel-grep-or-swiper :which-key "search buffer")
     "sp" '(counsel-projectile-rg :which-key "search project")
     "st" '(counsel-semantic-or-imenu :which-key "search tags")
+
+    "tg" '(hydra-git-gutter/body :which-key "changes")
+    "to" '(hydra-org/body :which-key "org")
+    "tr" '(hydra-reading/body :which-key "plain text")
 
     "v" '(:ignore t :which-key "view")
     "vw" '(whitespace-mode :which-key "whitespace")
@@ -534,6 +536,14 @@
 
 (use-package hydra
   :config
+  (defhydra hydra-reading ()
+    "Text reading/navigation"
+    ("t" (evil-scroll-down 0) "down")
+    ("n" (evil-scroll-up 0) "up")
+    ("T" (scroll-up) "next page")
+    ("N" (scroll-down) "prev page")
+    ("q" nil "quit" :color blue))
+
   (defhydra hydra-zoom ()
     "zoom"
     ("+" text-scale-increase "in")
@@ -543,9 +553,9 @@
 
   (defhydra hydra-git-gutter ()
     "Browse/stage/revert git hunks"
-    ("p" (progn (git-gutter:previous-hunk 1)
+    ("n" (progn (git-gutter:previous-hunk 1)
                 (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
-    ("n" (progn (git-gutter:next-hunk 1)
+    ("t" (progn (git-gutter:next-hunk 1)
                 (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
     ("s" git-gutter:stage-hunk "stage hunk")
     ("r" git-gutter:revert-hunk "revert hunk")
