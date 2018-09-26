@@ -330,8 +330,6 @@
     "os" '(imenu-list-smart-toggle :which-key "code structure")
     ;; "ov" '(persp-switch :which-key "switch perspective")
 
-    "pr" '(package-refresh-contents :which-key "refresh package info")
-
     "Q" #'bury-buffer
 
     "s" '(:ignore t :which-key "search")
