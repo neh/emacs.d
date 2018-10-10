@@ -188,6 +188,7 @@
 (use-package evil
   :init
   (setq evil-want-integration nil
+        evil-want-keybinding nil
         evil-move-cursor-back t
         evil-vsplit-window-right t)
   :config
