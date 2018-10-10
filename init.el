@@ -180,6 +180,7 @@
   (setq display-line-numbers 'relative)
   (diff-hl-mode)
   (diff-hl-flydiff-mode)
+  (git-gutter-mode)
   (visual-fill-column-mode))
 (add-hook 'prog-mode-hook #'my-prog-mode-hook)
 (add-hook 'yaml-mode-hook #'my-prog-mode-hook)
@@ -833,7 +834,7 @@ Close: _c_
 
   :init
   (setq git-gutter:disabled-modes '(org-mode))
-  (global-git-gutter-mode +1)
+  (global-git-gutter-mode -1)
 
   :config
   (setq git-gutter:added-sign ""
