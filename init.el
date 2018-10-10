@@ -837,6 +837,9 @@ Close: _c_
   (global-git-gutter-mode -1)
 
   :config
+  (advice-add 'git-gutter:previous-hunk :after #'neh/after-jump)
+  (advice-add 'git-gutter:next-hunk :after #'neh/after-jump)
+
   (setq git-gutter:added-sign ""
         git-gutter:deleted-sign ""
         git-gutter:modified-sign ""
@@ -845,6 +848,10 @@ Close: _c_
   (set-face-foreground 'git-gutter:added "ForestGreen")
   (set-face-foreground 'git-gutter:deleted "red4")
   )
+
+(defun neh/after-jump (&optional arg)
+  "Position text sanely after jumping. ARG is unused but apparently necessary."
+  (evil-scroll-line-to-center (line-number-at-pos)))
 
 
 ;; disable annoying multi-line docs in echo area
