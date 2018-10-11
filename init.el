@@ -570,6 +570,7 @@
     ("T" org-forward-heading-same-level "next heading at same level")
     ("N" org-backward-heading-same-level "prev heading at same level")
     ("H" outline-up-heading "up heading")
+    ("<tab>" org-cycle "cycle")
     ("g" org-goto "goto" :exit t)
     ("q" nil "quit" :color blue)))
 
