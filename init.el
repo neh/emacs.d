@@ -179,7 +179,7 @@
   "Set line-numbers settings for 'prog-mode'."
   (setq display-line-numbers 'relative)
   (diff-hl-mode)
-  (diff-hl-flydiff-mode)
+  ;; (diff-hl-flydiff-mode)
   (git-gutter-mode)
   (visual-fill-column-mode))
 (add-hook 'prog-mode-hook #'my-prog-mode-hook)
