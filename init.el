@@ -363,6 +363,11 @@
   (which-key-mode))
 
 
+(use-package key-chord)
+(use-package use-package-chords
+  :config (key-chord-mode 1))
+
+
 (use-package dired
   :straight nil
   :general
@@ -393,6 +398,8 @@
 (use-package flx)
 
 (use-package avy
+  :chords (("qj" . avy-goto-char-2)
+           ("jl" . avy-goto-line))
   :general
   (general-define-key
    :states '(normal visual)
