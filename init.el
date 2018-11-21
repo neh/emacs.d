@@ -1098,7 +1098,7 @@ Close: _c_
     "hp" '(symbol-overlay-switch-backward :which-key "previous highlighted symbol")
     "hn" '(symbol-overlay-switch-forward :which-key "next highlighted symbol")
     "hC" '(symbol-overlay-remove-all :which-key "clear highlighted symbols")
-    "hM" '(symbol-overlay-mode :which-key "symbol overlay mode"))
+    "hM" '(symbol-overlay-mode :which-key "symbol overlay mode")))
 
 (use-package deft
   :init
