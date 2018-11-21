@@ -238,6 +238,7 @@
 
 (use-package evil-textobj-line)
 (use-package evil-textobj-syntax)
+
 (use-package general
   :after evil-collection
   :config
