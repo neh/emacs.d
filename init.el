@@ -208,13 +208,13 @@
   ;;       evil-motion-state-tag   (propertize "M" 'face '((:background "blue")))
   ;;       evil-visual-state-tag   (propertize "V" 'face '((:background "grey80" :foreground "black")))
   ;;       evil-operator-state-tag (propertize "O" 'face '((:background "purple"))))
-  (setq evil-normal-state-tag   (propertize "N")
-        evil-emacs-state-tag    (propertize "E")
-        evil-insert-state-tag   (propertize "I")
-        evil-replace-state-tag  (propertize "R")
-        evil-motion-state-tag   (propertize "M")
-        evil-visual-state-tag   (propertize "V")
-        evil-operator-state-tag (propertize "O"))
+  (setq evil-normal-state-tag   (propertize " N ")
+        evil-emacs-state-tag    (propertize " E ")
+        evil-insert-state-tag   (propertize " I ")
+        evil-replace-state-tag  (propertize " R ")
+        evil-motion-state-tag   (propertize " M ")
+        evil-visual-state-tag   (propertize " V ")
+        evil-operator-state-tag (propertize " O "))
 
   (evil-define-operator evil-narrow-indirect (beg end type)
     "Indirectly narrow the region from BEG to END."
@@ -1159,44 +1159,23 @@ Close: _c_
            :which-key "ansible docs refresh")
    ))
 
-(use-package spaceline
+
+(use-package doom-modeline
+  :defer t
+  :hook (after-init . doom-modeline-init)
   :config
-  (setq-default powerline-default-separator 'wave)
-  (setq spaceline-separator-dir-left '(left . left)
-        spaceline-separator-dir-right '(right . right)))
-
-(use-package spaceline-config
-  :straight nil
-  :config
-  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-
-  (spaceline-define-segment neh/buffer-status
-    (cond (buffer-read-only (propertize ""))
-          ((buffer-modified-p) (propertize ""))
-          (t "")))
-
-  (spaceline-define-segment neh/hud
-    "A HUD that shows which part of the buffer is currently visible."
-    (powerline-hud highlight-face default-face)
-    :tight t)
-  
-  ;; fancy git icon
-  (defadvice vc-mode-line (after strip-backend () activate)
-    (when (stringp vc-mode)
-      (let ((gitlogo (replace-regexp-in-string "^ Git." "  " vc-mode)))
-        (setq vc-mode gitlogo))))
-
-  (spaceline-install
-    'main
-    '((evil-state :face highlight-face)
-      (persp-name)
-      (buffer-id)
-      (neh/buffer-status :face highlight-face))
-    '((version-control :when active)
-      (major-mode)
-      ((line column buffer-position) :priority 0)
-      (neh/hud :priority 0)))
-  (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
+  (setq-default doom-modeline-column-zero-based nil)
+  (setq doom-modeline-height 20
+        doom-modeline-bar-width 3
+        column-number-indicator-zero-based nil)
+  (column-number-mode)
+  (set-face-attribute 'doom-modeline-evil-emacs-state nil :background "DarkMagenta" :foreground "#ffffff")
+  (set-face-attribute 'doom-modeline-evil-insert-state nil :background "#ffd700" :foreground "#000000")
+  (set-face-attribute 'doom-modeline-evil-motion-state nil :background "SteelBlue" :foreground "#ffffff")
+  (set-face-attribute 'doom-modeline-evil-normal-state nil :background "ForestGreen" :foreground "#ffffff")
+  (set-face-attribute 'doom-modeline-evil-operator-state nil :background "SteelBlue" :foreground "#ffffff")
+  (set-face-attribute 'doom-modeline-evil-visual-state nil :background "#fe8019" :foreground "#000000")
+  (set-face-attribute 'doom-modeline-evil-replace-state nil :background "red4" :foreground "#ffffff"))
 
 ;; ((main
 ;;   ((((((persp-name :fallback workspace-number)
