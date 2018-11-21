@@ -338,6 +338,7 @@
     "sf" '(counsel-ag :which-key "search files")
     "sg" '(counsel-git-grep :which-key "search files in git")
     "sh" '(counsel-grep-or-swiper :which-key "search buffer")
+    "so" '(counsel-org-goto-all :which-key "search org")
     "sp" '(counsel-projectile-rg :which-key "search project")
     "st" '(counsel-semantic-or-imenu :which-key "search tags")
 
