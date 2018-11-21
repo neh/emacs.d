@@ -829,6 +829,9 @@ Close: _c_
   (add-to-list 'company-box-frame-parameters
                '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1")))
 
+(use-package typo
+  :hook (text-mode . typo-mode))
+
 (fringe-mode 8)
 
 (use-package imenu-list)
