@@ -197,9 +197,10 @@
 
   (evil-set-initial-state 'ivy-occur-mode 'emacs)
 
-  ;; (unbind-key "s" evil-normal-state-map)
+  (unbind-key "C-h" evil-normal-state-map)
   (unbind-key "C-t" evil-normal-state-map)
   (unbind-key "C-n" evil-normal-state-map)
+  (unbind-key "C-s" evil-normal-state-map)
   (unbind-key "C-e" evil-motion-state-map)
 
   ;; (setq evil-normal-state-tag   (propertize "N" 'face '((:background "green" :foreground "black")))
@@ -256,6 +257,10 @@
   (general-define-key
    "C-M-t" 'scroll-other-window
    "C-M-n" 'scroll-other-window-down
+   "C-h" 'evil-window-left
+   "C-t" 'evil-window-down
+   "C-n" 'evil-window-up
+   "C-s" 'evil-window-right
    )
 
   (general-define-key
