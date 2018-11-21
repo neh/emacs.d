@@ -304,7 +304,6 @@
 
     "hl" '(highlight-lines-matching-regexp :which-key "highlight line")
     "hr" '(highlight-regexp :which-key "highlight regexp")
-    "hs" '(highlight-symbol-at-point :which-key "highlight symbol at point")
     "hu" '(unhighlight-regexp :which-key "unhighlight regexp")
 
     "i" '(:ignore t :which-key "insert")
@@ -1091,6 +1090,15 @@ Close: _c_
         jiralib-user-login-name "nathan.howell"
         org-jira-use-status-as-todo t
         jiralib-url "https://fresh-grade.atlassian.net"))
+
+(use-package symbol-overlay
+  :general
+  (neh/leader-keys
+    "hs" '(symbol-overlay-put :which-key "highlight symbol")
+    "hp" '(symbol-overlay-switch-backward :which-key "previous highlighted symbol")
+    "hn" '(symbol-overlay-switch-forward :which-key "next highlighted symbol")
+    "hC" '(symbol-overlay-remove-all :which-key "clear highlighted symbols")
+    "hM" '(symbol-overlay-mode :which-key "symbol overlay mode"))
 
 (use-package deft
   :init
