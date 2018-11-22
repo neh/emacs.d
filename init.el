@@ -495,6 +495,7 @@
   (neh/leader-keys
     "e" '(counsel-M-x :which-key "M-x")
 
+    "ha" '(counsel-apropos :which-key "apropos")
     "hf" '(counsel-describe-function :which-key "describe function")
     "hv" '(counsel-describe-variable :which-key "describe variable")
 
