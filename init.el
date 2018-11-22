@@ -251,18 +251,19 @@
 
   (general-override-mode)
 
+  (general-define-key
+   "C-M-t" 'scroll-other-window
+   "C-M-n" 'scroll-other-window-down)
+
   (general-add-advice (list #'evil-search-previous
                             #'evil-search-next)
                       :after #'evil-scroll-line-to-center)
 
   (general-define-key
-   "C-M-t" 'scroll-other-window
-   "C-M-n" 'scroll-other-window-down
    "C-h" 'evil-window-left
    "C-t" 'evil-window-down
    "C-n" 'evil-window-up
-   "C-s" 'evil-window-right
-   )
+   "C-s" 'evil-window-right)
 
   (general-define-key
    :states '(normal visual)
@@ -295,18 +296,8 @@
     "fv" '(visual-line-mode :which-key "visual line mode")
 
     "g" '(:ignore t :which-key "git")
-    "gc" '(magit-commit :which-key "commit")
-    "gd" '(magit-diff-popup :which-key "diff")
-    "gf" '(magit-stage-file :which-key "stage file")
-    "gl" '(magit-log-popup :which-key "log")
-    "gm" '(magit-dispatch-popup :which-key "menu")
-    "gP" '(magit-push-popup :which-key "push")
-    "gs" '(magit-status :which-key "status")
 
-    "h" '(help-command :which-key "help")
-    "ha" 'helm-apropos
-    "hf" '(counsel-describe-function :which-key "describe function")
-    "hv" '(counsel-describe-variable :which-key "describe variable")
+    "h" '(:ignore t :which-key "help")
 
     "hl" '(highlight-lines-matching-regexp :which-key "highlight line")
     "hr" '(highlight-regexp :which-key "highlight regexp")
@@ -315,52 +306,34 @@
     "i" '(:ignore t :which-key "insert")
     "ip" '(clipboard-yank :which-key "paste from clipboard")
 
-    "nb" '(org-narrow-to-block :which-key "narrow to block")
+    "n" '(:ignore t :which-key "narrow")
     "nd" '(narrow-to-defun :which-key "narrow to defun")
-    "ne" '(org-narrow-to-element :which-key "narrow to element")
-    "ns" '(org-narrow-to-subtree :which-key "narrow to subtree")
     "np" '(narrow-to-page :which-key "narrow to page")
     "nr" '(narrow-to-region :which-key "narrow to region")
     "nw" '(widen :which-key "widen")
 
     "o" '(:ignore t :which-key "open")
-    "oa" '(counsel-linux-app :which-key "app")
     "oe" '(mode-line-other-buffer :which-key "previous buffer")
-    "of" '(counsel-find-file :which-key "open file")
-    "og" '(org-agenda :which-key "agenda")
-    "oh" '(counsel-projectile-find-file :which-key "open file in project")
-    "ol" '(org-open-at-point :which-key "follow link")
-    "oo" '(ivy-switch-buffer :which-key "switch buffer")
-    ;; "oo" '(persp-switch-to-buffer :which-key "switch buffer")
-    "op" '(counsel-projectile-switch-project :which-key "switch project")
     "os" '(imenu-list-smart-toggle :which-key "code structure")
+    ;; "oo" '(persp-switch-to-buffer :which-key "switch buffer")
     ;; "ov" '(persp-switch :which-key "switch perspective")
 
     "Q" #'bury-buffer
 
     "s" '(:ignore t :which-key "search")
-    "sa" '(swiper-all :which-key "search all buffers")
-    "sf" '(counsel-ag :which-key "search files")
-    "sg" '(counsel-git-grep :which-key "search files in git")
-    "sh" '(counsel-grep-or-swiper :which-key "search buffer")
-    "so" '(counsel-org-goto-all :which-key "search org")
-    "sp" '(counsel-projectile-rg :which-key "search project")
-    "st" '(counsel-semantic-or-imenu :which-key "search tags")
 
-    "tg" '(hydra-git-gutter/body :which-key "changes")
-    "to" '(hydra-org/body :which-key "org")
-    "tr" '(hydra-reading/body :which-key "plain text")
+    "r" '(:ignore t :which-key "read")
+    "rg" '(hydra-git-gutter/body :which-key "changes")
+    "ro" '(hydra-org/body :which-key "org")
+    "rr" '(hydra-reading/body :which-key "plain text")
 
     "v" '(:ignore t :which-key "view")
     "vw" '(whitespace-mode :which-key "whitespace")
 
-    "x" '(:ignore t :which-key "execute")
-    "xa" '(ivy-resume :which-key "ivy resume")
     "xb" '(eval-buffer :which-key "eval buffer")
     "xe" '(eval-expression :which-key "eval expression")
     "xr" '(eval-region :which-key "eval region")
     "xs" '(eval-last-sexp :which-key "eval sexp")
-    "xx" '(counsel-M-x :which-key "M-x")
 
     "zt" '(hydra-zoom/body :which-key "zoom text")))
 
@@ -408,6 +381,7 @@
 (use-package avy
   :chords (("qj" . avy-goto-char-2)
            ("jl" . avy-goto-line))
+
   :general
   (general-define-key
    :states '(normal visual)
@@ -416,6 +390,10 @@
    "c" '(avy-goto-char-timer :which-key "char")
    "h" '(avy-org-goto-heading-timer :which-key "org heading")
    "l" '(avy-goto-line :which-key "line"))
+
+  (neh/leader-keys
+    "oo" '(ivy-switch-buffer :which-key "switch buffer"))
+
   :config
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 
@@ -444,6 +422,9 @@
     (balance-windows))
 
   :general
+  (neh/leader-keys
+    "xa" '(ivy-resume :which-key "ivy resume"))
+
   (general-define-key
    :keymaps 'ivy-minibuffer-map
    "<escape>" 'keyboard-escape-quit
@@ -508,7 +489,28 @@
   (company-prescient-mode))
 
 (use-package counsel
-  :after ivy
+  :after (ivy swiper)
+
+  :general
+  (neh/leader-keys
+    "e" '(counsel-M-x :which-key "M-x")
+
+    "hf" '(counsel-describe-function :which-key "describe function")
+    "hv" '(counsel-describe-variable :which-key "describe variable")
+
+    "oa" '(counsel-linux-app :which-key "app")
+    "of" '(counsel-find-file :which-key "open file")
+    "oh" '(counsel-projectile-find-file :which-key "open file in project")
+    "op" '(counsel-projectile-switch-project :which-key "switch project")
+
+    "sa" '(swiper-all :which-key "search all buffers")
+    "sf" '(counsel-ag :which-key "search files")
+    "sg" '(counsel-git-grep :which-key "search files in git")
+    "sh" '(counsel-grep-or-swiper :which-key "search buffer")
+    "so" '(counsel-org-goto-all :which-key "search org")
+    "sp" '(counsel-projectile-rg :which-key "search project")
+    "st" '(counsel-semantic-or-imenu :which-key "search tags"))
+
   :config
   (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s"
         counsel-grep-base-command "grep -inE '%s' %s")
@@ -525,6 +527,7 @@
 
 (use-package counsel-projectile
   :after (counsel projectile)
+
   :config
   ;; Set the default switch project action to find files so that paths are included in the search list
   (counsel-projectile-modify-action 'counsel-projectile-switch-project-action
@@ -902,6 +905,16 @@ Close: _c_
    "l" 'evil-search-next
    "L" 'evil-search-previous)
 
+  (neh/leader-keys
+    "gc" '(magit-commit :which-key "commit")
+    "gd" '(magit-diff-popup :which-key "diff")
+    "gf" '(magit-stage-file :which-key "stage file")
+    "gl" '(magit-log-popup :which-key "log")
+    ;; "glf" '(magit-log-buffer-file :which-key "current buffer log")
+    "gm" '(magit-dispatch-popup :which-key "menu")
+    "gP" '(magit-push-popup :which-key "push")
+    "gs" '(magit-status :which-key "status"))
+
   :config
   ;; There doesn't seem to be a "nice" way to adjust magit popups, so I stole
   ;; this method from evil-magit
@@ -928,18 +941,26 @@ Close: _c_
 (use-package org
   :straight nil
   :general
+  (neh/leader-keys
+    "nb" '(org-narrow-to-block :which-key "narrow to block")
+    "ne" '(org-narrow-to-element :which-key "narrow to element")
+    "ns" '(org-narrow-to-subtree :which-key "narrow to subtree")
+
+    "og" '(org-agenda :which-key "agenda")
+    "o." '(org-open-at-point :which-key "follow link"))
+
   (:keymaps 'org-mode-map
    :states '(normal emacs)
    :prefix  "g"
-   "x" 'org-open-at-point
-   )
+   "." 'org-open-at-point)
+
   (:keymaps 'org-mode-map
    :states '(normal emacs)
    "<RET>" 'org-tree-to-indirect-buffer
    "ze" 'outline-show-branches
    "C-M-t" 'scroll-other-window
-   "C-M-n" 'scroll-other-window-down
-   )
+   "C-M-n" 'scroll-other-window-down)
+
   ;; (:keymaps 'org-mode-map
   ;;  "H" 'org-shiftleft
   ;;  "T" 'org-shiftdown
@@ -950,6 +971,7 @@ Close: _c_
   ;;  "C-n" 'org-shiftup
   ;;  "C-s" 'org-shiftright
   ;;  )
+
   :init
   (let* ((variable-tuple (cond ((x-list-fonts "DejaVu Sans") '(:font "DejaVu Sans"))
                                ((x-list-fonts "DejaVu Serif") '(:font "DejaVu Serif"))
@@ -1194,6 +1216,7 @@ Close: _c_
   (set-face-attribute 'doom-modeline-evil-operator-state nil :background "SteelBlue" :foreground "#ffffff")
   (set-face-attribute 'doom-modeline-evil-visual-state nil :background "#fe8019" :foreground "#000000")
   (set-face-attribute 'doom-modeline-evil-replace-state nil :background "red4" :foreground "#ffffff"))
+
 
 ;; ((main
 ;;   ((((((persp-name :fallback workspace-number)
