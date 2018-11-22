@@ -315,7 +315,6 @@
 
     "o" '(:ignore t :which-key "open")
     "oe" '(mode-line-other-buffer :which-key "previous buffer")
-    "os" '(imenu-list-smart-toggle :which-key "code structure")
     ;; "oo" '(persp-switch-to-buffer :which-key "switch buffer")
     ;; "ov" '(persp-switch :which-key "switch perspective")
 
@@ -554,6 +553,14 @@
         ivy-historian-recent-decrement 5)
 
   (ivy-historian-mode 1))
+
+(use-package imenu-list
+  :general
+  (neh/leader-keys
+    "os" '(imenu-list-smart-toggle :which-key "code structure"))
+
+  :config
+  (setq imenu-list-focus-after-activation t))
 
 (use-package hydra
   :config
@@ -838,7 +845,6 @@ Close: _c_
 
 (fringe-mode 8)
 
-(use-package imenu-list)
 
 (use-package diff-hl
   :config
