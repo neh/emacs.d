@@ -702,6 +702,18 @@ Close: _c_
   ("q" nil))
 
 
+(use-package window-purpose
+  :init
+  (purpose-mode)
+
+  :config
+  (purpose-compile-user-configuration))
+
+(use-package ivy-purpose
+  :after window-purpose
+  :config
+  (ivy-purpose-setup))
+
 (use-package projectile
   :config
   (setq projectile-completion-system 'ivy)
