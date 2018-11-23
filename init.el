@@ -176,6 +176,10 @@
 
 (setq uniquify-buffer-name-style 'forward)
 
+(use-package saveplace
+  :config
+  (save-place-mode t))
+
 
 (defun my-prog-mode-hook ()
   "Set line-numbers settings for 'prog-mode'."
