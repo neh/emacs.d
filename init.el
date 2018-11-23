@@ -854,6 +854,7 @@ Close: _c_
 
 (use-package diff-hl
   :config
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   (set-face-attribute 'diff-hl-change nil :foreground "medium blue" :background "DodgerBlue1")
   (set-face-attribute 'diff-hl-insert nil :foreground "dark green" :background "ForestGreen")
   (set-face-attribute 'diff-hl-delete nil :foreground "dark red" :background "red4"))
