@@ -489,7 +489,7 @@
   (company-prescient-mode))
 
 (use-package counsel
-  :after (ivy swiper)
+  :after ivy
 
   :general
   (neh/leader-keys
