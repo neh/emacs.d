@@ -393,9 +393,6 @@
    "h" '(avy-org-goto-heading-timer :which-key "org heading")
    "l" '(avy-goto-line :which-key "line"))
 
-  (neh/leader-keys
-    "oo" '(ivy-switch-buffer :which-key "switch buffer"))
-
   :config
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 
@@ -425,6 +422,7 @@
 
   :general
   (neh/leader-keys
+    "oo" '(ivy-switch-buffer :which-key "switch buffer")
     "xa" '(ivy-resume :which-key "ivy resume"))
 
   (general-define-key
