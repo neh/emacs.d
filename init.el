@@ -1101,6 +1101,10 @@ Close: _c_
    '((shell . t)
      (emacs-lisp . t))))
 
+(use-package org-tempo
+  :straight nil
+  :after org)
+
 (use-package rainbow-mode
   :general
   (neh/leader-keys
