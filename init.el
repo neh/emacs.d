@@ -573,6 +573,12 @@
   :config
   (setq imenu-list-focus-after-activation t))
 
+(use-package imenu-anywhere
+  :after ivy
+  :general
+  (neh/leader-keys
+    "sT" '(ivy-imenu-anywhere :which-key "imenu anywhere")))
+
 (use-package hydra
   :config
   (defhydra hydra-reading ()
