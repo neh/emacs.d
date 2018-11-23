@@ -194,6 +194,7 @@
         evil-want-keybinding nil
         evil-move-cursor-back t
         evil-vsplit-window-right t)
+
   :config
   (evil-mode 1)
 
@@ -235,15 +236,20 @@
   (evil-collection-init))
 
 (use-package evil-indent-plus
+  :after evil
   :config
   (evil-indent-plus-default-bindings))
 
-(use-package evil-textobj-line)
-(use-package evil-textobj-syntax)
-(use-package evil-ex-fasd)
+(use-package evil-textobj-line
+  :after evil)
+(use-package evil-textobj-syntax
+  :after evil)
+(use-package evil-ex-fasd
+  :after evil)
 
 (use-package general
   :after evil-collection
+
   :config
   (general-create-definer
     neh/leader-keys
@@ -357,6 +363,7 @@
   (general-define-key
    :states 'normal
    "U" '(dired-jump :which-key "dired"))
+
   (general-define-key
    :states 'normal
    :keymaps 'dired-mode-map
@@ -366,6 +373,7 @@
   :general
   (neh/leader-keys
     "ot" 'dired-sidebar-toggle-sidebar)
+
   :config
   (setq dired-sidebar-theme 'nerd)
   (add-hook 'dired-load-hook
@@ -473,7 +481,6 @@
 ;;           (right-fringe . 10)))
 ;;   (ivy-posframe-enable))
 
-;; (use-package smex)
 (use-package prescient
   :config
   (prescient-persist-mode))
@@ -539,8 +546,7 @@
    `(("c" ,(given-file #'copy-file "Copy") "copy")
      ("d" ,(reloading #'confirm-delete-file) "delete")
      ("m" ,(reloading (given-file #'rename-file "Move")) "move")
-     ("b" counsel-find-file-cd-bookmark-action "cd bookmark")))
-  )
+     ("b" counsel-find-file-cd-bookmark-action "cd bookmark"))))
 
 (use-package historian
   :config
@@ -788,7 +794,6 @@ Close: _c_
   (set-face-attribute 'rainbow-delimiters-depth-9-face nil :height 1.8))
 
 (use-package wgrep)
-(use-package multiple-cursors)
 
 (use-package elec-pair
   :ensure nil
