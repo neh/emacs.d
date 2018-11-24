@@ -51,6 +51,11 @@ We set =gc-cons-threshold= to its maximum value, to prevent any garbage collecti
   (setq gc-cons-threshold most-positive-fixnum)
 #+end_src
 
+Handy profiling command:
+#+begin_src shell :tangle no
+  emacs -Q -l profile-dotemacs.el --eval "(setq profile-dotemacs-file (setq load-file-name \"/home/nathan/.emacs.d/init2.el\"))" -f profile-dotemacs
+#+end_src
+
 * Base settings
 Turn off all startup messages, splash screens, menus, scrollbars, etc.
 #+begin_src emacs-lisp
