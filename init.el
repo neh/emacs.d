@@ -105,6 +105,10 @@
 ;; set man page width, also put in olivetti-mode set to same width?
 (setenv "MANWIDTH" "100")
 
+;; work around $SSH_AUTH_SOCK not being set when running under sway
+(when (string= (getenv "SSH_AUTH_SOCK") nil)
+  (setenv "SSH_AUTH_SOCK" (format "/tmp/ssh-agent-%s-tmux" (getenv "USER"))))
+
 (use-package exec-path-from-shell
   :config
   (when (memq window-system '(mac ns x))
