@@ -93,11 +93,16 @@ Set the window titles:
 Set my preferred font and size, taking display DPI into account.
 ;; need a 'new frame' hook to run this after, as it only runs on emacs init
 #+begin_src emacs-lisp
-  (let ((mydpi (/ (display-pixel-width) (/ (display-mm-width) 25.4)))
-        (myfont "Iosevka"))
-    (if (> mydpi 160)
-        (set-frame-font (format "%s-10" myfont))
-      (set-frame-font (format "%s-10.5" myfont))))
+  (defun neh/set-frame-options (frame)
+    "Set options for a FRAME."
+    (let ((mydpi (/ (display-pixel-width) (/ (display-mm-width) 25.4)))
+          (myfont "Iosevka"))
+      (if (> mydpi 160)
+          (set-frame-font (format "%s-10" myfont))
+        (set-frame-font (format "%s-10" myfont)))))
+
+  (neh/set-frame-options nil)
+  (add-hook 'after-make-frame-functions #'neh/set-frame-options)
 #+end_src
 
 I don’t really use the customization system in Emacs (yet?) but let’s at least make it use a file that isn’t the main config.
@@ -148,58 +153,28 @@ But I like some things to be set no matter the theme. There’s probably a hook 
   (set-face-attribute 'mode-line-inactive nil :height 1.0)
 #+end_src
 
-* Eeeeevil
+* Modeline
 #+begin_src emacs-lisp
-  (use-package evil
-    ;; :defer 1
-    ;; :demand t
-    :init
-    (setq evil-want-integration nil
-          evil-want-keybinding nil
-          evil-move-cursor-back t
-          evil-vsplit-window-right t)
+  (use-package doom-modeline
+    ;; :disabled t
+    ;; :defer t
+    :demand t
 
+    :hook (after-init . doom-modeline-init)
     :config
-    (evil-mode 1)
-
-    (evil-set-initial-state 'ivy-occur-mode 'emacs)
-
-    (unbind-key "C-h" evil-normal-state-map)
-    (unbind-key "C-t" evil-normal-state-map)
-    (unbind-key "C-n" evil-normal-state-map)
-    (unbind-key "C-s" evil-normal-state-map)
-    (unbind-key "C-e" evil-motion-state-map)
-
-    (setq evil-normal-state-tag   (propertize " N ")
-          evil-emacs-state-tag    (propertize " E ")
-          evil-insert-state-tag   (propertize " I ")
-          evil-replace-state-tag  (propertize " R ")
-          evil-motion-state-tag   (propertize " M ")
-          evil-visual-state-tag   (propertize " V ")
-          evil-operator-state-tag (propertize " O "))
-
-    (evil-define-operator evil-narrow-indirect (beg end type)
-      "Indirectly narrow the region from BEG to END."
-      (interactive "<R>")
-      (evil-normal-state)
-      (narrow-to-region-indirect beg end))
-
-    (use-package evil-surround
-      :config
-      (global-evil-surround-mode))
-
-    (use-package evil-collection
-      ;; :demand t
-      :config
-      (evil-collection-init))
-
-    (use-package evil-indent-plus
-      :config
-      (evil-indent-plus-default-bindings))
-
-    (use-package evil-textobj-line)
-    (use-package evil-textobj-syntax)
-    (use-package evil-ex-fasd))
+    (setq-default doom-modeline-column-zero-based nil)
+    (setq doom-modeline-height 20
+          doom-modeline-bar-width 3
+          column-number-indicator-zero-based nil)
+    (column-number-mode)
+    (set-face-attribute 'doom-modeline-evil-emacs-state nil :background "DarkMagenta" :foreground "#ffffff")
+    (set-face-attribute 'doom-modeline-evil-insert-state nil :background "#ffd700" :foreground "#000000")
+    (set-face-attribute 'doom-modeline-evil-motion-state nil :background "SteelBlue" :foreground "#ffffff")
+    (set-face-attribute 'doom-modeline-evil-normal-state nil :background "ForestGreen" :foreground "#ffffff")
+    (set-face-attribute 'doom-modeline-evil-operator-state nil :background "SteelBlue" :foreground "#ffffff")
+    (set-face-attribute 'doom-modeline-evil-visual-state nil :background "#fe8019" :foreground "#000000")
+    (set-face-attribute 'doom-modeline-evil-replace-state nil :background "red4" :foreground "#ffffff")
+    (doom-modeline-init))
 #+end_src
 
 * Keybindings
@@ -208,7 +183,7 @@ General
   (use-package general
     ;; :after evil
     ;; :defer 1
-    ;; :demand t
+    :demand t
 
     :config
     (general-create-definer
@@ -218,7 +193,7 @@ General
       :non-normal-prefix "C-SPC"
       :prefix "SPC")
 
-    (general-override-mode)
+    (general-override-mode t)
 
     (general-define-key
      "C-M-t" 'scroll-other-window
@@ -310,7 +285,7 @@ General
 Which-key shows a handy popup for available keybindings at any given time.
 #+begin_src emacs-lisp
   (use-package which-key
-    ;; :demand t
+    :demand t
     :config
     (which-key-setup-side-window-bottom)
     (setq which-key-idle-secondary-delay 0.25)
@@ -325,22 +300,73 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
     (key-chord-mode 1))
 #+end_src
 
+* Eeeeevil
+#+begin_src emacs-lisp
+  (use-package evil
+    ;; :defer 1
+    ;; :demand t
+    :init
+    (setq evil-want-integration nil
+          evil-want-keybinding nil
+          evil-move-cursor-back t
+          evil-vsplit-window-right t)
+
+    :config
+    (evil-mode 1)
+
+    (evil-set-initial-state 'ivy-occur-mode 'emacs)
+
+    (unbind-key "C-h" evil-normal-state-map)
+    (unbind-key "C-t" evil-normal-state-map)
+    (unbind-key "C-n" evil-normal-state-map)
+    (unbind-key "C-s" evil-normal-state-map)
+    (unbind-key "C-e" evil-motion-state-map)
+
+    (setq evil-normal-state-tag   (propertize " N ")
+          evil-emacs-state-tag    (propertize " E ")
+          evil-insert-state-tag   (propertize " I ")
+          evil-replace-state-tag  (propertize " R ")
+          evil-motion-state-tag   (propertize " M ")
+          evil-visual-state-tag   (propertize " V ")
+          evil-operator-state-tag (propertize " O "))
+
+    (evil-define-operator evil-narrow-indirect (beg end type)
+      "Indirectly narrow the region from BEG to END."
+      (interactive "<R>")
+      (evil-normal-state)
+      (narrow-to-region-indirect beg end))
+
+    (use-package evil-surround
+      :config
+      (global-evil-surround-mode))
+
+    (use-package evil-collection
+      ;; :demand t
+      :config
+      (evil-collection-init))
+
+    (use-package evil-indent-plus
+      :config
+      (evil-indent-plus-default-bindings))
+
+    (use-package evil-textobj-line)
+    (use-package evil-textobj-syntax)
+    (use-package evil-ex-fasd))
+#+end_src
+
+** TODO look into evil-collection minibuffer setup
+
 * Navigation?
 #+begin_src emacs-lisp
-  (use-package amx
-    :after ivy
-    :config
-    (amx-mode))
-
   (use-package ivy
     ;; :disabled t
     ;; :demand t
-    ;; :commands ()
     :init
     (defun reloading (cmd)
       (lambda (x)
         (funcall cmd x)
         (ivy--reset-state ivy-last)))
+
     (defun given-file (cmd prompt) ; needs lexical-binding
       (lambda (source)
         (let ((target
@@ -348,8 +374,10 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
                  (read-file-name
                   (format "%s %s to:" prompt source)))))
           (funcall cmd source target 1))))
+
     (defun confirm-delete-file (x)
       (dired-delete-file x 'confirm-each-subdirectory))
+
     (defun neh-open-file-in-vsplit (f)
       (evil-window-vsplit 80 f)
       (balance-windows))
@@ -395,25 +423,21 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
           ivy-use-selectable-prompt t
           ivy-re-builders-alist
           '((t . ivy--regex-fuzzy))
-          ivy-initial-inputs-alist nil))
+          ivy-initial-inputs-alist nil)
 
-  ;; (use-package ivy-posframe
-  ;;   :after ivy
-  ;;   :config
-  ;;   ;; (setq ivy-display-function #'ivy-posframe-display)
-  ;;   (setq ivy-display-function #'ivy-posframe-display-at-window-center
-  ;;         ivy-posframe-parameters
-  ;;         '((left-fringe . 10)
-  ;;           (right-fringe . 10)))
-  ;;   (ivy-posframe-enable))
+    (use-package amx
+      ;; :after ivy
+      :config
+      (amx-mode)))
+
 
   (use-package prescient
-    :disabled t
+    ;; :disabled t
     :config
     (prescient-persist-mode))
 
   (use-package ivy-prescient
-    :disabled t
+    ;; :disabled t
     :after (prescient ivy)
     :config
     (ivy-prescient-mode))
@@ -428,27 +452,24 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
     ;; :disabled t
     ;; :demand t
     ;; :commands (counsel-M-x)
-    :after ivy
+    ;; :after ivy
 
     :general
     (neh/leader-keys
       "e" '(counsel-M-x :which-key "M-x")
 
       "ha" '(counsel-apropos :which-key "apropos")
-      ;; "hf" '(counsel-describe-function :which-key "describe function")
-      ;; "hv" '(counsel-describe-variable :which-key "describe variable")
+      "hf" '(counsel-describe-function :which-key "describe function")
+      "hv" '(counsel-describe-variable :which-key "describe variable")
 
       "oa" '(counsel-linux-app :which-key "app")
       "of" '(counsel-find-file :which-key "open file")
-      "oh" '(counsel-projectile-find-file :which-key "open file in project")
-      "op" '(counsel-projectile-switch-project :which-key "switch project")
 
       "sa" '(swiper-all :which-key "search all buffers")
       "sf" '(counsel-ag :which-key "search files")
       "sg" '(counsel-git-grep :which-key "search files in git")
       "sh" '(counsel-grep-or-swiper :which-key "search buffer")
       "so" '(counsel-org-goto-all :which-key "search org")
-      "sp" '(counsel-projectile-rg :which-key "search project")
       "st" '(counsel-semantic-or-imenu :which-key "search tags"))
 
     :config
@@ -465,21 +486,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
        ("s" neh-open-file-in-vsplit "vsplit")
        ("m" ,(reloading (given-file #'rename-file "Move")) "move"))))
 
-  (use-package counsel-projectile
-    :disabled t
-    :after (counsel projectile)
-
-    :config
-    ;; Set the default switch project action to find files so that paths are included in the search list
-    (counsel-projectile-modify-action 'counsel-projectile-switch-project-action
-                                      '((default counsel-projectile-switch-project-action-find-file)))
-
-    (ivy-add-actions
-     'counsel-projectile-find-file
-     `(("c" ,(given-file #'copy-file "Copy") "copy")
-       ("d" ,(reloading #'confirm-delete-file) "delete")
-       ("m" ,(reloading (given-file #'rename-file "Move")) "move")
-       ("b" counsel-find-file-cd-bookmark-action "cd bookmark"))))
 
   (use-package historian
     :disabled t
@@ -497,19 +503,42 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
     (ivy-historian-mode 1))
 #+end_src
 
-Projectile
+* Projectile
 #+begin_src emacs-lisp
   (use-package projectile
-    :disabled t
+    ;; :disabled t
+    :general
+    (neh/leader-keys
+      "oh" '(counsel-projectile-find-file :which-key "open file in project")
+      "op" '(counsel-projectile-switch-project :which-key "switch project")
+      "sp" '(counsel-projectile-rg :which-key "search project"))
+
     :config
     (setq projectile-completion-system 'ivy)
-    (projectile-mode))
+
+    (projectile-mode)
+
+    (use-package counsel-projectile
+      ;; :disabled t
+      :after (counsel projectile)
+
+      :config
+      ;; Set the default switch project action to find files so that paths are included in the search list
+      (counsel-projectile-modify-action 'counsel-projectile-switch-project-action
+                                        '((default counsel-projectile-switch-project-action-find-file)))
+
+      (ivy-add-actions
+       'counsel-projectile-find-file
+       `(("c" ,(given-file #'copy-file "Copy") "copy")
+         ("d" ,(reloading #'confirm-delete-file) "delete")
+         ("m" ,(reloading (given-file #'rename-file "Move")) "move")
+         ("b" counsel-find-file-cd-bookmark-action "cd bookmark")))))
 #+end_src
 
-Company
+* Company
 #+begin_src emacs-lisp
   (use-package company
-    :disabled t
+    ;; :disabled t
     :bind (:map company-active-map
            ("M-n" . nil)
            ("M-p" . nil)
@@ -518,6 +547,7 @@ Company
            ("TAB" . #'company-complete)
            ("<tab>" . #'company-complete)
            ("RET" . #'company-complete-selection))
+
     :config
     (add-hook 'after-init-hook 'global-company-mode))
 
@@ -527,12 +557,12 @@ Company
     (add-hook 'company-mode-hook #'company-statistics-mode))
 
   (use-package company-terraform
-    :disabled t
+    ;; :disabled t
     :config
     (company-terraform-init))
 
   (use-package company-box
-    :disabled t
+    ;; :disabled t
     :after company
     :hook (company-mode . company-box-mode)
     :config
@@ -562,7 +592,7 @@ Company
 
 #+begin_src emacs-lisp
   (use-package git-gutter
-    :disabled t
+    ;; :disabled t
     :general
     (general-define-key
      :states '(normal visual)
@@ -593,7 +623,7 @@ Company
 #+begin_src emacs-lisp
   (straight-use-package 'magit)
   (use-package magit
-    :disabled t
+    ;; :disabled t
     :straight nil
     :general
     (general-define-key
@@ -647,10 +677,11 @@ Company
 #+begin_src emacs-lisp
   ;; Installing org-plus-contrib as a lazy workaround for the built-in older org-mode
   ;; https://github.com/jwiegley/use-package/issues/319
-  (straight-use-package 'org-plus-contrib)
+  ;; (straight-use-package 'org-plus-contrib)
   (use-package org
-    :disabled t
-    :straight nil
+    ;; :disabled t
+    ;; :straight nil
+
     :general
     (neh/leader-keys
       "nb" '(org-narrow-to-block :which-key "narrow to block")
@@ -793,7 +824,6 @@ Company
 
 #+begin_src emacs-lisp
   (use-package evil-org
-    :disabled t
     :after evil
     :config
     (setq evil-org-movement-bindings '((up . "n")
@@ -811,33 +841,11 @@ Company
 
 #+begin_src emacs-lisp
   (use-package org-bullets
-    :disabled t
     :after org
     :config
     ;; (setq org-bullets-bullet-list '("•"))
     (setq org-bullets-bullet-list '(" "))
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-#+end_src
-
-* Modeline
-#+begin_src emacs-lisp
-  (use-package doom-modeline
-    :disabled t
-    :defer t
-    :hook (after-init . doom-modeline-init)
-    :config
-    (setq-default doom-modeline-column-zero-based nil)
-    (setq doom-modeline-height 20
-          doom-modeline-bar-width 3
-          column-number-indicator-zero-based nil)
-    (column-number-mode)
-    (set-face-attribute 'doom-modeline-evil-emacs-state nil :background "DarkMagenta" :foreground "#ffffff")
-    (set-face-attribute 'doom-modeline-evil-insert-state nil :background "#ffd700" :foreground "#000000")
-    (set-face-attribute 'doom-modeline-evil-motion-state nil :background "SteelBlue" :foreground "#ffffff")
-    (set-face-attribute 'doom-modeline-evil-normal-state nil :background "ForestGreen" :foreground "#ffffff")
-    (set-face-attribute 'doom-modeline-evil-operator-state nil :background "SteelBlue" :foreground "#ffffff")
-    (set-face-attribute 'doom-modeline-evil-visual-state nil :background "#fe8019" :foreground "#000000")
-    (set-face-attribute 'doom-modeline-evil-replace-state nil :background "red4" :foreground "#ffffff"))
 #+end_src
 
 * Epilogue
