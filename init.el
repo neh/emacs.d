@@ -984,6 +984,10 @@ Close: _c_
 (straight-use-package 'org-plus-contrib)
 (use-package org
   :straight nil
+  :hook
+  (org-mode . (lambda () (add-hook 'after-save-hook 'org-babel-tangle
+                                   'run-at-end 'only-in-org-mode)))
+
   :general
   (neh/leader-keys
     "nb" '(org-narrow-to-block :which-key "narrow to block")
