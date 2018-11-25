@@ -52,7 +52,7 @@ We set =gc-cons-threshold= to its maximum value, to prevent any garbage collecti
 #+end_src
 
 Handy profiling command:
-#+begin_src shell :tangle no
+#+begin_src shell :tangle no :results silent
   emacs -Q -l profile-dotemacs.el --eval "(setq profile-dotemacs-file (setq load-file-name \"/home/nathan/.emacs.d/init2.el\"))" -f profile-dotemacs
 #+end_src
 
