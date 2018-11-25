@@ -18,12 +18,16 @@
 
 (setq exec-path (append exec-path '("~/bin")))
 
-;; Set font/size based on display DPI
-(let ((mydpi (/ (display-pixel-width) (/ (display-mm-width) 25.4)))
-      (myfont "Iosevka"))
-  (if (> mydpi 160)
-      (set-frame-font (format "%s-10" myfont))
-    (set-frame-font (format "%s-10" myfont))))
+(defun neh/set-frame-options (frame)
+  "Set options for a FRAME."
+  (let ((mydpi (/ (display-pixel-width) (/ (display-mm-width) 25.4)))
+        (myfont "Iosevka"))
+    (if (> mydpi 160)
+        (set-frame-font (format "%s-10" myfont))
+      (set-frame-font (format "%s-10" myfont)))))
+
+(neh/set-frame-options nil)
+(add-hook 'after-make-frame-functions #'neh/set-frame-options)
 
 (setq confirm-kill-emacs 'y-or-n-p)
 (fset 'yes-or-no-p #'y-or-n-p)
