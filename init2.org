@@ -91,7 +91,6 @@ Set the window titles:
 #+end_src
 
 Set my preferred font and size, taking display DPI into account.
-;; need a 'new frame' hook to run this after, as it only runs on emacs init
 #+begin_src emacs-lisp
   (defun neh/set-frame-options (frame)
     "Set options for a FRAME."
@@ -156,8 +155,6 @@ But I like some things to be set no matter the theme. There’s probably a hook 
 * Modeline
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    ;; :disabled t
-    ;; :defer t
     :demand t
 
     :hook (after-init . doom-modeline-init)
@@ -181,8 +178,6 @@ But I like some things to be set no matter the theme. There’s probably a hook 
 General
 #+begin_src emacs-lisp
   (use-package general
-    ;; :after evil
-    ;; :defer 1
     :demand t
 
     :config
@@ -303,8 +298,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 * Eeeeevil
 #+begin_src emacs-lisp
   (use-package evil
-    ;; :defer 1
-    ;; :demand t
     :init
     (setq evil-want-integration nil
           evil-want-keybinding nil
@@ -359,8 +352,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 * Navigation?
 #+begin_src emacs-lisp
   (use-package ivy
-    ;; :disabled t
-    ;; :demand t
     :init
     (defun reloading (cmd)
       (lambda (x)
@@ -426,18 +417,15 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
           ivy-initial-inputs-alist nil)
 
     (use-package amx
-      ;; :after ivy
       :config
       (amx-mode)))
 
 
   (use-package prescient
-    ;; :disabled t
     :config
     (prescient-persist-mode))
 
   (use-package ivy-prescient
-    ;; :disabled t
     :after (prescient ivy)
     :config
     (ivy-prescient-mode))
@@ -449,11 +437,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
     (company-prescient-mode))
 
   (use-package counsel
-    ;; :disabled t
-    ;; :demand t
-    ;; :commands (counsel-M-x)
-    ;; :after ivy
-
     :general
     (neh/leader-keys
       "e" '(counsel-M-x :which-key "M-x")
@@ -506,7 +489,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 * Projectile
 #+begin_src emacs-lisp
   (use-package projectile
-    ;; :disabled t
     :general
     (neh/leader-keys
       "oh" '(counsel-projectile-find-file :which-key "open file in project")
@@ -538,7 +520,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 * Company
 #+begin_src emacs-lisp
   (use-package company
-    ;; :disabled t
     :bind (:map company-active-map
            ("M-n" . nil)
            ("M-p" . nil)
@@ -557,12 +538,10 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
     (add-hook 'company-mode-hook #'company-statistics-mode))
 
   (use-package company-terraform
-    ;; :disabled t
     :config
     (company-terraform-init))
 
   (use-package company-box
-    ;; :disabled t
     :after company
     :hook (company-mode . company-box-mode)
     :config
@@ -576,7 +555,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 * Git
 #+begin_src emacs-lisp
   (use-package diff-hl
-    :disabled t
     :config
     (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
     (set-face-attribute 'diff-hl-change nil :foreground "medium blue" :background "DodgerBlue1")
@@ -592,7 +570,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 
 #+begin_src emacs-lisp
   (use-package git-gutter
-    ;; :disabled t
     :general
     (general-define-key
      :states '(normal visual)
@@ -623,7 +600,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 #+begin_src emacs-lisp
   (straight-use-package 'magit)
   (use-package magit
-    ;; :disabled t
     :straight nil
     :general
     (general-define-key
@@ -675,13 +651,7 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 
 * Org
 #+begin_src emacs-lisp
-  ;; Installing org-plus-contrib as a lazy workaround for the built-in older org-mode
-  ;; https://github.com/jwiegley/use-package/issues/319
-  ;; (straight-use-package 'org-plus-contrib)
   (use-package org
-    ;; :disabled t
-    ;; :straight nil
-
     :general
     (neh/leader-keys
       "nb" '(org-narrow-to-block :which-key "narrow to block")
