@@ -15,7 +15,12 @@
 
 This is my Emacs configuration file.
 
-This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]] using [[https://orgmode.org/][org-mode]]. See [[file:init.el][init.el]] for the generated file. You can see this in a nicer format on my blog post [[http://zzamboni.org/post/my-emacs-configuration-with-commentary/][My Emacs Configuration, With Commentary]].
+This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]] using [[https://orgmode.org/][org-mode]]. See [[file:init.el][init.el]] for the generated file. This configuration was heavily influenced/started from [[http://zzamboni.org/post/my-emacs-configuration-with-commentary/][Diego Zamboni’s configuration]], as well as [[https://github.com/blaenk/dots/tree/master/emacs/.emacs.d][Jorge Israel Peña's]].
+
+This is a handy command I’ve been using to test as I move to a literate config. =C-c C-c= will launch a new emacs, using the tangled version of this config.
+#+begin_src shell :tangle no :results silent
+  emacs -Q -l profile-dotemacs.el --eval "(setq profile-dotemacs-file (setq load-file-name \"/home/nathan/.emacs.d/init2.el\"))" -f profile-dotemacs
+#+end_src
 
 * Performance optimization
 
@@ -51,11 +56,6 @@ We set =gc-cons-threshold= to its maximum value, to prevent any garbage collecti
   (setq gc-cons-threshold most-positive-fixnum)
 #+end_src
 
-Handy profiling command:
-#+begin_src shell :tangle no :results silent
-  emacs -Q -l profile-dotemacs.el --eval "(setq profile-dotemacs-file (setq load-file-name \"/home/nathan/.emacs.d/init2.el\"))" -f profile-dotemacs
-#+end_src
-
 * Base settings
 Turn off all startup messages, splash screens, menus, scrollbars, etc.
 #+begin_src emacs-lisp
@@ -69,7 +69,7 @@ Turn off all startup messages, splash screens, menus, scrollbars, etc.
   (scroll-bar-mode -1)
 #+end_src
 
-Set up scrolling how I like it:
+Set scrolling options. These stop the half-page jumps while scrolling, and make things smoother. Haven’t tried out =pixel-scroll-mode= yet.
 #+begin_src emacs-lisp
   (setq mouse-wheel-scroll-amount '(2 ((shift) . 1)) ;; one line at a time
         mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
@@ -84,7 +84,7 @@ Set up scrolling how I like it:
         scroll-conservatively 101) ;; Don't jump around when scrolling
 #+end_src
 
-Set the window titles:
+Set the window titles. Nothing fancy, just the buffer name.
 #+begin_src emacs-lisp
   (setq frame-title-format "%b" ;; focused window title format
         icon-title-format "%b") ;; unfocused window title format
@@ -111,9 +111,14 @@ I don’t really use the customization system in Emacs (yet?) but let’s at lea
 #+end_src
 
 * Package management
-I like [[https://github.com/raxod502/straight.el][straight.el]] instead of package.el, so let’s bootstrap that.
+I use [[https://github.com/raxod502/straight.el][straight.el]] instead of package.el.
+
+This setting makes the straight bootstrap /much/ faster. See the discussion [[https://github.com/raxod502/straight.el/issues/304][here]].
 #+begin_src emacs-lisp
   (setq straight-check-for-modifications '(check-on-save))
+#+end_src
+And now bootstrap straight, using the snippet from the docs.
+#+begin_src emacs-lisp
   ;; Bootstrap straight.el
   (defvar bootstrap-version)
   (let ((bootstrap-file
@@ -139,25 +144,31 @@ And then make [[https://github.com/jwiegley/use-package][use-package]] use strai
 #+end_src
 
 * Pretty it up
-I like this theme.
+I’ve been liking dark-on-light themes lately, and brutalist with some tweaks has been good.
 #+begin_src emacs-lisp
   (use-package brutalist-theme)
   (load-theme 'brutalist t)
 #+end_src
 
 But I like some things to be set no matter the theme. There’s probably a hook or something for this.
+
+I like italic comments.
 #+begin_src emacs-lisp
   (set-face-italic 'font-lock-comment-face t)
+#+end_src
+And the smaller brutalist modeline height is not for me.
+#+begin_src emacs-lisp
   (set-face-attribute 'mode-line nil :height 1.0)
   (set-face-attribute 'mode-line-inactive nil :height 1.0)
 #+end_src
 
 * Modeline
+Trying out doom-modeline.
 #+begin_src emacs-lisp
   (use-package doom-modeline
     :demand t
-
     :hook (after-init . doom-modeline-init)
+
     :config
     (setq-default doom-modeline-column-zero-based nil)
     (setq doom-modeline-height 20
@@ -175,7 +186,7 @@ But I like some things to be set no matter the theme. There’s probably a hook 
 #+end_src
 
 * Keybindings
-General
+[[https://github.com/noctuid/general.el][General.el]] handles keybinding management.
 #+begin_src emacs-lisp
   (use-package general
     :demand t
@@ -188,34 +199,15 @@ General
       :non-normal-prefix "C-SPC"
       :prefix "SPC")
 
-    (general-override-mode t)
+    (general-override-mode)
+
+    (general-add-advice (list #'evil-search-previous
+                              #'evil-search-next)
+                        :after #'neh/after-jump)
 
     (general-define-key
      "C-M-t" 'scroll-other-window
      "C-M-n" 'scroll-other-window-down)
-
-    (general-add-advice (list #'evil-search-previous
-                              #'evil-search-next)
-                        :after #'evil-scroll-line-to-center)
-
-    (general-define-key
-     "C-h" 'evil-window-left
-     "C-t" 'evil-window-down
-     "C-n" 'evil-window-up
-     "C-s" 'evil-window-right)
-
-    (general-define-key
-     :states '(normal visual)
-     "h" 'evil-backward-char
-     "t" 'evil-next-visual-line
-     "n" 'evil-previous-visual-line
-     "s" 'evil-forward-char
-
-     "l" 'evil-search-next
-     "L" 'evil-search-previous
-     "S" 'evil-window-bottom
-
-     "N" 'evil-narrow-indirect)
 
     (neh/leader-keys
       "<SPC>" '(save-buffer :which-key "save")
@@ -296,13 +288,35 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 #+end_src
 
 * Eeeeevil
+I come from vim, so evil is a necessity.
 #+begin_src emacs-lisp
   (use-package evil
+    :demand t
     :init
     (setq evil-want-integration nil
           evil-want-keybinding nil
           evil-move-cursor-back t
           evil-vsplit-window-right t)
+
+    :general
+    (general-define-key
+     "C-h" 'evil-window-left
+     "C-t" 'evil-window-down
+     "C-n" 'evil-window-up
+     "C-s" 'evil-window-right)
+
+    (general-define-key
+     :states '(normal visual)
+     "h" 'evil-backward-char
+     "t" 'evil-next-visual-line
+     "n" 'evil-previous-visual-line
+     "s" 'evil-forward-char
+
+     "l" 'evil-search-next
+     "L" 'evil-search-previous
+     "S" 'evil-window-bottom
+
+     "N" 'evil-narrow-indirect)
 
     :config
     (evil-mode 1)
@@ -334,7 +348,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
       (global-evil-surround-mode))
 
     (use-package evil-collection
-      ;; :demand t
       :config
       (evil-collection-init))
 
@@ -431,7 +444,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
     (ivy-prescient-mode))
 
   (use-package company-prescient
-    :disabled t
     :after (prescient company)
     :config
     (company-prescient-mode))
@@ -468,22 +480,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
        ("d" ,(reloading #'confirm-delete-file) "delete")
        ("s" neh-open-file-in-vsplit "vsplit")
        ("m" ,(reloading (given-file #'rename-file "Move")) "move"))))
-
-
-  (use-package historian
-    :disabled t
-    :config
-    (historian-mode))
-
-  (use-package ivy-historian
-    :disabled t
-    :after ivy
-    :config
-    (setq ivy-historian-freq-boost-factor 100
-          ivy-historian-recent-boost 100
-          ivy-historian-recent-decrement 5)
-
-    (ivy-historian-mode 1))
 #+end_src
 
 * Projectile
@@ -553,6 +549,7 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 #+end_src
 
 * Git
+I find that diff-hl does a better job of showing diff information than git-gutter does.
 #+begin_src emacs-lisp
   (use-package diff-hl
     :config
@@ -562,12 +559,14 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
     (set-face-attribute 'diff-hl-delete nil :foreground "dark red" :background "red4"))
 #+end_src
 
+Ending up at the bottom of the window and not being able see enought context when jumping around is annoying, so I have this to help deal with that by recentering after jumps.
 #+begin_src emacs-lisp
   (defun neh/after-jump (&optional arg)
     "Position text sanely after jumping. ARG is unused but apparently necessary."
     (evil-scroll-line-to-center (line-number-at-pos)))
 #+end_src
 
+Diff-hl may be better at /showing/ diff info, but git-gutter is better at doing things with diffs. So I have it active for navigation and staging actions.
 #+begin_src emacs-lisp
   (use-package git-gutter
     :general
@@ -597,6 +596,7 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
     )
 #+end_src
 
+Of course, the great magit.
 #+begin_src emacs-lisp
   (straight-use-package 'magit)
   (use-package magit
@@ -809,6 +809,7 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
                 (evil-org-set-key-theme))))
 #+end_src
 
+Make org-mode prettier.
 #+begin_src emacs-lisp
   (use-package org-bullets
     :after org
