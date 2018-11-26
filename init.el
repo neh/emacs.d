@@ -733,6 +733,12 @@ Close: _c_
   :config
   (ivy-purpose-setup))
 
+(use-package golden-ratio
+  :config
+  (setq golden-ration-auto-scale t)
+  ;; (golden-ratio-mode 1)
+  )
+
 (use-package projectile
   :config
   (setq projectile-completion-system 'ivy)
