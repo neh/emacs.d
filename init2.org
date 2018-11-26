@@ -1229,8 +1229,10 @@ Make org-mode prettier.
     "My python mode settings."
     (add-to-list 'company-backends 'company-jedi))
   (use-package elpy
-    :config
-    (elpy-enable))
+    :commands elpy-enable
+    :init
+    (with-eval-after-load 'python (elpy-enable)))
+
   (use-package company-jedi
     :after company
     :hook (python-mode . neh/python-mode-hook))
