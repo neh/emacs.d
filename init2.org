@@ -404,8 +404,11 @@ Which-key shows a handy popup for available keybindings at any given time.
 
 Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-style bindings with leaders is maybe just as good?
 #+begin_src emacs-lisp
-  (use-package key-chord)
+  (use-package key-chord
+    :demand t)
   (use-package use-package-chords
+    :after key-chord
+    :demand t
     :config
     (key-chord-mode 1))
 #+end_src
