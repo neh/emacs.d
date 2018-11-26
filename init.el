@@ -319,6 +319,7 @@
     "g" '(:ignore t :which-key "git")
 
     "h" '(:ignore t :which-key "help")
+    "hk" '(describe-key :which-key "key")
 
     "hl" '(highlight-lines-matching-regexp :which-key "highlight line")
     "hr" '(highlight-regexp :which-key "highlight regexp")
