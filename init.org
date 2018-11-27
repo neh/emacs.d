@@ -1188,7 +1188,7 @@ Make org-mode prettier.
   (use-package golden-ratio
     :commands golden-ratio-mode
     :config
-    (setq golden-ration-auto-scale t)
+    (setq golden-ratio-auto-scale t)
     ;; (golden-ratio-mode 1)
     )
 
