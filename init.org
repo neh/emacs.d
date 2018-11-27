@@ -854,7 +854,7 @@ Of course, the great magit.
                                             'run-at-end 'only-in-org-mode)))
            (org-mode . org-indent-mode)
            (org-mode . visual-fill-column-mode)
-           (org-mode . set-buffer-variable-pitch))
+           (org-mode . variable-pitch-mode))
 
     :general
     (neh/leader-keys
@@ -878,40 +878,49 @@ Of course, the great magit.
      "C-M-n" 'scroll-other-window-down)
 
     :init
+    (defface org-inprogress
+      '((default :inherit default))
+      "Face for INPROGRESS org tasks")
+
+    (setq org-todo-keyword-faces
+          '(("TODO" . org-todo)
+            ("INPROGRESS" . org-inprogress)))
+
+    (set-face-attribute 'org-ellipsis '(:underline nil :weight normal))
+
     (let* ((variable-tuple (cond ((x-list-fonts "DejaVu Sans") '(:font "DejaVu Sans"))
-                                 ((x-list-fonts "DejaVu Serif") '(:font "DejaVu Serif"))
-                                 ((x-list-fonts "Noto Sans") '(:font "Noto Sans"))
                                  ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
-                                 (nil (warn "Cannot find a Sans Serif Font. Install Source Sans Pro."))))
+                                 (nil (warn "Cannot find a variable width font."))))
            (fixed-tuple (cond ((x-list-fonts "Iosevka") '(:font "Iosevka"))
                               (nil (warn "Cannot find a fixed width font."))))
-           (base-font-color     (face-foreground 'default nil 'default))
-           ;; (headline           `(:inherit default :weight bold :foreground ,base-font-color))
-           ;; (done               `(:inherit default :weight normal :height 0.9 :foreground "#bdae93"))
-           ;; (variable           `(:inherit default :foreground ,base-font-color)))
-           (headline           `(:weight bold :foreground ,base-font-color))
-           (done               `(:weight normal :foreground "#7c6f64"))
-           (variable           `(:foreground ,base-font-color)))
 
-      (defface org-inprogress
-        '((default :inherit default))
-        "Face for INPROGRESS org tasks")
-      (custom-theme-set-faces 'user
-                              `(fixed-pitch ((t (,@fixed-tuple))))
-                              `(variable-pitch ((t (,@variable-tuple))))
-                              `(org-ellipsis ((t (:underline nil :weight normal))))
-                              `(org-indent ((t (:inherit (org-hide fixed-pitch)))))
-                              `(org-code ((t (:inherit fixed-pitch))))
-                              `(org-table ((t (:inherit fixed-pitch))))
-                              `(org-todo ((t (,@headline ,@variable-tuple :background "#ddbb00"))))
-                              `(org-inprogress ((t (,@headline ,@variable-tuple :foreground "white" :background "ForestGreen"))))
-                              `(org-done ((t (,@done ,@variable-tuple :strike-through t))))
-                              `(org-archived ((t (,@done ,@variable-tuple :strike-through t))))
-                              `(org-headline-done ((t (,@done ,@variable-tuple))))
-                              `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil)))))
-      (setq org-todo-keyword-faces
-            '(("TODO" . org-todo)
-              ("INPROGRESS" . org-inprogress))))
+           (base-font-color     (face-foreground 'default nil 'default))
+           (headline           `(:inherit default :weight bold :foreground ,base-font-color))
+           (done               `(:weight normal :foreground "#7c6f64")))
+
+      (custom-theme-set-faces
+       'user
+       `(fixed-pitch ((t (,@fixed-tuple))))
+       `(variable-pitch ((t (,@variable-tuple))))
+
+       `(org-ellipsis ((t (:underline nil :weight normal))))
+
+       `(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+       `(org-code ((t (:inherit fixed-pitch))))
+       `(org-table ((t (:inherit fixed-pitch))))
+       `(org-verbatim ((t (:inherit fixed-pitch))))
+       `(org-block ((t (:inherit fixed-pitch))))
+
+       `(org-todo ((t (,@headline ,@variable-tuple :background "#ddbb00"))))
+       `(org-inprogress ((t (,@headline
+                             ,@variable-tuple
+                             :foreground "white"
+                             :background "ForestGreen"))))
+       `(org-done ((t (,@done ,@variable-tuple :strike-through t))))
+       `(org-archived ((t (,@done ,@variable-tuple :strike-through t))))
+       `(org-headline-done ((t (,@done ,@variable-tuple))))
+
+       `(org-document-title ((t (,@headline ,@variable-tuple :height 1.3 :underline nil))))))
 
     (defmacro my-org-in-calendar (command)
       (let ((name (intern (format "my-org-in-calendar-%s" command))))
@@ -945,8 +954,6 @@ Of course, the great magit.
           org-cycle-separator-lines 2
           org-M-RET-may-split-line '((default . nil)))
 
-    (set-face-attribute 'org-ellipsis '(:underline nil :weight normal))
-
     (font-lock-add-keywords 'org-mode
                             '(("^ *\\([-]\\) "
                                (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
@@ -960,16 +967,6 @@ Of course, the great magit.
   (use-package org-tempo
     :straight nil
     :after org)
-#+end_src
-
-#+begin_src emacs-lisp
-  (defun set-buffer-variable-pitch ()
-    "Set this buffer to variable pitch mode, keeping some `org-mode' parts in fixed pitch."
-    (interactive)
-    (variable-pitch-mode t)
-    (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-block nil :inherit 'fixed-pitch))
 #+end_src
 
 #+begin_src emacs-lisp
