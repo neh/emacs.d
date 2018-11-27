@@ -1199,6 +1199,13 @@ Make org-mode prettier.
 
 * Misc packages
 #+begin_src emacs-lisp
+  (use-package golden-ratio
+    :commands golden-ratio-mode
+    :config
+    (setq golden-ration-auto-scale t)
+    ;; (golden-ratio-mode 1)
+    )
+
   (use-package rainbow-delimiters
     :general
     (neh/leader-keys
