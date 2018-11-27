@@ -738,8 +738,9 @@ Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company.
 I find that diff-hl does a better job of showing diff information than git-gutter does.
 #+begin_src emacs-lisp
   (use-package diff-hl
+    :hook (magit-post-refresh . diff-hl-magit-post-refresh)
     :config
-    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+    ;; (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
     (set-face-attribute 'diff-hl-change nil :foreground "medium blue" :background "DodgerBlue1")
     (set-face-attribute 'diff-hl-insert nil :foreground "dark green" :background "ForestGreen")
     (set-face-attribute 'diff-hl-delete nil :foreground "dark red" :background "red4"))
@@ -863,17 +864,6 @@ Of course, the great magit.
      "C-M-t" 'scroll-other-window
      "C-M-n" 'scroll-other-window-down)
 
-    ;; (:keymaps 'org-mode-map
-    ;;  "H" 'org-shiftleft
-    ;;  "T" 'org-shiftdown
-    ;;  "N" 'org-shiftup
-    ;;  "S" 'org-shiftright
-    ;;  "C-h" 'org-shiftleft
-    ;;  "C-t" 'org-shiftdown
-    ;;  "C-n" 'org-shiftup
-    ;;  "C-s" 'org-shiftright
-    ;;  )
-
     :init
     (let* ((variable-tuple (cond ((x-list-fonts "DejaVu Sans") '(:font "DejaVu Sans"))
                                  ((x-list-fonts "DejaVu Serif") '(:font "DejaVu Serif"))
@@ -900,16 +890,6 @@ Of course, the great magit.
                               `(org-indent ((t (:inherit (org-hide fixed-pitch)))))
                               `(org-code ((t (:inherit fixed-pitch))))
                               `(org-table ((t (:inherit fixed-pitch))))
-                              ;; `(org-link ((t (:inherit default :foreground "#f4e8ba"))))
-                              ;; `(org-link ((t (:inherit default))))
-                              ;; `(org-level-8 ((t (,@headline ,@variable-tuple :slant italic))))
-                              ;; `(org-level-7 ((t (,@headline ,@variable-tuple :slant italic))))
-                              ;; `(org-level-6 ((t (,@headline ,@variable-tuple :slant italic))))
-                              ;; `(org-level-5 ((t (,@headline ,@variable-tuple :slant italic))))
-                              ;; `(org-level-4 ((t (,@headline ,@variable-tuple :slant italic))))
-                              ;; `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1 :slant italic))))
-                              ;; `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.1 :slant italic))))
-                              ;; `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.2 :slant italic))))
                               `(org-todo ((t (,@headline ,@variable-tuple :background "#ddbb00"))))
                               `(org-inprogress ((t (,@headline ,@variable-tuple :foreground "white" :background "ForestGreen"))))
                               `(org-done ((t (,@done ,@variable-tuple :strike-through t))))
