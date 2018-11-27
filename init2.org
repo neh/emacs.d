@@ -208,102 +208,10 @@ And then make [[https://github.com/jwiegley/use-package][use-package]] use strai
         )
 #+end_src
 
-* Base2
+Set up ESUP for startup profiling. In theory. [[https://github.com/jschaf/esup/issues/54][It breaks.]]
 #+begin_src emacs-lisp
-  (use-package saveplace
-    :config
-    (save-place-mode t))
-
-  (use-package visual-fill-column)
-
-  (defun comment-auto-fill ()
-    "Comment/fill settings to use in 'prog-mode'."
-    (setq-local comment-auto-fill-only-comments t)
-    (auto-fill-mode nil))
-
-  (use-package undo-tree
-    :config
-    (global-undo-tree-mode t))
-
-  (use-package paren
-    :init
-    (setq show-paren-delay 0
-          show-paren-style 'parenthesis)
-    :config
-    (show-paren-mode 1))
-
-  (use-package whitespace
-    :init
-    (setq whitespace-line-column 80
-          whitespace-style '(face trailing tabs lines-tail))
-    :config
-    (whitespace-mode))
-#+end_src
-* Text mode
-#+begin_src emacs-lisp
-  (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
-#+end_src
-
-I’ll put olivetti mode here since I think it’s mainly a text mode thing rather than for programming, but who knows.
-#+begin_src emacs-lisp
-  (use-package olivetti
-    :commands (olivetti-mode)
-    :config
-    (setq-default olivetti-body-width 100))
-#+end_src
-
-* Prog mode
-#+begin_src emacs-lisp
-  (defun my-prog-mode-hook ()
-    "Set line-numbers settings for 'prog-mode'."
-    ;; (setq display-line-numbers 'relative)
-    (diff-hl-mode)
-    ;; (diff-hl-flydiff-mode)
-    (git-gutter-mode)
-    (visual-fill-column-mode))
-  (add-hook 'prog-mode-hook #'my-prog-mode-hook)
-  (add-hook 'yaml-mode-hook #'my-prog-mode-hook)
-#+end_src
-* Pretty it up
-I’ve been liking dark-on-light themes lately, and brutalist with some tweaks has been good.
-#+begin_src emacs-lisp
-  (use-package brutalist-theme)
-  (load-theme 'brutalist t)
-#+end_src
-
-But I like some things to be set no matter the theme. There’s probably a hook or something for this.
-
-I like italic comments.
-#+begin_src emacs-lisp
-  (set-face-italic 'font-lock-comment-face t)
-#+end_src
-And the smaller brutalist modeline height is not for me.
-#+begin_src emacs-lisp
-  (set-face-attribute 'mode-line nil :height 1.0)
-  (set-face-attribute 'mode-line-inactive nil :height 1.0)
-#+end_src
-
-* Modeline
-Trying out doom-modeline.
-#+begin_src emacs-lisp
-  (use-package doom-modeline
-    :demand t
-    :hook (after-init . doom-modeline-init)
-
-    :config
-    (setq-default doom-modeline-column-zero-based nil)
-    (setq doom-modeline-height 20
-          doom-modeline-bar-width 3
-          column-number-indicator-zero-based nil)
-    (column-number-mode)
-    (set-face-attribute 'doom-modeline-evil-emacs-state nil :background "DarkMagenta" :foreground "#ffffff")
-    (set-face-attribute 'doom-modeline-evil-insert-state nil :background "#ffd700" :foreground "#000000")
-    (set-face-attribute 'doom-modeline-evil-motion-state nil :background "SteelBlue" :foreground "#ffffff")
-    (set-face-attribute 'doom-modeline-evil-normal-state nil :background "ForestGreen" :foreground "#ffffff")
-    (set-face-attribute 'doom-modeline-evil-operator-state nil :background "SteelBlue" :foreground "#ffffff")
-    (set-face-attribute 'doom-modeline-evil-visual-state nil :background "#fe8019" :foreground "#000000")
-    (set-face-attribute 'doom-modeline-evil-replace-state nil :background "red4" :foreground "#ffffff")
-    (doom-modeline-init))
+  (use-package esup
+    :disabled t)
 #+end_src
 
 * Keybindings
@@ -342,7 +250,6 @@ Trying out doom-modeline.
 
       "f" '(:ignore t :which-key "formatting")
       "fa" '(auto-fill-mode :which-key "auto fill")
-      "fc" '(visual-fill-column-mode :which-key "visual fill column")
       "fi" '(indent-region :which-key "indent region")
       "fp" '(fill-paragraph :which-key "paragraph")
       "fr" '(fill-region :which-key "fill region")
@@ -352,6 +259,7 @@ Trying out doom-modeline.
       "g" '(:ignore t :which-key "git")
 
       "h" '(:ignore t :which-key "help")
+      "hk" '(describe-key :which-key "key")
 
       "hl" '(highlight-lines-matching-regexp :which-key "highlight line")
       "hr" '(highlight-regexp :which-key "highlight regexp")
@@ -413,6 +321,105 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
     (key-chord-mode 1))
 #+end_src
 
+* Base2
+#+begin_src emacs-lisp
+  (use-package saveplace
+    :demand t
+    :config
+    (save-place-mode t))
+
+  (use-package visual-fill-column
+    :commands visual-fill-column-mode
+    :general
+    (neh/leader-keys
+      "fc" '(visual-fill-column-mode :which-key "visual fill column")))
+
+  (use-package undo-tree
+    ;; not sure I've ever used this
+    :disabled
+    :config
+    (global-undo-tree-mode t))
+
+  (use-package paren
+    :init
+    (setq show-paren-delay 0
+          show-paren-style 'parenthesis)
+    :config
+    (show-paren-mode 1))
+
+  (use-package whitespace
+    :commands (whitespace-mode)
+    :init
+    (setq whitespace-line-column 80
+          whitespace-style '(face trailing tabs lines-tail)))
+#+end_src
+* Text mode
+#+begin_src emacs-lisp
+  (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+#+end_src
+
+I’ll put olivetti mode here since I think it’s mainly a text mode thing rather than for programming, but who knows.
+#+begin_src emacs-lisp
+  (use-package olivetti
+    :commands (olivetti-mode)
+    :config
+    (setq-default olivetti-body-width 100))
+#+end_src
+
+* Prog mode
+#+begin_src emacs-lisp
+  (defun my-prog-mode-hook ()
+    "Set line-numbers settings for 'prog-mode'."
+    ;; (setq display-line-numbers 'relative)
+    (diff-hl-mode)
+    ;; (diff-hl-flydiff-mode)
+    (git-gutter-mode)
+    (visual-fill-column-mode))
+  (add-hook 'prog-mode-hook #'my-prog-mode-hook)
+  (add-hook 'yaml-mode-hook #'my-prog-mode-hook)
+#+end_src
+* Pretty it up
+I’ve been liking dark-on-light themes lately, and brutalist with some tweaks has been good.
+#+begin_src emacs-lisp
+  (use-package brutalist-theme)
+  (load-theme 'brutalist t)
+#+end_src
+
+But I like some things to be set no matter the theme. There’s probably a hook or something for this.
+
+I like italic comments.
+#+begin_src emacs-lisp
+  (set-face-italic 'font-lock-comment-face t)
+#+end_src
+And the smaller brutalist modeline height is not for me.
+#+begin_src emacs-lisp
+  (set-face-attribute 'mode-line nil :height 1.0)
+  (set-face-attribute 'mode-line-inactive nil :height 1.0)
+#+end_src
+
+* Modeline
+Trying out doom-modeline.
+
+I don’t understand why I have to use =:demand= here. My understanding is that the =:hook= should take care of it. I have general troubles with the =after-init= hook (like with =company-mode=), so maybe it’s something there.
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :demand t
+    :hook (after-init . doom-modeline-init)
+
+    :config
+    (setq-default doom-modeline-column-zero-based nil)
+    (setq doom-modeline-height 20
+          doom-modeline-bar-width 1)
+    (column-number-mode t)
+    (set-face-attribute 'doom-modeline-evil-emacs-state nil :background "DarkMagenta" :foreground "#ffffff")
+    (set-face-attribute 'doom-modeline-evil-insert-state nil :background "#ffd700" :foreground "#000000")
+    (set-face-attribute 'doom-modeline-evil-motion-state nil :background "SteelBlue" :foreground "#ffffff")
+    (set-face-attribute 'doom-modeline-evil-normal-state nil :background "ForestGreen" :foreground "#ffffff")
+    (set-face-attribute 'doom-modeline-evil-operator-state nil :background "SteelBlue" :foreground "#ffffff")
+    (set-face-attribute 'doom-modeline-evil-visual-state nil :background "#fe8019" :foreground "#000000")
+    (set-face-attribute 'doom-modeline-evil-replace-state nil :background "red4" :foreground "#ffffff"))
+#+end_src
+
 * Eeeeevil
 I come from vim, so evil is a necessity.
 #+begin_src emacs-lisp
@@ -425,6 +432,13 @@ I come from vim, so evil is a necessity.
           evil-vsplit-window-right t)
 
     :general
+    (:keymaps 'normal
+     "C-h" nil
+     "C-t" nil
+     "C-n" nil
+     "C-s" nil
+     "C-e" nil)
+
     (general-define-key
      "C-h" 'evil-window-left
      "C-t" 'evil-window-down
@@ -449,12 +463,6 @@ I come from vim, so evil is a necessity.
 
     (evil-set-initial-state 'ivy-occur-mode 'emacs)
 
-    (unbind-key "C-h" evil-normal-state-map)
-    (unbind-key "C-t" evil-normal-state-map)
-    (unbind-key "C-n" evil-normal-state-map)
-    (unbind-key "C-s" evil-normal-state-map)
-    (unbind-key "C-e" evil-motion-state-map)
-
     (setq evil-normal-state-tag   (propertize " N ")
           evil-emacs-state-tag    (propertize " E ")
           evil-insert-state-tag   (propertize " I ")
@@ -471,9 +479,16 @@ I come from vim, so evil is a necessity.
 
     (use-package evil-surround
       :config
-      (global-evil-surround-mode))
+      (global-evil-surround-mode t))
+
+    (defun neh/evil-key-translations (_mode mode-keymaps &rest _rest)
+      (evil-collection-translate-key 'normal mode-keymaps
+        "t" "j"
+        "n" "k"
+        ))
 
     (use-package evil-collection
+      :hook (evil-collection-setup-hook #'neh/evil-key-translations)
       :config
       (evil-collection-init))
 
@@ -490,88 +505,96 @@ I come from vim, so evil is a necessity.
 
 * Navigation?
 #+begin_src emacs-lisp
-    (use-package ivy
-      :init
-      (defun reloading (cmd)
-        (lambda (x)
-          (funcall cmd x)
-          (ivy--reset-state ivy-last)))
+  (use-package ivy
+    :init
+    (defun reloading (cmd)
+      (lambda (x)
+        (funcall cmd x)
+        (ivy--reset-state ivy-last)))
 
-      (defun given-file (cmd prompt) ; needs lexical-binding
-        (lambda (source)
-          (let ((target
-                 (let ((enable-recursive-minibuffers t))
-                   (read-file-name
-                    (format "%s %s to:" prompt source)))))
-            (funcall cmd source target 1))))
+    (defun given-file (cmd prompt) ; needs lexical-binding
+      (lambda (source)
+        (let ((target
+               (let ((enable-recursive-minibuffers t))
+                 (read-file-name
+                  (format "%s %s to:" prompt source)))))
+          (funcall cmd source target 1))))
 
-      (defun confirm-delete-file (x)
-        (dired-delete-file x 'confirm-each-subdirectory))
+    (defun confirm-delete-file (x)
+      (dired-delete-file x 'confirm-each-subdirectory))
 
-      (defun neh-open-file-in-vsplit (f)
-        (evil-window-vsplit 80 f)
-        (balance-windows))
+    (defun neh-open-file-in-vsplit (f)
+      (evil-window-vsplit 80 f)
+      (balance-windows))
 
-      :general
-      (neh/leader-keys
-        "oo" '(ivy-switch-buffer :which-key "switch buffer")
-        "xa" '(ivy-resume :which-key "ivy resume"))
+    :general
+    (neh/leader-keys
+      "oo" '(ivy-switch-buffer :which-key "switch buffer")
+      "xa" '(ivy-resume :which-key "ivy resume"))
 
-      (general-define-key
-       :keymaps 'ivy-minibuffer-map
-       "<escape>" 'keyboard-escape-quit
-       "C-t" 'ivy-next-line
-       "C-n" 'ivy-previous-line
-       "C-M-t" 'ivy-next-line-and-call
-       "C-M-n" 'ivy-previous-line-and-call
-       "C-b" 'ivy-scroll-down-command
-       "C-f" 'ivy-scroll-up-command
-       "C-d" 'ivy-call)
+    (general-define-key
+     :keymaps 'ivy-minibuffer-map
+     "<escape>" 'keyboard-escape-quit
+     "C-t" 'ivy-next-line
+     "C-n" 'ivy-previous-line
+     "C-M-t" 'ivy-next-line-and-call
+     "C-M-n" 'ivy-previous-line-and-call
+     "C-b" 'ivy-scroll-down-command
+     "C-f" 'ivy-scroll-up-command
+     "C-d" 'ivy-call)
 
-      (general-define-key
-       :keymaps 'counsel-find-file-map
-       "TAB" 'ivy-alt-done
-       "C-s" 'neh-open-file-in-vsplit)
+    (general-define-key
+     :keymaps 'counsel-find-file-map
+     "TAB" 'ivy-alt-done
+     "C-s" 'neh-open-file-in-vsplit)
 
-      (general-define-key
-       :keymaps 'ivy-occur-mode-map
-       "t" 'ivy-occur-next-line
-       "n" 'ivy-occur-previous-line
-       "RET" 'ivy-occur-press
-       "a" 'ivy-occur-read-action
-       "c" 'ivy-occur-toggle-calling
-       "C-f" 'evil-scroll-page-down
-       "C-b" 'evil-scroll-page-up)
+    (general-define-key
+     :keymaps 'ivy-occur-mode-map
+     "t" 'ivy-occur-next-line
+     "n" 'ivy-occur-previous-line
+     "RET" 'ivy-occur-press
+     "a" 'ivy-occur-read-action
+     "c" 'ivy-occur-toggle-calling
+     "C-f" 'evil-scroll-page-down
+     "C-b" 'evil-scroll-page-up)
 
-      :config
-      (ivy-mode 1)
-      (setq ivy-use-virtual-buffers t
-            ivy-count-format "%d/%d "
-            ivy-format-function #'ivy-format-function-arrow
-            ivy-extra-directories nil
-            ivy-height 15
-            ivy-use-selectable-prompt t
-            ivy-re-builders-alist
-            '((t . ivy--regex-fuzzy))
-            ivy-initial-inputs-alist nil)
+    :config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t
+          ivy-count-format "%d/%d "
+          ivy-format-function #'ivy-format-function-arrow
+          ivy-extra-directories nil
+          ivy-height 15
+          ivy-use-selectable-prompt t
+          ivy-re-builders-alist
+          '((t . ivy--regex-fuzzy))
+          ivy-initial-inputs-alist nil))
 
-      (use-package amx
-        :config
-        (amx-mode)))
+  (use-package amx
+    :disabled t
+    :config
+    (amx-mode))
 
-  (use-package flx)
+  (use-package flx
+    :disabled t)
 
   (use-package prescient
+    :demand t
+    :commands prescient-persist-mode
     :config
-    (prescient-persist-mode))
+    (prescient-persist-mode t))
 
   (use-package ivy-prescient
     :after (prescient ivy)
+    :demand t
+    :hook (after-init . ivy-prescient-mode)
+    :commands ivy-prescient-mode
     :config
-    (ivy-prescient-mode))
+    (ivy-prescient-mode t))
 
   (use-package company-prescient
     :after (prescient company)
+    :commands company-prescient-mode
     :config
     (company-prescient-mode))
 
@@ -658,8 +681,10 @@ I come from vim, so evil is a necessity.
 #+end_src
 
 * Company
+Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company. What. The =prog-mode= hook works though. Or just load it in =:config=.
 #+begin_src emacs-lisp
   (use-package company
+    ;; :demand t
     :bind (:map company-active-map
            ("M-n" . nil)
            ("M-p" . nil)
@@ -669,27 +694,31 @@ I come from vim, so evil is a necessity.
            ("<tab>" . #'company-complete)
            ("RET" . #'company-complete-selection))
 
+    ;; :hook (prog-mode . global-company-mode))
+    ;; :hook (after-init . global-company-mode))
+    ;; :init
+    ;; (add-hook 'after-init-hook 'global-company-mode))
     :config
-    (add-hook 'after-init-hook 'global-company-mode))
+    (global-company-mode t))
 
-  (use-package company-statistics
-    :disabled t
-    :init
-    (add-hook 'company-mode-hook #'company-statistics-mode))
+    (use-package company-statistics
+      :disabled t
+      :init
+      (add-hook 'company-mode-hook #'company-statistics-mode))
 
-  (use-package company-terraform
-    :config
-    (company-terraform-init))
+    (use-package company-terraform
+      :config
+      (company-terraform-init))
 
-  (use-package company-box
-    :after company
-    :hook (company-mode . company-box-mode)
-    :config
-    (setq company-box-enable-icon nil)
-    (add-to-list 'company-box-frame-parameters
-                 '(font . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
-    (add-to-list 'company-box-frame-parameters
-                 '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1")))
+    (use-package company-box
+      :after company
+      :hook (company-mode . company-box-mode)
+      :config
+      (setq company-box-enable-icon nil)
+      (add-to-list 'company-box-frame-parameters
+                   '(font . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
+      (add-to-list 'company-box-frame-parameters
+                   '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1")))
 #+end_src
 
 * Git
@@ -796,6 +825,10 @@ Of course, the great magit.
 * Org
 #+begin_src emacs-lisp
   (use-package org
+    :hook
+    (org-mode . (lambda () (add-hook 'after-save-hook 'org-babel-tangle
+                                     'run-at-end 'only-in-org-mode)))
+
     :general
     (neh/leader-keys
       "nb" '(org-narrow-to-block :which-key "narrow to block")
@@ -956,18 +989,15 @@ Of course, the great magit.
 Make org-mode prettier.
 #+begin_src emacs-lisp
   (use-package org-bullets
-    :after org
-    :config
-    ;; (setq org-bullets-bullet-list '("•"))
+    :init
     (setq org-bullets-bullet-list '(" "))
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+    :hook (org-mode . org-bullets-mode))
 #+end_src
 
 * Dired
 #+begin_src emacs-lisp
   (use-package dired
     :straight nil
-    :demand t
     :general
     (general-define-key
      :states 'normal
@@ -976,29 +1006,24 @@ Make org-mode prettier.
     (general-define-key
      :states 'normal
      :keymaps 'dired-mode-map
-     "U" '(dired-jump :which-key "go to parent directory"))
-
-    ;;   :config
-    ;;   (general-translate-key nil 'dired-mode-map
-    ;;     "t" "j"
-    ;;     "n" "k")
-    )
+     "U" '(dired-jump :which-key "go to parent directory")))
 
   (use-package dired-sidebar
     :general
     (neh/leader-keys
       "ot" 'dired-sidebar-toggle-sidebar)
 
-    :config
+    :init
     (setq dired-sidebar-theme 'nerd)
     (add-hook 'dired-load-hook
               (function (lambda () (load "dired-x")))))
 
   (use-package dired-k
+    :disabled t
     :after dired
-    :config
-    (add-hook 'dired-initial-position-hook 'dired-k)
-    (add-hook 'dired-after-readin-hook #'dired-k-no-revert))
+    :hook
+    (dired-initial-position-hook . dired-k)
+    (dired-after-readin-hook . dired-k-no-revert))
 #+end_src
 
 * Imenu
@@ -1008,7 +1033,7 @@ Make org-mode prettier.
     (neh/leader-keys
       "os" '(imenu-list-smart-toggle :which-key "code structure"))
 
-    :config
+    :init
     (setq imenu-list-focus-after-activation t))
 
   (use-package imenu-anywhere
@@ -1127,6 +1152,36 @@ Make org-mode prettier.
     ("c" evil-window-delete)
 
     ("q" nil))
+
+  ;; from https://github.com/abo-abo/hydra/wiki/straight.el
+  (defhydra hydra-straight-helper (:hint nil)
+    "
+  _c_heck all       |_f_etch all     |_m_erge all      |_n_ormalize all   |p_u_sh all
+  _C_heck package   |_F_etch package |_M_erge package  |_N_ormlize package|p_U_sh package
+  ----------------^^+--------------^^+---------------^^+----------------^^+------------||_q_uit||
+  _r_ebuild all     |_p_ull all      |_v_ersions freeze|_w_atcher start   |_g_et recipe
+  _R_ebuild package |_P_ull package  |_V_ersions thaw  |_W_atcher quit    |prun_e_ build"
+    ("c" straight-check-all)
+    ("C" straight-check-package)
+    ("r" straight-rebuild-all)
+    ("R" straight-rebuild-package)
+    ("f" straight-fetch-all)
+    ("F" straight-fetch-package)
+    ("p" straight-pull-all)
+    ("P" straight-pull-package)
+    ("m" straight-merge-all)
+    ("M" straight-merge-package)
+    ("n" straight-normalize-all)
+    ("N" straight-normalize-package)
+    ("u" straight-push-all)
+    ("U" straight-push-package)
+    ("v" straight-freeze-versions)
+    ("V" straight-thaw-versions)
+    ("w" straight-watcher-start)
+    ("W" straight-watcher-quit)
+    ("g" straight-get-recipe)
+    ("e" straight-prune-build)
+    ("q" nil))
 #+end_src
 
 * Misc packages
@@ -1135,6 +1190,7 @@ Make org-mode prettier.
     :general
     (neh/leader-keys
       "vd" '(rainbow-delimiters-mode :which-key "delimiters"))
+
     :config
     (set-face-attribute 'rainbow-delimiters-unmatched-face nil :height 1.0 :inherit 'error)
     (set-face-attribute 'rainbow-delimiters-depth-1-face nil :height 1.0)
@@ -1147,21 +1203,19 @@ Make org-mode prettier.
     (set-face-attribute 'rainbow-delimiters-depth-8-face nil :height 1.7)
     (set-face-attribute 'rainbow-delimiters-depth-9-face nil :height 1.8))
 
-  (use-package wgrep)
+  (use-package wgrep
+    :commands ivy-wgrep-change-to-wgrep-mode)
 
   (use-package elec-pair
     :ensure nil
-    :commands electric-pair-mode
     :hook (prog-mode . electric-pair-mode))
 
   (use-package executable
     :ensure nil
-    :commands executable-make-buffer-file-executable-if-script-p
     :hook (after-save . executable-make-buffer-file-executable-if-script-p))
 
   (use-package flycheck
-    :config
-    (add-hook 'after-init-hook 'global-flycheck-mode))
+    :hook (prog-mode . flycheck-mode))
 
   (use-package flycheck-posframe
     :after flycheck
@@ -1179,6 +1233,7 @@ Make org-mode prettier.
       "vc" '(rainbow-mode :which-key "colours")))
 
   (use-package hl-line+
+    :disabled
     :config
     (setq hl-line-inhibit-highlighting-for-modes '(org-mode))
     (toggle-hl-line-when-idle -1))
@@ -1193,10 +1248,10 @@ Make org-mode prettier.
       "hM" '(symbol-overlay-mode :which-key "symbol overlay mode")))
 
   (use-package aggressive-indent
-    :config
-    (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
+    :hook (emacs-lisp-mode . aggressive-indent-mode))
 
   (use-package direnv
+    :demand t
     :config
     (setq direnv-always-show-summary nil)
     (direnv-mode))
@@ -1207,8 +1262,7 @@ Make org-mode prettier.
 
   (use-package yaml-mode
     :gfhook #'my-evil-indent-setup
-    :config
-    (add-to-list 'auto-mode-alist '(".*\\(host\\|group\\)_vars.*" . yaml-mode)))
+    :mode ("\\(host\\|group\\)_vars.*" . yaml-mode))
 
   (use-package json-mode
     :mode (("\\.json\\'" . json-mode)))
@@ -1220,7 +1274,8 @@ Make org-mode prettier.
      "v" 'er/expand-region
      "V" 'er/contract-region))
 
-  (use-package markdown-mode)
+  (use-package markdown-mode
+    :mode ("\\.md'" . markdown-mode))
 
   (use-package lua-mode
     :mode ("\\.lua\\'" . lua-mode))
@@ -1240,19 +1295,19 @@ Make org-mode prettier.
   (use-package rust-mode
     :mode ("\\.rs\\'" . rust-mode))
 
-  (use-package hcl-mode)
+  (use-package hcl-mode
+    :commands terraform-mode)
 
   (use-package terraform-mode
-    :config
-    (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
+    :after hcl-mode
+    :mode ("\\.tf|tfvars\\'" . terraform-mode)
+    :hook (terraform-mode . terraform-format-on-save-mode))
 
   (use-package groovy-mode
-    :config
-    (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . groovy-mode)))
+    :mode ("Jenkinsfile\\'" . groovy-mode))
 
   (use-package dockerfile-mode
-    :config
-    (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+    :mode ("Dockerfile\\'" . dockerfile-mode))
 
   (use-package go-mode
     :mode "\\.go\\'")
@@ -1267,13 +1322,6 @@ Make org-mode prettier.
   (use-package elf-mode
     :commands elf-mode
     :magic ("ELF" . elf-mode))
-
-
-  (setq keymaps-with-jk-keybindings '(dired-mode-map))
-  (dolist (keymap keymaps-with-jk-keybindings)
-    (general-translate-key 'normal keymap
-      "t" "j"
-      "n" "k"))
 #+end_src
 
 * Misc functions
