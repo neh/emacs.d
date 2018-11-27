@@ -166,7 +166,7 @@ I’m testing out [[https://github.com/swaywm/sway][sway]] as my window manager,
 
 Some text fill options.
 #+begin_src emacs-lisp
-  (setq-default fill-column 110)
+  (setq-default fill-column 100)
   (setq comment-auto-fill-only-comments t)
 #+end_src
 
@@ -1197,8 +1197,8 @@ Make org-mode prettier.
     ;; (golden-ratio-mode 1)
     )
 
-  ;; The auto-decrypt-encrypt hook complains about the password-file var not being set, even though the manual
-  ;; encrypt/decrypt functions work just fine.
+  ;; The auto-decrypt-encrypt hook complains about the password-file var not being set, even though
+  ;; the manual encrypt/decrypt functions work just fine.
   (use-package ansible
     :commands (ansible ansible::auto-decrypt-encrypt)
     :hook ((yaml-mode . ansible)
