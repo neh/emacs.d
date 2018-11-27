@@ -593,6 +593,8 @@ I come from vim, so evil is a necessity.
     (ivy-prescient-mode t))
 
   (use-package company-prescient
+    ;; I can't actually work out how to use this during company completion
+    :disabled t
     :after (prescient company)
     :commands company-prescient-mode
     :config
@@ -701,24 +703,35 @@ Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company.
     :config
     (global-company-mode t))
 
-    (use-package company-statistics
-      :disabled t
-      :init
-      (add-hook 'company-mode-hook #'company-statistics-mode))
+  (use-package company-statistics
+    :disabled t
+    :init
+    (add-hook 'company-mode-hook #'company-statistics-mode))
 
-    (use-package company-terraform
-      :config
-      (company-terraform-init))
+  (use-package company-terraform
+    :config
+    (company-terraform-init))
 
-    (use-package company-box
-      :after company
-      :hook (company-mode . company-box-mode)
-      :config
-      (setq company-box-enable-icon nil)
-      (add-to-list 'company-box-frame-parameters
-                   '(font . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
-      (add-to-list 'company-box-frame-parameters
-                   '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1")))
+  (use-package company-box
+    :after company
+    :disabled t
+    :hook (company-mode . company-box-mode)
+    :config
+    (setq company-box-enable-icon nil)
+    (add-to-list 'company-box-frame-parameters
+                 '(font . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
+    (add-to-list 'company-box-frame-parameters
+                 '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1")))
+
+  (use-package company-quickhelp
+    :hook (company-mode . company-quickhelp-mode)
+    :general
+    (:keymaps 'company-active-map
+     "C-m" #'company-quickhelp-manual-begin))
+
+  (use-package company-ansible
+    :config
+    (add-to-list 'company-backends 'company-ansible))
 #+end_src
 
 * Git
