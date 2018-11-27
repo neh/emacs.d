@@ -850,9 +850,11 @@ Of course, the great magit.
 * Org
 #+begin_src emacs-lisp
   (use-package org
-    :hook
-    (org-mode . (lambda () (add-hook 'after-save-hook 'org-babel-tangle
-                                     'run-at-end 'only-in-org-mode)))
+    :hook ((org-mode . (lambda () (add-hook 'after-save-hook 'org-babel-tangle
+                                            'run-at-end 'only-in-org-mode)))
+           (org-mode . org-indent-mode)
+           (org-mode . visual-fill-column-mode)
+           (org-mode . set-buffer-variable-pitch))
 
     :general
     (neh/leader-keys
@@ -945,12 +947,6 @@ Of course, the great magit.
 
     (set-face-attribute 'org-ellipsis '(:underline nil :weight normal))
 
-    (add-hook 'org-mode-hook 'org-indent-mode)
-    ;; (add-hook 'org-mode-hook 'visual-fill-column-mode)
-    (add-hook 'org-mode-hook 'set-buffer-variable-pitch)
-    ;; (add-hook 'org-mode-hook (lambda ()
-    ;;                            (setq-local global-hl-line-mode
-    ;;                                        nil)))
     (font-lock-add-keywords 'org-mode
                             '(("^ *\\([-]\\) "
                                (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
