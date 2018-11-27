@@ -951,6 +951,9 @@ Of course, the great magit.
     ;; (add-hook 'org-mode-hook (lambda ()
     ;;                            (setq-local global-hl-line-mode
     ;;                                        nil)))
+    (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
     (setq org-confirm-babel-evaluate nil)
     (org-babel-do-load-languages
