@@ -19,7 +19,7 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 
 This is a handy command I’ve been using to test as I move to a literate config. =C-c C-c= will launch a new emacs, using the tangled version of this config.
 #+begin_src shell :tangle no :results silent
-  emacs -Q -l profile-dotemacs.el --eval "(setq profile-dotemacs-file (setq load-file-name \"/home/nathan/.emacs.d/init2.el\"))" -f profile-dotemacs
+  emacs -Q -l profile-dotemacs.el --eval "(setq profile-dotemacs-file (setq load-file-name \"/home/nathan/.emacs.d/init.el\"))" -f profile-dotemacs
 #+end_src
 
 * Performance optimization
