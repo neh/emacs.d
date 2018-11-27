@@ -386,8 +386,6 @@ I’ll put olivetti mode here since I think it’s mainly a text mode thing rath
   (defun my-prog-mode-hook ()
     "Set line-numbers settings for 'prog-mode'."
     ;; (setq display-line-numbers 'relative)
-    (diff-hl-mode)
-    ;; (diff-hl-flydiff-mode)
     (git-gutter-mode)
     (visual-fill-column-mode))
   (add-hook 'prog-mode-hook #'my-prog-mode-hook)
@@ -748,12 +746,12 @@ Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company.
 #+end_src
 
 * Git
-I find that diff-hl does a better job of showing diff information than git-gutter does.
+I find that diff-hl does a better job of showing diff information than git-gutter does. I’d like to use =diff-hl-flydiff-mode=, but it caused issues, which I can’t remember well enough to document now. Will revisit later.
 #+begin_src emacs-lisp
   (use-package diff-hl
-    :hook (magit-post-refresh . diff-hl-magit-post-refresh)
+    :hook ((after-init . global-diff-hl-mode)
+           (magit-post-refresh . diff-hl-magit-post-refresh))
     :config
-    ;; (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
     (set-face-attribute 'diff-hl-change nil :foreground "medium blue" :background "DodgerBlue1")
     (set-face-attribute 'diff-hl-insert nil :foreground "dark green" :background "ForestGreen")
     (set-face-attribute 'diff-hl-delete nil :foreground "dark red" :background "red4"))
@@ -766,7 +764,7 @@ Ending up at the bottom of the window and not being able see enought context whe
     (evil-scroll-line-to-center (line-number-at-pos)))
 #+end_src
 
-Diff-hl may be better at /showing/ diff info, but git-gutter is better at doing things with diffs. So I have it active for navigation and staging actions.
+Diff-hl may be better at /showing/ diff info, but git-gutter is better at doing things with diffs. So I have it active for navigation and staging actions. It’s disabled in org mode because I had issues with it before. Now that my config is in org though, it would be handy to have back. Another TODO.
 #+begin_src emacs-lisp
   (use-package git-gutter
     :general
