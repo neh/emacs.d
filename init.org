@@ -1192,6 +1192,15 @@ Make org-mode prettier.
     ;; (golden-ratio-mode 1)
     )
 
+  ;; The auto-decrypt-encrypt hook complains about the password-file var not being set, even though the manual
+  ;; encrypt/decrypt functions work just fine.
+  (use-package ansible
+    :commands (ansible ansible::auto-decrypt-encrypt)
+    :hook ((yaml-mode . ansible)
+           (ansible . ansible::auto-decrypt-encrypt))
+    :init
+    (setq ansible::vault-password-file "~/freshgrade/vaultpass"))
+
   (use-package rainbow-delimiters
     :general
     (neh/leader-keys
@@ -1268,7 +1277,9 @@ Make org-mode prettier.
 
   (use-package yaml-mode
     :gfhook #'my-evil-indent-setup
-    :mode ("\\(host\\|group\\)_vars.*" . yaml-mode))
+    :commands yaml-mode
+    :mode (("\\(host\\|group\\)_vars.*" . yaml-mode)
+           ("\\.yml|yaml\\'" . yaml-mode)))
 
   (use-package json-mode
     :mode (("\\.json\\'" . json-mode)))
