@@ -265,7 +265,6 @@ Set up ESUP for startup profiling. In theory. [[https://github.com/jschaf/esup/i
       "g" '(:ignore t :which-key "git")
 
       "h" '(:ignore t :which-key "help")
-      "hk" '(describe-key :which-key "key")
 
       "hl" '(highlight-lines-matching-regexp :which-key "highlight line")
       "hr" '(highlight-regexp :which-key "highlight regexp")
@@ -358,6 +357,16 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
     :init
     (setq whitespace-line-column 80
           whitespace-style '(face trailing tabs lines-tail)))
+
+  (use-package helpful
+    :init
+    (setq helpful-max-buffers 1)
+    :general
+    (neh/leader-keys
+      "h." '(helpful-at-point :which-key "point help")
+      "hf" '(helpful-callable :which-key "function help")
+      "hk" '(helpful-key :which-key "key help")
+      "hv" '(helpful-variable :which-key "variable help")))
 #+end_src
 * Text mode
 #+begin_src emacs-lisp
@@ -612,8 +621,6 @@ I come from vim, so evil is a necessity.
       "e" '(counsel-M-x :which-key "M-x")
 
       "ha" '(counsel-apropos :which-key "apropos")
-      "hf" '(counsel-describe-function :which-key "describe function")
-      "hv" '(counsel-describe-variable :which-key "describe variable")
 
       "oa" '(counsel-linux-app :which-key "app")
       "of" '(counsel-find-file :which-key "open file")
