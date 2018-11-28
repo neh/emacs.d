@@ -101,8 +101,8 @@ Set my preferred font and size, taking display DPI into account.
     (let ((mydpi (/ (display-pixel-width) (/ (display-mm-width) 25.4)))
           (myfont "Iosevka"))
       (if (> mydpi 160)
-          (set-frame-font (format "%s-10" myfont))
-        (set-frame-font (format "%s-10" myfont)))))
+          (set-frame-font (format "%s-10" myfont t t))
+        (set-frame-font (format "%s-10" myfont t t)))))
 
   (neh/set-frame-options nil)
   (add-hook 'after-make-frame-functions #'neh/set-frame-options)
