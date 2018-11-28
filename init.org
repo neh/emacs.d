@@ -164,6 +164,11 @@ I’m testing out [[https://github.com/swaywm/sway][sway]] as my window manager,
     (setenv "SSH_AUTH_SOCK" (format "/tmp/ssh-agent-%s-tmux" (getenv "USER"))))
 #+end_src
 
+Make sure my local bin dir is in emacs =$PATH=.
+#+begin_src emacs-lisp
+  (setq exec-path (append exec-path '("~/bin")))
+#+end_src
+
 Some text fill options.
 #+begin_src emacs-lisp
   (setq-default fill-column 100)
