@@ -894,6 +894,7 @@ Of course, the great magit.
      "C-M-n" 'scroll-other-window-down)
 
     (:keymaps 'org-mode-map
+     :states '(normal)
      "H" 'org-shiftleft
      "T" 'org-shiftdown
      "N" 'org-shiftup
