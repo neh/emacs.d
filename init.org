@@ -765,8 +765,9 @@ Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company.
 I find that diff-hl does a better job of showing diff information than git-gutter does. I’d like to use =diff-hl-flydiff-mode=, but it caused issues, which I can’t remember well enough to document now. Will revisit later.
 #+begin_src emacs-lisp
   (use-package diff-hl
-    :hook ((after-init . global-diff-hl-mode)
-           (magit-post-refresh . diff-hl-magit-post-refresh))
+    :hook ((after-init . global-diff-hl-mode))
+    :init
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
     :config
     (set-face-attribute 'diff-hl-change nil :foreground "medium blue" :background "DodgerBlue1")
     (set-face-attribute 'diff-hl-insert nil :foreground "dark green" :background "ForestGreen")
