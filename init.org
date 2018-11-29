@@ -375,7 +375,18 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 #+end_src
 * Text mode
 #+begin_src emacs-lisp
-  (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+  (use-package visual-line-mode
+    :straight nil
+    :commands (visual-line-mode)
+    :hook (text-mode . visual-line-mode))
+
+  (use-package visual-fill-column-mode
+    :straight nil
+    :commands (visual-fill-column-mode)
+    :hook (visual-line-mode . visual-fill-column-mode))
+
+  (advice-add 'text-scale-adjust :after
+              #'visual-fill-column-adjust)
 #+end_src
 
 I’ll put olivetti mode here since I think it’s mainly a text mode thing rather than for programming, but who knows.
@@ -858,7 +869,6 @@ Of course, the great magit.
     :hook ((org-mode . (lambda () (add-hook 'after-save-hook 'org-babel-tangle
                                             'run-at-end 'only-in-org-mode)))
            (org-mode . org-indent-mode)
-           (org-mode . visual-fill-column-mode)
            (org-mode . variable-pitch-mode))
 
     :general
