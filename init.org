@@ -47,7 +47,7 @@ First, a hook that reports how long and how many garbage collections the startup
 Next, we wrap the whole init file in a block that sets =file-name-handler-alist= to =nil= to prevent any special-filename parsing of files loaded from the init file (e.g. remote files loaded through tramp, etc.). The =let= block gets closed in the [[Epilogue][Epilogue]].
 
 #+begin_src emacs-lisp
-  ;; (let ((file-name-handler-alist nil))
+  (let ((file-name-handler-alist nil))
 #+end_src
 
 We set =gc-cons-threshold= to its maximum value, to prevent any garbage collection from happening during load time. We also reset this value in the [[Epilogue][Epilogue]].
@@ -1485,7 +1485,7 @@ Make org-mode prettier.
 Here we close the =let= expression from [[*Performance optimization][the preface]].
 
 #+begin_src emacs-lisp
-  ;; )
+  )
 #+end_src
 
 We also reset the value of =gc-cons-threshold=, not to its original value, we still leave it larger than default so that GCs don't happen so often.
