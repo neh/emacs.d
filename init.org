@@ -892,6 +892,12 @@ Of course, the great magit.
      "C-M-t" 'scroll-other-window
      "C-M-n" 'scroll-other-window-down)
 
+    (:keymaps 'org-mode-map
+     "H" 'org-shiftleft
+     "T" 'org-shiftdown
+     "N" 'org-shiftup
+     "S" 'org-shiftright)
+
     :init
     (defface org-inprogress
       '((default :inherit default))
