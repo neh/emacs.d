@@ -764,14 +764,15 @@ Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company.
 
   (use-package company-box
     :after company
-    :disabled t
+    :commands (company-box-mode)
     :hook (company-mode . company-box-mode)
     :config
     (setq company-box-enable-icon nil)
-    (add-to-list 'company-box-frame-parameters
-                 '(font . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
-    (add-to-list 'company-box-frame-parameters
-                 '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1")))
+    ;; (add-to-list 'company-box-frame-parameters
+    ;; '(font . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
+    ;; (add-to-list 'company-box-frame-parameters
+    ;; '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
+    )
 
   (use-package company-quickhelp
     :hook (company-mode . company-quickhelp-mode)
