@@ -267,7 +267,6 @@ Set up ESUP for startup profiling. In theory. [[https://github.com/jschaf/esup/i
       "fp" '(fill-paragraph :which-key "paragraph")
       "fr" '(fill-region :which-key "fill region")
       "ft" '(toggle-truncate-lines :which-key "truncate lines")
-      "fv" '(visual-line-mode :which-key "visual line mode")
 
       "g" '(:ignore t :which-key "git")
 
@@ -340,12 +339,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
     :config
     (save-place-mode t))
 
-  (use-package visual-fill-column
-    :commands visual-fill-column-mode
-    :general
-    (neh/leader-keys
-      "fc" '(visual-fill-column-mode :which-key "visual fill column")))
-
   (use-package undo-tree
     ;; not sure I've ever used this
     :disabled
@@ -377,18 +370,24 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 #+end_src
 * Text mode
 #+begin_src emacs-lisp
-  (use-package visual-line-mode
+  (use-package simple
     :straight nil
     :commands (visual-line-mode)
-    :hook (text-mode . visual-line-mode))
+    :hook (text-mode . visual-line-mode)
+    :general
+    (neh/leader-keys
+      "fv" '(visual-line-mode :which-key "visual line mode")))
 
-  (use-package visual-fill-column-mode
-    :straight nil
+  (use-package visual-fill-column
     :commands (visual-fill-column-mode)
-    :hook (visual-line-mode . visual-fill-column-mode))
+    :hook (visual-line-mode . visual-fill-column-mode)
+    :general
+    (neh/leader-keys
+      "fc" '(visual-fill-column-mode :which-key "visual fill column"))
 
-  (advice-add 'text-scale-adjust :after
-              #'visual-fill-column-adjust)
+    :config
+    (advice-add 'text-scale-adjust :after
+                #'visual-fill-column-adjust))
 #+end_src
 
 I’ll put olivetti mode here since I think it’s mainly a text mode thing rather than for programming, but who knows.
