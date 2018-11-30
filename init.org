@@ -203,6 +203,11 @@ Some git/vc options.
         vc-follow-symlinks t)
 #+end_src
 
+When pasting (yanking) into emacs, paste at the point, not where I click (I like to paste with the middle mouse button, xorg-style).
+#+begin_src emacs-lisp
+  (setq mouse-yank-at-point t)
+#+end_src
+
 * Package management
 I use [[https://github.com/raxod502/straight.el][straight.el]] instead of package.el.
 
