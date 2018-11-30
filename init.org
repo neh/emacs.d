@@ -94,21 +94,21 @@ Set the window titles. Nothing fancy, just the buffer name.
         icon-title-format "%b") ;; unfocused window title format
 #+end_src
 
-Set my preferred font and size, taking display DPI into account.
+Set my preferred font and size, taking display DPI into account. Bits and pieces of this came from various places, but especially [[https://www.reddit.com/r/emacs/comments/a01fs1/dispwatch_watch_the_current_display_for_changes/][this reddit thread]], which led me to [[https://emacs.stackexchange.com/questions/28390/quickly-adjusting-text-to-dpi-changes/44930#44930][this useful StackExchange question]]. I will probably revisit and incorporate more of what’s there later, but for now this will do. I’ll have to test this with different screens and moving frames between them (particularly, the =set-frame-font= args may need adjustment). Also, a hook for a frame moving to a different screen would be useful.
 #+begin_src emacs-lisp
-  (defun display-monitor-mm ()
+  (defun frame-monitor-mm ()
     "Return the size of the current monitor in mm."
-    (alist-get 'mm-size (car (display-monitor-attributes-list))))
+    (alist-get 'mm-size (frame-monitor-attributes)))
 
-  (defun display-monitor-pixels ()
+  (defun frame-monitor-pixels ()
     "Return the geometry of the current monitor in pixels."
-    (alist-get 'geometry (car (display-monitor-attributes-list))))
+    (alist-get 'geometry (frame-monitor-attributes)))
 
   (defun monitor-dpi ()
     "Return the DPI of the current monitor."
-    (let* ((mm (display-monitor-mm))
+    (let* ((mm (frame-monitor-mm))
            (mm-width (car mm))
-           (pixels (display-monitor-pixels))
+           (pixels (frame-monitor-pixels))
            (pixel-width (nth 2 pixels)))
       (/ pixel-width (/ mm-width 25.4))))
 
