@@ -217,6 +217,8 @@ And then make [[https://github.com/jwiegley/use-package][use-package]] use strai
   (setq use-package-verbose t
         ;; use-package-always-defer t
         )
+
+  (use-package use-package-ensure-system-package)
 #+end_src
 
 Set up ESUP for startup profiling. In theory. [[https://github.com/jschaf/esup/issues/54][It breaks.]]
@@ -1019,7 +1021,12 @@ Make org-mode prettier.
 
 Org export.
 #+begin_src emacs-lisp
-  (use-package ox-pandoc)
+  (use-package ox-pandoc
+    :ensure-system-package pandoc)
+
+  (use-package ox-odt
+    :straight nil
+    :ensure-system-package zip)
 
   (use-package ox-slack
     :commands (org-slack-export-as-slack
