@@ -362,8 +362,6 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
     (save-place-mode t))
 
   (use-package undo-tree
-    ;; not sure I've ever used this
-    :disabled
     :config
     (global-undo-tree-mode t))
 
