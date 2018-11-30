@@ -1022,7 +1022,9 @@ Make org-mode prettier.
 Org export.
 #+begin_src emacs-lisp
   (use-package ox-pandoc
-    :ensure-system-package pandoc)
+    :ensure-system-package (pandoc
+                            pdflatex
+                            mktexfmt))
 
   (use-package ox-odt
     :straight nil
