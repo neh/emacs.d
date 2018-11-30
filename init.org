@@ -1017,6 +1017,16 @@ Make org-mode prettier.
     :hook (org-mode . org-bullets-mode))
 #+end_src
 
+Org export.
+#+begin_src emacs-lisp
+  (use-package ox-pandoc)
+
+  (use-package ox-slack
+    :commands (org-slack-export-as-slack
+               org-slack-export-to-slack
+               org-slack-export-to-clipboard-as-slack))
+#+end_src
+
 * Dired
 #+begin_src emacs-lisp
   (use-package dired
