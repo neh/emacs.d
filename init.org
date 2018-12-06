@@ -1,5 +1,5 @@
 #+property: header-args:emacs-lisp :tangle (concat (file-name-sans-extension (buffer-file-name)) ".el")
-#+property: header-args :mkdirp yes :comments no
+#+property: header-args :mkdirp yes :comments no :results silent
 #+startup: indent
 
 #+begin_src emacs-lisp :exports none
