@@ -38,173 +38,173 @@ Based on these, I have added the code below.
 First, a hook that reports how long and how many garbage collections the startup took.
 
 #+begin_src emacs-lisp
-  ;; Use a hook so the message doesn't get clobbered by other messages.
-  (add-hook 'emacs-startup-hook
-            (lambda ()
-              (message "Emacs ready in %s with %d garbage collections."
-                       (format "%.2f seconds"
-                               (float-time
-                                (time-subtract after-init-time before-init-time)))
-                       gcs-done)))
+;; Use a hook so the message doesn't get clobbered by other messages.
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "Emacs ready in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
 #+end_src
 
 Next, we wrap the whole init file in a block that sets =file-name-handler-alist= to =nil= to prevent any special-filename parsing of files loaded from the init file (e.g. remote files loaded through tramp, etc.). The =let= block gets closed in the [[Epilogue][Epilogue]].
 
 #+begin_src emacs-lisp
-  (let ((file-name-handler-alist nil))
+(let ((file-name-handler-alist nil))
 #+end_src
 
 We set =gc-cons-threshold= to its maximum value, to prevent any garbage collection from happening during load time. We also reset this value in the [[Epilogue][Epilogue]].
 
 #+begin_src emacs-lisp
-  (setq gc-cons-threshold most-positive-fixnum)
+(setq gc-cons-threshold most-positive-fixnum)
 #+end_src
 
 * Base settings
 Turn off all startup messages, splash screens, menus, scrollbars, etc.
 #+begin_src emacs-lisp
-  (setq inhibit-splash-screen t
-        inhibit-startup-message t
-        initial-scratch-message nil
-        inhibit-startup-echo-area-message t)
+(setq inhibit-splash-screen t
+      inhibit-startup-message t
+      initial-scratch-message nil
+      inhibit-startup-echo-area-message t)
 
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 #+end_src
 
 Set scrolling options. These stop the half-page jumps while scrolling, and make things smoother. Haven’t tried out =pixel-scroll-mode= yet.
 #+begin_src emacs-lisp
-  (setq mouse-wheel-scroll-amount '(2 ((shift) . 1)) ;; one line at a time
-        mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
-        mouse-wheel-follow-mouse 't ;; scroll window under mouse
-        scroll-step 1 ;; keyboard scroll one line at a time
-        scroll-margin 5
-        hscroll-step 5
-        hscroll-margin 5
-        scroll-preserve-screen-position t
-        scroll-up-aggressively 0.01
-        scroll-down-aggressively 0.01
-        scroll-conservatively 101) ;; Don't jump around when scrolling
+(setq mouse-wheel-scroll-amount '(2 ((shift) . 1)) ;; one line at a time
+      mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
+      mouse-wheel-follow-mouse 't ;; scroll window under mouse
+      scroll-step 1 ;; keyboard scroll one line at a time
+      scroll-margin 5
+      hscroll-step 5
+      hscroll-margin 5
+      scroll-preserve-screen-position t
+      scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01
+      scroll-conservatively 101) ;; Don't jump around when scrolling
 #+end_src
 And let’s try out the new single-line-horizontal-scroll option in emacs 26.
 #+begin_src emacs-lisp
-  (setq-default auto-hscroll-mode 'current-line)
+(setq-default auto-hscroll-mode 'current-line)
 #+end_src
 
 Set the window titles. Nothing fancy, just the buffer name.
 #+begin_src emacs-lisp
-  (setq frame-title-format "%b" ;; focused window title format
-        icon-title-format "%b") ;; unfocused window title format
+(setq frame-title-format "%b" ;; focused window title format
+      icon-title-format "%b") ;; unfocused window title format
 #+end_src
 
 Set my preferred font and size, taking display DPI into account. Bits and pieces of this came from various places, but especially [[https://www.reddit.com/r/emacs/comments/a01fs1/dispwatch_watch_the_current_display_for_changes/][this reddit thread]], which led me to [[https://emacs.stackexchange.com/questions/28390/quickly-adjusting-text-to-dpi-changes/44930#44930][this useful StackExchange question]]. I will probably revisit and incorporate more of what’s there later, but for now this will do. I’ll have to test this with different screens and moving frames between them (particularly, the =set-frame-font= args may need adjustment). Also, a hook for a frame moving to a different screen would be useful.
 #+begin_src emacs-lisp
-  (defun frame-monitor-mm ()
-    "Return the size of the current monitor in mm."
-    (alist-get 'mm-size (frame-monitor-attributes)))
+(defun frame-monitor-mm ()
+  "Return the size of the current monitor in mm."
+  (alist-get 'mm-size (frame-monitor-attributes)))
 
-  (defun frame-monitor-pixels ()
-    "Return the geometry of the current monitor in pixels."
-    (alist-get 'geometry (frame-monitor-attributes)))
+(defun frame-monitor-pixels ()
+  "Return the geometry of the current monitor in pixels."
+  (alist-get 'geometry (frame-monitor-attributes)))
 
-  (defun monitor-dpi ()
-    "Return the DPI of the current monitor."
-    (let* ((mm (frame-monitor-mm))
-           (mm-width (car mm))
-           (pixels (frame-monitor-pixels))
-           (pixel-width (nth 2 pixels)))
-      (/ pixel-width (/ mm-width 25.4))))
+(defun monitor-dpi ()
+  "Return the DPI of the current monitor."
+  (let* ((mm (frame-monitor-mm))
+         (mm-width (car mm))
+         (pixels (frame-monitor-pixels))
+         (pixel-width (nth 2 pixels)))
+    (/ pixel-width (/ mm-width 25.4))))
 
-  (defun neh/set-frame-options (frame)
-    "Set font options for a FRAME based on the DPI."
-    (let ((myfont "Iosevka")
-          (mysize (if (> (monitor-dpi) 160)
-                      20
-                    10.5)))
-      (set-frame-font (format "%s-%f" myfont mysize) t t)
-      (set-face-attribute 'default nil :font (format "%s-%f" myfont mysize))))
+(defun neh/set-frame-options (frame)
+  "Set font options for a FRAME based on the DPI."
+  (let ((myfont "Iosevka")
+        (mysize (if (> (monitor-dpi) 160)
+                    20
+                  10.5)))
+    (set-frame-font (format "%s-%f" myfont mysize) t t)
+    (set-face-attribute 'default nil :font (format "%s-%f" myfont mysize))))
 
-  (neh/set-frame-options nil)
-  (add-hook 'after-make-frame-functions #'neh/set-frame-options)
+(neh/set-frame-options nil)
+(add-hook 'after-make-frame-functions #'neh/set-frame-options)
 #+end_src
 
 I don’t really use the customization system in Emacs (yet?) but let’s at least make it use a file that isn’t the main config.
 #+begin_src emacs-lisp
-  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-  (load custom-file 'no-error)
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file 'no-error)
 #+end_src
 
 All UTF-8, all the time.
 #+begin_src emacs-lisp
-  (setq coding-system-for-read 'utf-8
-        coding-system-for-write 'utf-8)
+(setq coding-system-for-read 'utf-8
+      coding-system-for-write 'utf-8)
 #+end_src
 
 No tabs when indenting.
 #+begin_src emacs-lisp
-  (setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 #+end_src
 
 More options.
 #+begin_src emacs-lisp
-  (setq sentence-end-double-space nil)
-  (setq ring-bell-function 'ignore)
-  (setq enable-recursive-minibuffers t)
+(setq sentence-end-double-space nil)
+(setq ring-bell-function 'ignore)
+(setq enable-recursive-minibuffers t)
 #+end_src
 
 Don’t warn me when I do these potentially confusing narrowing operations.
 #+begin_src emacs-lisp
-  (put 'narrow-to-region 'disabled nil)
-  (put 'narrow-to-page 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
 #+end_src
 
 Set some backup file options.
 #+begin_src emacs-lisp
-  (setq make-backup-files nil
-        delete-old-versions t
-        backup-directory-alist
-        `((".*" . ,temporary-file-directory))
-        auto-save-file-name-transforms
-        `((".*" ,temporary-file-directory t)))
+(setq make-backup-files nil
+      delete-old-versions t
+      backup-directory-alist
+      `((".*" . ,temporary-file-directory))
+      auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 #+end_src
 
 I’m not sure where to put some things in this file yet. Here’s one. It makes word-based navigation work on parts of things like CamelCase.
 #+begin_src emacs-lisp
-  (global-subword-mode 1)
+(global-subword-mode 1)
 #+end_src
 
 I view man pages in emacs sometimes, and want a fixed width for them.
 #+begin_src emacs-lisp
-  (setenv "MANWIDTH" "100")
+(setenv "MANWIDTH" "100")
 #+end_src
 
 I’m testing out [[https://github.com/swaywm/sway][sway]] as my window manager, and apparently ~$SSH_AUTH_SOCK~ doesn’t get set (maybe just for xwayland apps?). So we workaround. I already set a fixed link to the real socket for tmux usage, I can reuse it for this.
 #+begin_src emacs-lisp
-  (when (string= (getenv "SSH_AUTH_SOCK") nil)
-    (setenv "SSH_AUTH_SOCK" (format "/tmp/ssh-agent-%s-tmux" (getenv "USER"))))
+(when (string= (getenv "SSH_AUTH_SOCK") nil)
+  (setenv "SSH_AUTH_SOCK" (format "/tmp/ssh-agent-%s-tmux" (getenv "USER"))))
 #+end_src
 
 Some text fill options.
 #+begin_src emacs-lisp
-  (setq-default fill-column 100)
-  (setq comment-auto-fill-only-comments t)
+(setq-default fill-column 100)
+(setq comment-auto-fill-only-comments t)
 #+end_src
 
 How to make display buffer names.
 #+begin_src emacs-lisp
-  (setq uniquify-buffer-name-style 'forward)
+(setq uniquify-buffer-name-style 'forward)
 #+end_src
 
 Some git/vc options.
 #+begin_src emacs-lisp
-  (setq auto-revert-check-vc-info t
-        vc-follow-symlinks t)
+(setq auto-revert-check-vc-info t
+      vc-follow-symlinks t)
 #+end_src
 
 When pasting (yanking) into emacs, paste at the point, not where I click (I like to paste with the middle mouse button, xorg-style).
 #+begin_src emacs-lisp
-  (setq mouse-yank-at-point t)
+(setq mouse-yank-at-point t)
 #+end_src
 
 * Package management
@@ -212,250 +212,252 @@ I use [[https://github.com/raxod502/straight.el][straight.el]] instead of packag
 
 This setting makes the straight bootstrap /much/ faster. See the discussion [[https://github.com/raxod502/straight.el/issues/304][here]].
 #+begin_src emacs-lisp
-  (setq straight-check-for-modifications '(check-on-save))
+(setq straight-check-for-modifications '(check-on-save))
 #+end_src
 And now bootstrap straight, using the snippet from the docs.
 #+begin_src emacs-lisp
-  ;; Bootstrap straight.el
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
+;; Bootstrap straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 #+end_src
 
 And then make [[https://github.com/jwiegley/use-package][use-package]] use straight, and install use-package using straight:
 #+begin_src emacs-lisp
-  (setq straight-use-package-by-default t)
-  (straight-use-package 'use-package)
-  (setq use-package-verbose t
-        ;; use-package-always-defer t
-        )
+(setq straight-use-package-by-default t)
+(straight-use-package 'use-package)
+(setq use-package-verbose t
+      ;; use-package-always-defer t
+      )
 #+end_src
 This =use-package= extension allows declaring dependencies on system commands.
 #+begin_src emacs-lisp
-  (use-package use-package-ensure-system-package)
+(use-package use-package-ensure-system-package)
 #+end_src
 
 Set up ESUP for startup profiling. In theory. [[https://github.com/jschaf/esup/issues/54][It breaks.]]
 #+begin_src emacs-lisp
-  (use-package esup
-    :disabled t)
+(use-package esup
+  :disabled t)
 #+end_src
 
 * Keybindings
 [[https://github.com/noctuid/general.el][General.el]] handles keybinding management.
 #+begin_src emacs-lisp
-  (use-package general
-    :demand t
+(use-package general
+  :demand t
 
-    :config
-    (general-create-definer
-      neh/leader-keys
-      :keymaps 'override
-      :states '(emacs normal visual motion insert)
-      :non-normal-prefix "C-SPC"
-      :prefix "SPC")
+  :config
+  (general-create-definer
+    neh/leader-keys
+    :keymaps 'override
+    :states '(emacs normal visual motion insert)
+    :non-normal-prefix "C-SPC"
+    :prefix "SPC")
 
-    (general-override-mode)
+  (general-override-mode)
 
-    (general-add-advice (list #'evil-search-previous
-                              #'evil-search-next
-                              #'org-previous-visible-heading
-                              #'org-next-visible-heading)
-                        :after #'neh/after-jump)
+  (general-add-advice (list #'evil-search-previous
+                            #'evil-search-next
+                            #'org-previous-visible-heading
+                            #'org-next-visible-heading)
+                      :after #'neh/after-jump)
 
-    (general-define-key
-     "C-M-t" 'scroll-other-window
-     "C-M-n" 'scroll-other-window-down)
+  (general-define-key
+   "C-M-t" 'scroll-other-window
+   "C-M-n" 'scroll-other-window-down)
 
-    (neh/leader-keys
-      "<SPC>" '(save-buffer :which-key "save")
+  (neh/leader-keys
+    "<SPC>" '(save-buffer :which-key "save")
 
-      "b" '(:ignore t :which-key "buffer")
-      "bd" '(evil-delete-buffer :which-key "delete buffer")
+    "b" '(:ignore t :which-key "buffer")
+    "bd" '(evil-delete-buffer :which-key "delete buffer")
 
-      "cc" '(comment-or-uncomment-region-or-line :which-key "toggle comment")
+    "cc" '(comment-or-uncomment-region-or-line :which-key "toggle comment")
 
-      "f" '(:ignore t :which-key "formatting")
-      "fa" '(auto-fill-mode :which-key "auto fill")
-      "fi" '(indent-region :which-key "indent region")
-      "fp" '(fill-paragraph :which-key "paragraph")
-      "fr" '(fill-region :which-key "fill region")
-      "ft" '(toggle-truncate-lines :which-key "truncate lines")
+    "f" '(:ignore t :which-key "formatting")
+    "fa" '(auto-fill-mode :which-key "auto fill")
+    "fi" '(indent-region :which-key "indent region")
+    "fp" '(fill-paragraph :which-key "paragraph")
+    "fr" '(fill-region :which-key "fill region")
+    "ft" '(toggle-truncate-lines :which-key "truncate lines")
 
-      "g" '(:ignore t :which-key "git")
+    "g" '(:ignore t :which-key "git")
 
-      "h" '(:ignore t :which-key "help")
+    "h" '(:ignore t :which-key "help")
 
-      "hl" '(highlight-lines-matching-regexp :which-key "highlight line")
-      "hr" '(highlight-regexp :which-key "highlight regexp")
-      "hu" '(unhighlight-regexp :which-key "unhighlight regexp")
+    "hl" '(highlight-lines-matching-regexp :which-key "highlight line")
+    "hr" '(highlight-regexp :which-key "highlight regexp")
+    "hu" '(unhighlight-regexp :which-key "unhighlight regexp")
 
-      "i" '(:ignore t :which-key "insert")
-      "ip" '(clipboard-yank :which-key "paste from clipboard")
+    "i" '(:ignore t :which-key "insert")
+    "ip" '(clipboard-yank :which-key "paste from clipboard")
 
-      "n" '(:ignore t :which-key "narrow")
-      "nd" '(narrow-to-defun :which-key "narrow to defun")
-      "np" '(narrow-to-page :which-key "narrow to page")
-      "nr" '(narrow-to-region :which-key "narrow to region")
-      "nw" '(widen :which-key "widen")
+    "n" '(:ignore t :which-key "narrow")
+    "nd" '(narrow-to-defun :which-key "narrow to defun")
+    "np" '(narrow-to-page :which-key "narrow to page")
+    "nr" '(narrow-to-region :which-key "narrow to region")
+    "nw" '(widen :which-key "widen")
 
-      "o" '(:ignore t :which-key "open")
-      "oe" '(mode-line-other-buffer :which-key "previous buffer")
-      ;; "oo" '(persp-switch-to-buffer :which-key "switch buffer")
-      ;; "ov" '(persp-switch :which-key "switch perspective")
+    "o" '(:ignore t :which-key "open")
+    "oe" '(mode-line-other-buffer :which-key "previous buffer")
+    ;; "oo" '(persp-switch-to-buffer :which-key "switch buffer")
+    ;; "ov" '(persp-switch :which-key "switch perspective")
 
-      "Q" #'bury-buffer
+    "Q" #'bury-buffer
 
-      "s" '(:ignore t :which-key "search")
+    "s" '(:ignore t :which-key "search")
 
-      "r" '(:ignore t :which-key "read")
-      "rc" '(hydra-codereading/body :which-key "changes")
-      "rg" '(hydra-git-gutter/body :which-key "changes")
-      "ro" '(hydra-org/body :which-key "org")
-      "rr" '(hydra-reading/body :which-key "plain text")
+    "r" '(:ignore t :which-key "read")
+    "rc" '(hydra-codereading/body :which-key "changes")
+    "rg" '(hydra-git-gutter/body :which-key "changes")
+    "ro" '(hydra-org/body :which-key "org")
+    "rr" '(hydra-reading/body :which-key "plain text")
 
-      "v" '(:ignore t :which-key "view")
-      "vw" '(whitespace-mode :which-key "whitespace")
+    "v" '(:ignore t :which-key "view")
+    "vw" '(whitespace-mode :which-key "whitespace")
 
-      "xb" '(eval-buffer :which-key "eval buffer")
-      "xe" '(eval-expression :which-key "eval expression")
-      "xr" '(eval-region :which-key "eval region")
-      "xs" '(eval-last-sexp :which-key "eval sexp")
+    "xb" '(eval-buffer :which-key "eval buffer")
+    "xe" '(eval-expression :which-key "eval expression")
+    "xr" '(eval-region :which-key "eval region")
+    "xs" '(eval-last-sexp :which-key "eval sexp")
 
-      "zt" '(hydra-zoom/body :which-key "zoom text")))
+    "zt" '(hydra-zoom/body :which-key "zoom text")))
 #+end_src
 
 Which-key shows a handy popup for available keybindings at any given time.
 #+begin_src emacs-lisp
-  (use-package which-key
-    :demand t
-    :config
-    (which-key-setup-side-window-bottom)
-    (setq which-key-idle-secondary-delay 0.25)
-    (which-key-mode))
+(use-package which-key
+  :demand t
+  :config
+  (which-key-setup-side-window-bottom)
+  (setq which-key-idle-secondary-delay 0.25)
+  (which-key-mode))
 #+end_src
 
 Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-style bindings with leaders is maybe just as good?
 #+begin_src emacs-lisp
-  (use-package key-chord
-    :demand t)
-  (use-package use-package-chords
-    :after key-chord
-    :demand t
-    :config
-    (key-chord-mode 1))
+(use-package key-chord
+  :demand t)
+
+(use-package use-package-chords
+  :after key-chord
+  :demand t
+  :config
+  (key-chord-mode 1))
 #+end_src
 
 * Base2
 #+begin_src emacs-lisp
-  (use-package saveplace
-    :demand t
-    :config
-    (save-place-mode t))
+(use-package saveplace
+  :demand t
+  :config
+  (save-place-mode t))
 
-  (use-package undo-tree
-    :config
-    (global-undo-tree-mode t))
+(use-package undo-tree
+  :config
+  (global-undo-tree-mode t))
 
-  (use-package paren
-    :init
-    (setq show-paren-delay 0
-          show-paren-style 'parenthesis)
-    :config
-    (show-paren-mode 1))
+(use-package paren
+  :init
+  (setq show-paren-delay 0
+        show-paren-style 'parenthesis)
+  :config
+  (show-paren-mode 1))
 
-  (use-package whitespace
-    :commands (whitespace-mode)
-    :init
-    (setq whitespace-line-column 80
-          whitespace-style '(face trailing tabs lines-tail)))
+(use-package whitespace
+  :commands (whitespace-mode)
+  :init
+  (setq whitespace-line-column 80
+        whitespace-style '(face trailing tabs lines-tail)))
 
-  (use-package helpful
-    :init
-    (setq helpful-max-buffers 1)
-    :general
-    (neh/leader-keys
-      "h." '(helpful-at-point :which-key "point help")
-      "hf" '(helpful-callable :which-key "function help")
-      "hk" '(helpful-key :which-key "key help")
-      "hv" '(helpful-variable :which-key "variable help")))
+(use-package helpful
+  :init
+  (setq helpful-max-buffers 1)
+  :general
+  (neh/leader-keys
+    "h." '(helpful-at-point :which-key "point help")
+    "hf" '(helpful-callable :which-key "function help")
+    "hk" '(helpful-key :which-key "key help")
+    "hv" '(helpful-variable :which-key "variable help")))
 #+end_src
 
 Make sure my local bin dir is in emacs =$PATH=, and keep it updated.
 #+begin_src emacs-lisp
-  (use-package exec-path-from-shell
-    :config
-    (setq exec-path (append exec-path '("~/bin")))
-    (when (memq window-system '(mac ns x))
-      (exec-path-from-shell-initialize)))
+(use-package exec-path-from-shell
+  :config
+  (setq exec-path (append exec-path '("~/bin")))
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 #+end_src
 
 * Text mode
 #+begin_src emacs-lisp
-  (use-package simple
-    :straight nil
-    :commands (visual-line-mode)
-    :hook (text-mode . visual-line-mode)
-    :general
-    (neh/leader-keys
-      "fv" '(visual-line-mode :which-key "visual line mode")))
+(use-package simple
+  :straight nil
+  :commands (visual-line-mode)
+  :hook (text-mode . visual-line-mode)
+  :general
+  (neh/leader-keys
+    "fv" '(visual-line-mode :which-key "visual line mode")))
 
-  (use-package visual-fill-column
-    :commands (visual-fill-column-mode)
-    :hook (visual-line-mode . visual-fill-column-mode)
-    :general
-    (neh/leader-keys
-      "fc" '(visual-fill-column-mode :which-key "visual fill column"))
+(use-package visual-fill-column
+  :commands (visual-fill-column-mode)
+  :hook (visual-line-mode . visual-fill-column-mode)
+  :general
+  (neh/leader-keys
+    "fc" '(visual-fill-column-mode :which-key "visual fill column"))
 
-    :config
-    (advice-add 'text-scale-adjust :after
-                #'visual-fill-column-adjust))
+  :config
+  (advice-add 'text-scale-adjust :after
+              #'visual-fill-column-adjust))
 #+end_src
 
 I’ll put olivetti mode here since I think it’s mainly a text mode thing rather than for programming, but who knows.
 #+begin_src emacs-lisp
-  (use-package olivetti
-    :commands (olivetti-mode)
-    :config
-    (setq-default olivetti-body-width 100))
+(use-package olivetti
+  :commands (olivetti-mode)
+  :config
+  (setq-default olivetti-body-width 100))
 #+end_src
 
 * Prog mode
 #+begin_src emacs-lisp
-  (defun my-prog-mode-hook ()
-    "Set line-numbers settings for 'prog-mode'."
-    ;; (setq display-line-numbers 'relative)
-    (git-gutter-mode)
-    (visual-fill-column-mode))
+(defun my-prog-mode-hook ()
+  "Set line-numbers settings for 'prog-mode'."
+  ;; (setq display-line-numbers 'relative)
+  (git-gutter-mode)
+  (visual-fill-column-mode))
   (add-hook 'prog-mode-hook #'my-prog-mode-hook)
   (add-hook 'yaml-mode-hook #'my-prog-mode-hook)
 #+end_src
+
 * Pretty it up
 I’ve been liking dark-on-light themes lately, and brutalist with some tweaks has been good.
 #+begin_src emacs-lisp
-  (use-package brutalist-theme)
-  (load-theme 'brutalist t)
+(use-package brutalist-theme)
+(load-theme 'brutalist t)
 #+end_src
 
 But I like some things to be set no matter the theme. There’s probably a hook or something for this.
 
 I like italic comments.
 #+begin_src emacs-lisp
-  (set-face-italic 'font-lock-comment-face t)
+(set-face-italic 'font-lock-comment-face t)
 #+end_src
 And the smaller brutalist modeline height is not for me.
 #+begin_src emacs-lisp
-  (set-face-attribute 'mode-line nil :height 1.0)
-  (set-face-attribute 'mode-line-inactive nil :height 1.0)
+(set-face-attribute 'mode-line nil :height 1.0)
+(set-face-attribute 'mode-line-inactive nil :height 1.0)
 #+end_src
 
 * Modeline
@@ -463,103 +465,103 @@ Trying out doom-modeline.
 
 I don’t understand why I have to use =:demand= here. My understanding is that the =:hook= should take care of it. I have general troubles with the =after-init= hook (like with =company-mode=), so maybe it’s something there.
 #+begin_src emacs-lisp
-  (use-package doom-modeline
-    :demand t
-    :hook (after-init . doom-modeline-init)
+(use-package doom-modeline
+  :demand t
+  :hook (after-init . doom-modeline-init)
 
-    :config
-    (setq-default doom-modeline-column-zero-based nil)
-    (setq doom-modeline-height 20
-          doom-modeline-bar-width 1)
-    (column-number-mode t)
-    (set-face-attribute 'doom-modeline-evil-emacs-state nil :background "DarkMagenta" :foreground "#ffffff")
-    (set-face-attribute 'doom-modeline-evil-insert-state nil :background "#ffd700" :foreground "#000000")
-    (set-face-attribute 'doom-modeline-evil-motion-state nil :background "SteelBlue" :foreground "#ffffff")
-    (set-face-attribute 'doom-modeline-evil-normal-state nil :background "ForestGreen" :foreground "#ffffff")
-    (set-face-attribute 'doom-modeline-evil-operator-state nil :background "SteelBlue" :foreground "#ffffff")
-    (set-face-attribute 'doom-modeline-evil-visual-state nil :background "#fe8019" :foreground "#000000")
-    (set-face-attribute 'doom-modeline-evil-replace-state nil :background "red4" :foreground "#ffffff"))
+  :config
+  (setq-default doom-modeline-column-zero-based nil)
+  (setq doom-modeline-height 20
+        doom-modeline-bar-width 1)
+  (column-number-mode t)
+  (set-face-attribute 'doom-modeline-evil-emacs-state nil :background "DarkMagenta" :foreground "#ffffff")
+  (set-face-attribute 'doom-modeline-evil-insert-state nil :background "#ffd700" :foreground "#000000")
+  (set-face-attribute 'doom-modeline-evil-motion-state nil :background "SteelBlue" :foreground "#ffffff")
+  (set-face-attribute 'doom-modeline-evil-normal-state nil :background "ForestGreen" :foreground "#ffffff")
+  (set-face-attribute 'doom-modeline-evil-operator-state nil :background "SteelBlue" :foreground "#ffffff")
+  (set-face-attribute 'doom-modeline-evil-visual-state nil :background "#fe8019" :foreground "#000000")
+  (set-face-attribute 'doom-modeline-evil-replace-state nil :background "red4" :foreground "#ffffff"))
 #+end_src
 
 * Eeeeevil
 I come from vim, so evil is a necessity.
 #+begin_src emacs-lisp
-  (use-package evil
-    :demand t
-    :init
-    (setq evil-want-integration nil
-          evil-want-keybinding nil
-          evil-move-cursor-back t
-          evil-vsplit-window-right t)
+(use-package evil
+  :demand t
+  :init
+  (setq evil-want-integration nil
+        evil-want-keybinding nil
+        evil-move-cursor-back t
+        evil-vsplit-window-right t)
 
-    :general
-    (:keymaps 'normal
-     "C-h" nil
-     "C-t" nil
-     "C-n" nil
-     "C-s" nil
-     "C-e" nil)
+  :general
+  (:keymaps 'normal
+   "C-h" nil
+   "C-t" nil
+   "C-n" nil
+   "C-s" nil
+   "C-e" nil)
 
-    (general-define-key
-     "C-h" 'evil-window-left
-     "C-t" 'evil-window-down
-     "C-n" 'evil-window-up
-     "C-s" 'evil-window-right)
+  (general-define-key
+   "C-h" 'evil-window-left
+   "C-t" 'evil-window-down
+   "C-n" 'evil-window-up
+   "C-s" 'evil-window-right)
 
-    (general-define-key
-     :states '(normal visual)
-     "h" 'evil-backward-char
-     "t" 'evil-next-visual-line
-     "n" 'evil-previous-visual-line
-     "s" 'evil-forward-char
+  (general-define-key
+   :states '(normal visual)
+   "h" 'evil-backward-char
+   "t" 'evil-next-visual-line
+   "n" 'evil-previous-visual-line
+   "s" 'evil-forward-char
 
-     "l" 'evil-search-next
-     "L" 'evil-search-previous
-     "S" 'evil-window-bottom
+   "l" 'evil-search-next
+   "L" 'evil-search-previous
+   "S" 'evil-window-bottom
 
-     "N" 'evil-narrow-indirect)
+   "N" 'evil-narrow-indirect)
 
+  :config
+  (evil-mode 1)
+
+  (evil-set-initial-state 'ivy-occur-mode 'emacs)
+
+  (setq evil-normal-state-tag   (propertize " N ")
+        evil-emacs-state-tag    (propertize " E ")
+        evil-insert-state-tag   (propertize " I ")
+        evil-replace-state-tag  (propertize " R ")
+        evil-motion-state-tag   (propertize " M ")
+        evil-visual-state-tag   (propertize " V ")
+        evil-operator-state-tag (propertize " O "))
+
+  (evil-define-operator evil-narrow-indirect (beg end type)
+    "Indirectly narrow the region from BEG to END."
+    (interactive "<R>")
+    (evil-normal-state)
+    (narrow-to-region-indirect beg end))
+
+  (use-package evil-surround
     :config
-    (evil-mode 1)
+    (global-evil-surround-mode t))
 
-    (evil-set-initial-state 'ivy-occur-mode 'emacs)
+  (defun neh/evil-key-translations (_mode mode-keymaps &rest _rest)
+    (evil-collection-translate-key 'normal mode-keymaps
+      "t" "j"
+      "n" "k"
+      ))
 
-    (setq evil-normal-state-tag   (propertize " N ")
-          evil-emacs-state-tag    (propertize " E ")
-          evil-insert-state-tag   (propertize " I ")
-          evil-replace-state-tag  (propertize " R ")
-          evil-motion-state-tag   (propertize " M ")
-          evil-visual-state-tag   (propertize " V ")
-          evil-operator-state-tag (propertize " O "))
+  (use-package evil-collection
+    :hook (evil-collection-setup-hook #'neh/evil-key-translations)
+    :config
+    (evil-collection-init))
 
-    (evil-define-operator evil-narrow-indirect (beg end type)
-      "Indirectly narrow the region from BEG to END."
-      (interactive "<R>")
-      (evil-normal-state)
-      (narrow-to-region-indirect beg end))
+  (use-package evil-indent-plus
+    :config
+    (evil-indent-plus-default-bindings))
 
-    (use-package evil-surround
-      :config
-      (global-evil-surround-mode t))
-
-    (defun neh/evil-key-translations (_mode mode-keymaps &rest _rest)
-      (evil-collection-translate-key 'normal mode-keymaps
-        "t" "j"
-        "n" "k"
-        ))
-
-    (use-package evil-collection
-      :hook (evil-collection-setup-hook #'neh/evil-key-translations)
-      :config
-      (evil-collection-init))
-
-    (use-package evil-indent-plus
-      :config
-      (evil-indent-plus-default-bindings))
-
-    (use-package evil-textobj-line)
-    (use-package evil-textobj-syntax)
-    (use-package evil-ex-fasd))
+  (use-package evil-textobj-line)
+  (use-package evil-textobj-syntax)
+  (use-package evil-ex-fasd))
 #+end_src
 
 ** TODO look into evil-collection minibuffer setup
@@ -693,52 +695,52 @@ I come from vim, so evil is a necessity.
        ("m" ,(reloading (given-file #'rename-file "Move")) "move"))))
 #+end_src
 #+begin_src emacs-lisp
-  (use-package avy
-    :chords (("qj" . avy-goto-char-2)
-             ("jl" . avy-goto-line))
+(use-package avy
+  :chords (("qj" . avy-goto-char-2)
+           ("jl" . avy-goto-line))
 
-    :general
-    (general-define-key
-     :states '(normal visual)
-     :prefix "j"
-     "j" '(avy-goto-char-2 :which-key "char(2)")
-     "c" '(avy-goto-char-timer :which-key "char")
-     "h" '(avy-org-goto-heading-timer :which-key "org heading")
-     "l" '(avy-goto-line :which-key "line"))
+  :general
+  (general-define-key
+   :states '(normal visual)
+   :prefix "j"
+   "j" '(avy-goto-char-2 :which-key "char(2)")
+   "c" '(avy-goto-char-timer :which-key "char")
+   "h" '(avy-org-goto-heading-timer :which-key "org heading")
+   "l" '(avy-goto-line :which-key "line"))
 
-    :config
-    (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
+  :config
+  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 #+end_src
 
 * Projectile
 #+begin_src emacs-lisp
-  (use-package projectile
-    :general
-    (neh/leader-keys
-      "oh" '(counsel-projectile-find-file :which-key "open file in project")
-      "op" '(counsel-projectile-switch-project :which-key "switch project")
-      "sp" '(counsel-projectile-rg :which-key "search project"))
+(use-package projectile
+  :general
+  (neh/leader-keys
+    "oh" '(counsel-projectile-find-file :which-key "open file in project")
+    "op" '(counsel-projectile-switch-project :which-key "switch project")
+    "sp" '(counsel-projectile-rg :which-key "search project"))
+
+  :config
+  (setq projectile-completion-system 'ivy)
+
+  (projectile-mode)
+
+  (use-package counsel-projectile
+    ;; :disabled t
+    :after (counsel projectile)
 
     :config
-    (setq projectile-completion-system 'ivy)
+    ;; Set the default switch project action to find files so that paths are included in the search list
+    (counsel-projectile-modify-action 'counsel-projectile-switch-project-action
+                                      '((default counsel-projectile-switch-project-action-find-file)))
 
-    (projectile-mode)
-
-    (use-package counsel-projectile
-      ;; :disabled t
-      :after (counsel projectile)
-
-      :config
-      ;; Set the default switch project action to find files so that paths are included in the search list
-      (counsel-projectile-modify-action 'counsel-projectile-switch-project-action
-                                        '((default counsel-projectile-switch-project-action-find-file)))
-
-      (ivy-add-actions
-       'counsel-projectile-find-file
-       `(("c" ,(given-file #'copy-file "Copy") "copy")
-         ("d" ,(reloading #'confirm-delete-file) "delete")
-         ("m" ,(reloading (given-file #'rename-file "Move")) "move")
-         ("b" counsel-find-file-cd-bookmark-action "cd bookmark")))))
+    (ivy-add-actions
+     'counsel-projectile-find-file
+     `(("c" ,(given-file #'copy-file "Copy") "copy")
+       ("d" ,(reloading #'confirm-delete-file) "delete")
+       ("m" ,(reloading (given-file #'rename-file "Move")) "move")
+       ("b" counsel-find-file-cd-bookmark-action "cd bookmark")))))
 #+end_src
 
 * Company
@@ -797,51 +799,51 @@ Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company.
 * Git
 I find that diff-hl does a better job of showing diff information than git-gutter does. I’d like to use =diff-hl-flydiff-mode=, but it caused issues, which I can’t remember well enough to document now. Will revisit later.
 #+begin_src emacs-lisp
-  (use-package diff-hl
-    :hook ((after-init . global-diff-hl-mode))
-    :init
-    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-    :config
-    (set-face-attribute 'diff-hl-change nil :foreground "medium blue" :background "DodgerBlue1")
-    (set-face-attribute 'diff-hl-insert nil :foreground "dark green" :background "ForestGreen")
-    (set-face-attribute 'diff-hl-delete nil :foreground "dark red" :background "red4"))
+(use-package diff-hl
+  :hook ((after-init . global-diff-hl-mode))
+  :init
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+  :config
+  (set-face-attribute 'diff-hl-change nil :foreground "medium blue" :background "DodgerBlue1")
+  (set-face-attribute 'diff-hl-insert nil :foreground "dark green" :background "ForestGreen")
+  (set-face-attribute 'diff-hl-delete nil :foreground "dark red" :background "red4"))
 #+end_src
 
 Ending up at the bottom of the window and not being able see enought context when jumping around is annoying, so I have this to help deal with that by recentering after jumps.
 #+begin_src emacs-lisp
-  (defun neh/after-jump (&optional arg)
-    "Position text sanely after jumping. ARG is unused but apparently necessary."
-    (evil-scroll-line-to-center (line-number-at-pos)))
+(defun neh/after-jump (&optional arg)
+  "Position text sanely after jumping. ARG is unused but apparently necessary."
+  (evil-scroll-line-to-center (line-number-at-pos)))
 #+end_src
 
 Diff-hl may be better at /showing/ diff info, but git-gutter is better at doing things with diffs. So I have it active for navigation and staging actions. It’s disabled in org mode because I had issues with it before. Now that my config is in org though, it would be handy to have back. Another TODO.
 #+begin_src emacs-lisp
-  (use-package git-gutter
-    :general
-    (general-define-key
-     :states '(normal visual)
-     "gp" 'git-gutter:previous-hunk
-     "gn" 'git-gutter:next-hunk
-     "gs" 'git-gutter:popup-hunk
-     "gS" 'git-gutter:stage-hunk
-     "gU" 'git-gutter:revert-hunk)
+(use-package git-gutter
+  :general
+  (general-define-key
+   :states '(normal visual)
+   "gp" 'git-gutter:previous-hunk
+   "gn" 'git-gutter:next-hunk
+   "gs" 'git-gutter:popup-hunk
+   "gS" 'git-gutter:stage-hunk
+   "gU" 'git-gutter:revert-hunk)
 
-    :init
-    (setq git-gutter:disabled-modes '(org-mode))
-    (global-git-gutter-mode -1)
+  :init
+  (setq git-gutter:disabled-modes '(org-mode))
+  (global-git-gutter-mode -1)
 
-    :config
-    (advice-add 'git-gutter:previous-hunk :after #'neh/after-jump)
-    (advice-add 'git-gutter:next-hunk :after #'neh/after-jump)
+  :config
+  (advice-add 'git-gutter:previous-hunk :after #'neh/after-jump)
+  (advice-add 'git-gutter:next-hunk :after #'neh/after-jump)
 
-    (setq git-gutter:added-sign ""
-          git-gutter:deleted-sign ""
-          git-gutter:modified-sign ""
-          git-gutter:ask-p nil)
-    (set-face-foreground 'git-gutter:modified "DeepSkyBlue2")
-    (set-face-foreground 'git-gutter:added "ForestGreen")
-    (set-face-foreground 'git-gutter:deleted "red4")
-    )
+  (setq git-gutter:added-sign ""
+        git-gutter:deleted-sign ""
+        git-gutter:modified-sign ""
+        git-gutter:ask-p nil)
+  (set-face-foreground 'git-gutter:modified "DeepSkyBlue2")
+  (set-face-foreground 'git-gutter:added "ForestGreen")
+  (set-face-foreground 'git-gutter:deleted "red4")
+  )
 #+end_src
 
 Of course, the great magit.
@@ -1030,183 +1032,183 @@ Of course, the great magit.
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package evil-org
-    :after evil
-    :config
-    (setq evil-org-movement-bindings '((up . "n")
-                                       (down . "t")
-                                       (left . "h")
-                                       (right . "s")))
+(use-package evil-org
+  :after evil
+  :config
+  (setq evil-org-movement-bindings '((up . "n")
+                                     (down . "t")
+                                     (left . "h")
+                                     (right . "s")))
 
-    (add-to-list 'evil-org-key-theme 'shift)
+  (add-to-list 'evil-org-key-theme 'shift)
 
-    (add-hook 'org-mode-hook 'evil-org-mode)
-    (add-hook 'evil-org-mode-hook
-              (lambda ()
-                (evil-org-set-key-theme))))
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme))))
 #+end_src
 
 Make org-mode prettier.
 #+begin_src emacs-lisp
-  (use-package org-bullets
-    :init
-    (setq org-bullets-bullet-list '(" "))
-    :hook (org-mode . org-bullets-mode))
+(use-package org-bullets
+  :init
+  (setq org-bullets-bullet-list '(" "))
+  :hook (org-mode . org-bullets-mode))
 #+end_src
 
 Org export.
 #+begin_src emacs-lisp
-  (use-package ox-pandoc
-    :ensure-system-package (pandoc
-                            pdflatex
-                            mktexfmt))
+(use-package ox-pandoc
+  :ensure-system-package (pandoc
+                          pdflatex
+                          mktexfmt))
 
-  (use-package ox-odt
-    :straight nil
-    :ensure-system-package zip)
+(use-package ox-odt
+  :straight nil
+  :ensure-system-package zip)
 
-  (use-package ox-slack
-    :commands (org-slack-export-as-slack
-               org-slack-export-to-slack
-               org-slack-export-to-clipboard-as-slack))
+(use-package ox-slack
+  :commands (org-slack-export-as-slack
+             org-slack-export-to-slack
+             org-slack-export-to-clipboard-as-slack))
 #+end_src
 
 * Dired
 #+begin_src emacs-lisp
-  (use-package dired
-    :straight nil
-    :general
-    (general-define-key
-     :states 'normal
-     "U" '(dired-jump :which-key "dired"))
+(use-package dired
+  :straight nil
+  :general
+  (general-define-key
+   :states 'normal
+   "U" '(dired-jump :which-key "dired"))
 
-    (general-define-key
-     :states 'normal
-     :keymaps 'dired-mode-map
-     "U" '(dired-jump :which-key "go to parent directory")))
+  (general-define-key
+   :states 'normal
+   :keymaps 'dired-mode-map
+   "U" '(dired-jump :which-key "go to parent directory")))
 
-  (use-package dired-sidebar
-    :general
-    (neh/leader-keys
-      "ot" 'dired-sidebar-toggle-sidebar)
+(use-package dired-sidebar
+  :general
+  (neh/leader-keys
+    "ot" 'dired-sidebar-toggle-sidebar)
 
-    :init
-    (setq dired-sidebar-theme 'nerd)
-    (add-hook 'dired-load-hook
-              (function (lambda () (load "dired-x")))))
+  :init
+  (setq dired-sidebar-theme 'nerd)
+  (add-hook 'dired-load-hook
+            (function (lambda () (load "dired-x")))))
 
-  (use-package dired-k
-    :disabled t
-    :after dired
-    :hook
-    (dired-initial-position-hook . dired-k)
-    (dired-after-readin-hook . dired-k-no-revert))
+(use-package dired-k
+  :disabled t
+  :after dired
+  :hook
+  (dired-initial-position-hook . dired-k)
+  (dired-after-readin-hook . dired-k-no-revert))
 #+end_src
 
 * Imenu
 #+begin_src emacs-lisp
-  (use-package imenu-list
-    :general
-    (neh/leader-keys
-      "os" '(imenu-list-smart-toggle :which-key "code structure"))
+(use-package imenu-list
+  :general
+  (neh/leader-keys
+    "os" '(imenu-list-smart-toggle :which-key "code structure"))
 
-    :init
-    (setq imenu-list-focus-after-activation t))
+  :init
+  (setq imenu-list-focus-after-activation t))
 
-  (use-package imenu-anywhere
-    :after ivy
-    :general
-    (neh/leader-keys
-      "sT" '(ivy-imenu-anywhere :which-key "imenu anywhere")))
+(use-package imenu-anywhere
+  :after ivy
+  :general
+  (neh/leader-keys
+    "sT" '(ivy-imenu-anywhere :which-key "imenu anywhere")))
 #+end_src
 
 * Hydra
 #+begin_src emacs-lisp
-  (use-package hydra
-    :config
-    (defhydra hydra-reading ()
-      "Text reading/navigation"
-      ("t" (evil-scroll-down 0) "down")
-      ("n" (evil-scroll-up 0) "up")
-      ("T" (scroll-up) "next page")
-      ("N" (scroll-down) "prev page")
-      ("q" nil "quit" :color blue))
+(use-package hydra
+  :config
+  (defhydra hydra-reading ()
+    "Text reading/navigation"
+    ("t" (evil-scroll-down 0) "down")
+    ("n" (evil-scroll-up 0) "up")
+    ("T" (scroll-up) "next page")
+    ("N" (scroll-down) "prev page")
+    ("q" nil "quit" :color blue))
 
-    (defhydra hydra-zoom ()
-      "zoom"
-      ("+" text-scale-increase "in")
-      ("-" text-scale-decrease "out")
-      ("0" (text-scale-adjust 0) "reset")
-      ("q" nil "quit" :color blue))
+  (defhydra hydra-zoom ()
+    "zoom"
+    ("+" text-scale-increase "in")
+    ("-" text-scale-decrease "out")
+    ("0" (text-scale-adjust 0) "reset")
+    ("q" nil "quit" :color blue))
 
-    (defhydra hydra-git-gutter ()
-      "Browse/stage/revert git hunks"
-      ("n" (progn (git-gutter:previous-hunk 1)
-                  (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
-      ("t" (progn (git-gutter:next-hunk 1)
-                  (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
-      ("s" git-gutter:stage-hunk "stage hunk")
-      ("r" git-gutter:revert-hunk "revert hunk")
-      ("q" nil "quit" :color blue))
+  (defhydra hydra-git-gutter ()
+    "Browse/stage/revert git hunks"
+    ("n" (progn (git-gutter:previous-hunk 1)
+                (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
+    ("t" (progn (git-gutter:next-hunk 1)
+                (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
+    ("s" git-gutter:stage-hunk "stage hunk")
+    ("r" git-gutter:revert-hunk "revert hunk")
+    ("q" nil "quit" :color blue))
 
-    (defhydra hydra-org (:color red :columns 3)
-      "Org Mode Movements"
-      ("t" outline-next-visible-heading "next heading")
-      ("n" outline-previous-visible-heading "prev heading")
-      ("T" org-forward-heading-same-level "next heading at same level")
-      ("N" org-backward-heading-same-level "prev heading at same level")
-      ("H" outline-up-heading "up heading")
-      ("<tab>" org-cycle "cycle")
-      ("g" org-goto "goto" :exit t)
-      ("q" nil "quit" :color blue)))
+  (defhydra hydra-org (:color red :columns 3)
+    "Org Mode Movements"
+    ("t" outline-next-visible-heading "next heading")
+    ("n" outline-previous-visible-heading "prev heading")
+    ("T" org-forward-heading-same-level "next heading at same level")
+    ("N" org-backward-heading-same-level "prev heading at same level")
+    ("H" outline-up-heading "up heading")
+    ("<tab>" org-cycle "cycle")
+    ("g" org-goto "goto" :exit t)
+    ("q" nil "quit" :color blue)))
 
-  (use-package ivy-hydra
-    :config
-    (defhydra hydra-ivy (:hint nil
-                         :color pink)
-      "
+(use-package ivy-hydra
+  :config
+  (defhydra hydra-ivy (:hint nil
+                       :color pink)
+    "
       ^ ^ ^ ^ ^ ^ | ^Call^  | ^Cancel^ | ^Options^ | Action _r_/_c_/_a_: %-14s(ivy-action-name)
       ^-^-^-^-^-^-+----^-^--+-^-^------+-^-^-------+-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^---------------------------
       ^ ^ _n_ ^ ^ | occ_u_r | _i_nsert | _C_: calling %-5s(if ivy-calling \"on\" \"off\") Case-_F_old: %-10`ivy-case-fold-search
       _h_ ^+^ _s_ | _d_one  | ^ ^      | _m_: matcher %-5s(ivy--matcher-desc)^^^^^^^^^^^^ _T_runcate: %-11`truncate-lines
       ^ ^ _t_ ^ ^ | _g_o    | ^ ^      | _<_/_>_: shrink/grow^^^^^^^^^^^^^^^^^^^^^^^^^^^^ _D_efinition of this menu
       "
-      ;; arrows
-      ("h" ivy-beginning-of-buffer)
-      ("t" ivy-next-line)
-      ("n" ivy-previous-line)
-      ("s" ivy-end-of-buffer)
-      ;; actions
-      ("<ESC>" keyboard-escape-quit :exit t)
-      ("C-g" keyboard-escape-quit :exit t)
-      ("q" keyboard-escape-quit :exit t)
-      ("i" nil)
-      ("C-o" nil)
-      ;; ("f" ivy-alt-done :exit nil)
-      ("C-j" ivy-alt-done :exit nil)
-      ("d" ivy-done :exit t)
-      ("g" ivy-call)
-      ("S" (ivy-exit-with-action
-            (lambda (f) (evil-window-vsplit 80 f)
-              (balance-windows)))
-       :exit t)
-      ("C-m" ivy-done :exit t)
-      ("C" ivy-toggle-calling)
-      ("m" ivy-toggle-fuzzy)
-      (">" ivy-minibuffer-grow)
-      ("<" ivy-minibuffer-shrink)
-      ("r" ivy-prev-action)
-      ("c" ivy-next-action)
-      ("a" ivy-read-action)
-      ("T" (setq truncate-lines (not truncate-lines)))
-      ("F" ivy-toggle-case-fold)
-      ("u" ivy-occur :exit t)
-      ("D" (ivy-exit-with-action
-            (lambda (_) (find-function 'hydra-ivy/body)))
-       :exit t)))
+    ;; arrows
+    ("h" ivy-beginning-of-buffer)
+    ("t" ivy-next-line)
+    ("n" ivy-previous-line)
+    ("s" ivy-end-of-buffer)
+    ;; actions
+    ("<ESC>" keyboard-escape-quit :exit t)
+    ("C-g" keyboard-escape-quit :exit t)
+    ("q" keyboard-escape-quit :exit t)
+    ("i" nil)
+    ("C-o" nil)
+    ;; ("f" ivy-alt-done :exit nil)
+    ("C-j" ivy-alt-done :exit nil)
+    ("d" ivy-done :exit t)
+    ("g" ivy-call)
+    ("S" (ivy-exit-with-action
+          (lambda (f) (evil-window-vsplit 80 f)
+            (balance-windows)))
+     :exit t)
+    ("C-m" ivy-done :exit t)
+    ("C" ivy-toggle-calling)
+    ("m" ivy-toggle-fuzzy)
+    (">" ivy-minibuffer-grow)
+    ("<" ivy-minibuffer-shrink)
+    ("r" ivy-prev-action)
+    ("c" ivy-next-action)
+    ("a" ivy-read-action)
+    ("T" (setq truncate-lines (not truncate-lines)))
+    ("F" ivy-toggle-case-fold)
+    ("u" ivy-occur :exit t)
+    ("D" (ivy-exit-with-action
+          (lambda (_) (find-function 'hydra-ivy/body)))
+     :exit t)))
 
-  (defhydra hydra-windows (:hint nil)
-    "
+(defhydra hydra-windows (:hint nil)
+  "
      Go: _h_ _t_ _n_ _s_
    Move: _H_ _T_ _N_ _S_
 
@@ -1215,248 +1217,248 @@ Org export.
 
    Exit: _q_
   "
-    ("h" evil-window-left)
-    ("n" evil-window-up)
-    ("t" evil-window-down)
-    ("s" evil-window-right)
+  ("h" evil-window-left)
+  ("n" evil-window-up)
+  ("t" evil-window-down)
+  ("s" evil-window-right)
 
-    ("H" evil-window-move-far-left)
-    ("T" evil-window-move-very-bottom)
-    ("N" evil-window-move-very-top)
-    ("S" evil-window-move-far-right)
+  ("H" evil-window-move-far-left)
+  ("T" evil-window-move-very-bottom)
+  ("N" evil-window-move-very-top)
+  ("S" evil-window-move-far-right)
 
-    ("o" delete-other-windows)
-    ("c" evil-window-delete)
+  ("o" delete-other-windows)
+  ("c" evil-window-delete)
 
-    ("q" nil))
+  ("q" nil))
 
-  ;; from https://github.com/abo-abo/hydra/wiki/straight.el
-  (defhydra hydra-straight-helper (:hint nil)
-    "
+;; from https://github.com/abo-abo/hydra/wiki/straight.el
+(defhydra hydra-straight-helper (:hint nil)
+  "
   _c_heck all       |_f_etch all     |_m_erge all      |_n_ormalize all   |p_u_sh all
   _C_heck package   |_F_etch package |_M_erge package  |_N_ormlize package|p_U_sh package
   ----------------^^+--------------^^+---------------^^+----------------^^+------------||_q_uit||
   _r_ebuild all     |_p_ull all      |_v_ersions freeze|_w_atcher start   |_g_et recipe
   _R_ebuild package |_P_ull package  |_V_ersions thaw  |_W_atcher quit    |prun_e_ build"
-    ("c" straight-check-all)
-    ("C" straight-check-package)
-    ("r" straight-rebuild-all)
-    ("R" straight-rebuild-package)
-    ("f" straight-fetch-all)
-    ("F" straight-fetch-package)
-    ("p" straight-pull-all)
-    ("P" straight-pull-package)
-    ("m" straight-merge-all)
-    ("M" straight-merge-package)
-    ("n" straight-normalize-all)
-    ("N" straight-normalize-package)
-    ("u" straight-push-all)
-    ("U" straight-push-package)
-    ("v" straight-freeze-versions)
-    ("V" straight-thaw-versions)
-    ("w" straight-watcher-start)
-    ("W" straight-watcher-quit)
-    ("g" straight-get-recipe)
-    ("e" straight-prune-build)
-    ("q" nil))
+  ("c" straight-check-all)
+  ("C" straight-check-package)
+  ("r" straight-rebuild-all)
+  ("R" straight-rebuild-package)
+  ("f" straight-fetch-all)
+  ("F" straight-fetch-package)
+  ("p" straight-pull-all)
+  ("P" straight-pull-package)
+  ("m" straight-merge-all)
+  ("M" straight-merge-package)
+  ("n" straight-normalize-all)
+  ("N" straight-normalize-package)
+  ("u" straight-push-all)
+  ("U" straight-push-package)
+  ("v" straight-freeze-versions)
+  ("V" straight-thaw-versions)
+  ("w" straight-watcher-start)
+  ("W" straight-watcher-quit)
+  ("g" straight-get-recipe)
+  ("e" straight-prune-build)
+  ("q" nil))
 #+end_src
 
 * Misc packages
 #+begin_src emacs-lisp
-  (use-package golden-ratio
-    :commands golden-ratio-mode
-    :config
-    (setq golden-ratio-auto-scale t)
-    ;; (golden-ratio-mode 1)
-    )
+(use-package golden-ratio
+  :commands golden-ratio-mode
+  :config
+  (setq golden-ratio-auto-scale t)
+  ;; (golden-ratio-mode 1)
+  )
 
-  ;; The auto-decrypt-encrypt hook complains about the password-file var not being set, even though
-  ;; the manual encrypt/decrypt functions work just fine.
-  (use-package ansible
-    :commands (ansible ansible::auto-decrypt-encrypt)
-    :hook ((yaml-mode . ansible)
-           (ansible . ansible::auto-decrypt-encrypt))
-    :init
-    (setq ansible::vault-password-file "~/freshgrade/vaultpass"))
+;; The auto-decrypt-encrypt hook complains about the password-file var not being set, even though
+;; the manual encrypt/decrypt functions work just fine.
+(use-package ansible
+  :commands (ansible ansible::auto-decrypt-encrypt)
+  :hook ((yaml-mode . ansible)
+         (ansible . ansible::auto-decrypt-encrypt))
+  :init
+  (setq ansible::vault-password-file "~/freshgrade/vaultpass"))
 
-  (use-package rainbow-delimiters
-    :general
-    (neh/leader-keys
-      "vd" '(rainbow-delimiters-mode :which-key "delimiters"))
+(use-package rainbow-delimiters
+  :general
+  (neh/leader-keys
+    "vd" '(rainbow-delimiters-mode :which-key "delimiters"))
 
-    :config
-    (set-face-attribute 'rainbow-delimiters-unmatched-face nil :height 1.0 :inherit 'error)
-    (set-face-attribute 'rainbow-delimiters-depth-1-face nil :height 1.0)
-    (set-face-attribute 'rainbow-delimiters-depth-2-face nil :height 1.1)
-    (set-face-attribute 'rainbow-delimiters-depth-3-face nil :height 1.2)
-    (set-face-attribute 'rainbow-delimiters-depth-4-face nil :height 1.3)
-    (set-face-attribute 'rainbow-delimiters-depth-5-face nil :height 1.4)
-    (set-face-attribute 'rainbow-delimiters-depth-6-face nil :height 1.5)
-    (set-face-attribute 'rainbow-delimiters-depth-7-face nil :height 1.6)
-    (set-face-attribute 'rainbow-delimiters-depth-8-face nil :height 1.7)
-    (set-face-attribute 'rainbow-delimiters-depth-9-face nil :height 1.8))
+  :config
+  (set-face-attribute 'rainbow-delimiters-unmatched-face nil :height 1.0 :inherit 'error)
+  (set-face-attribute 'rainbow-delimiters-depth-1-face nil :height 1.0)
+  (set-face-attribute 'rainbow-delimiters-depth-2-face nil :height 1.1)
+  (set-face-attribute 'rainbow-delimiters-depth-3-face nil :height 1.2)
+  (set-face-attribute 'rainbow-delimiters-depth-4-face nil :height 1.3)
+  (set-face-attribute 'rainbow-delimiters-depth-5-face nil :height 1.4)
+  (set-face-attribute 'rainbow-delimiters-depth-6-face nil :height 1.5)
+  (set-face-attribute 'rainbow-delimiters-depth-7-face nil :height 1.6)
+  (set-face-attribute 'rainbow-delimiters-depth-8-face nil :height 1.7)
+  (set-face-attribute 'rainbow-delimiters-depth-9-face nil :height 1.8))
 
-  (use-package wgrep
-    :commands ivy-wgrep-change-to-wgrep-mode)
+(use-package wgrep
+  :commands ivy-wgrep-change-to-wgrep-mode)
 
-  (use-package elec-pair
-    :ensure nil
-    :hook (prog-mode . electric-pair-mode))
+(use-package elec-pair
+  :ensure nil
+  :hook (prog-mode . electric-pair-mode))
 
-  (use-package executable
-    :ensure nil
-    :hook (after-save . executable-make-buffer-file-executable-if-script-p))
+(use-package executable
+  :ensure nil
+  :hook (after-save . executable-make-buffer-file-executable-if-script-p))
 
-  (use-package flycheck
-    :hook (prog-mode . flycheck-mode))
+(use-package flycheck
+  :hook (prog-mode . flycheck-mode))
 
-  (use-package flycheck-posframe
-    :after flycheck
-    :hook (flycheck-mode . flycheck-posframe-mode)
-    :config
-    (set-face-attribute 'flycheck-posframe-warning-face nil :height 1.1 :foreground "#111111" :background "#ffd700" :inherit 'warning)
-    (set-face-attribute 'flycheck-posframe-error-face nil :height 1.1 :foreground "#eeeeee" :background "#b22222" :inherit 'error))
+(use-package flycheck-posframe
+  :after flycheck
+  :hook (flycheck-mode . flycheck-posframe-mode)
+  :config
+  (set-face-attribute 'flycheck-posframe-warning-face nil :height 1.1 :foreground "#111111" :background "#ffd700" :inherit 'warning)
+  (set-face-attribute 'flycheck-posframe-error-face nil :height 1.1 :foreground "#eeeeee" :background "#b22222" :inherit 'error))
 
-  (use-package typo
-    :hook (text-mode . typo-mode))
+(use-package typo
+  :hook (text-mode . typo-mode))
 
-  (use-package rainbow-mode
-    :general
-    (neh/leader-keys
-      "vc" '(rainbow-mode :which-key "colours")))
+(use-package rainbow-mode
+  :general
+  (neh/leader-keys
+    "vc" '(rainbow-mode :which-key "colours")))
 
-  (use-package hl-line+
-    :disabled
-    :config
-    (setq hl-line-inhibit-highlighting-for-modes '(org-mode))
-    (toggle-hl-line-when-idle -1))
+(use-package hl-line+
+  :disabled
+  :config
+  (setq hl-line-inhibit-highlighting-for-modes '(org-mode))
+  (toggle-hl-line-when-idle -1))
 
-  (use-package symbol-overlay
-    :general
-    (neh/leader-keys
-      "hs" '(symbol-overlay-put :which-key "highlight symbol")
-      "hp" '(symbol-overlay-switch-backward :which-key "previous highlighted symbol")
-      "hn" '(symbol-overlay-switch-forward :which-key "next highlighted symbol")
-      "hC" '(symbol-overlay-remove-all :which-key "clear highlighted symbols")
-      "hM" '(symbol-overlay-mode :which-key "symbol overlay mode")))
+(use-package symbol-overlay
+  :general
+  (neh/leader-keys
+    "hs" '(symbol-overlay-put :which-key "highlight symbol")
+    "hp" '(symbol-overlay-switch-backward :which-key "previous highlighted symbol")
+    "hn" '(symbol-overlay-switch-forward :which-key "next highlighted symbol")
+    "hC" '(symbol-overlay-remove-all :which-key "clear highlighted symbols")
+    "hM" '(symbol-overlay-mode :which-key "symbol overlay mode")))
 
-  (use-package aggressive-indent
-    :hook (emacs-lisp-mode . aggressive-indent-mode))
+(use-package aggressive-indent
+  :hook (emacs-lisp-mode . aggressive-indent-mode))
 
-  (use-package direnv
-    :demand t
-    :config
-    (setq direnv-always-show-summary nil)
-    (direnv-mode))
+(use-package direnv
+  :demand t
+  :config
+  (setq direnv-always-show-summary nil)
+  (direnv-mode))
 
-  (defun my-evil-indent-setup ()
-    "Set evil-shift-width to the relevant language indent level (but yaml only, so far)."
-    (setq evil-shift-width yaml-indent-offset))
+(defun my-evil-indent-setup ()
+  "Set evil-shift-width to the relevant language indent level (but yaml only, so far)."
+  (setq evil-shift-width yaml-indent-offset))
 
-  (use-package yaml-mode
-    :gfhook #'my-evil-indent-setup
-    :commands yaml-mode
-    :mode (("\\(host\\|group\\)_vars.*" . yaml-mode)
-           ("\\.yml|yaml\\'" . yaml-mode)))
+(use-package yaml-mode
+  :gfhook #'my-evil-indent-setup
+  :commands yaml-mode
+  :mode (("\\(host\\|group\\)_vars.*" . yaml-mode)
+         ("\\.yml|yaml\\'" . yaml-mode)))
 
-  (use-package json-mode
-    :mode (("\\.json\\'" . json-mode)))
+(use-package json-mode
+  :mode (("\\.json\\'" . json-mode)))
 
-  (use-package expand-region
-    :general
-    (general-define-key
-     :states 'visual
-     "v" 'er/expand-region
-     "V" 'er/contract-region))
+(use-package expand-region
+  :general
+  (general-define-key
+   :states 'visual
+   "v" 'er/expand-region
+   "V" 'er/contract-region))
 
-  (use-package markdown-mode
-    :mode ("\\.md'" . markdown-mode))
+(use-package markdown-mode
+  :mode ("\\.md'" . markdown-mode))
 
-  (use-package lua-mode
-    :mode ("\\.lua\\'" . lua-mode))
+(use-package lua-mode
+  :mode ("\\.lua\\'" . lua-mode))
 
-  (defun neh/python-mode-hook ()
-    "My python mode settings."
-    (add-to-list 'company-backends 'company-jedi))
-  (use-package elpy
-    :commands elpy-enable
-    :init
-    (with-eval-after-load 'python (elpy-enable)))
+(defun neh/python-mode-hook ()
+  "My python mode settings."
+  (add-to-list 'company-backends 'company-jedi))
+(use-package elpy
+  :commands elpy-enable
+  :init
+  (with-eval-after-load 'python (elpy-enable)))
 
-  (use-package company-jedi
-    :after company
-    :hook (python-mode . neh/python-mode-hook))
+(use-package company-jedi
+  :after company
+  :hook (python-mode . neh/python-mode-hook))
 
-  (use-package rust-mode
-    :mode ("\\.rs\\'" . rust-mode))
+(use-package rust-mode
+  :mode ("\\.rs\\'" . rust-mode))
 
-  (use-package hcl-mode
-    :commands terraform-mode)
+(use-package hcl-mode
+  :commands terraform-mode)
 
-  (use-package terraform-mode
-    :after hcl-mode
-    :mode ("\\.tf|tfvars\\'" . terraform-mode)
-    :hook (terraform-mode . terraform-format-on-save-mode))
+(use-package terraform-mode
+  :after hcl-mode
+  :mode ("\\.tf|tfvars\\'" . terraform-mode)
+  :hook (terraform-mode . terraform-format-on-save-mode))
 
-  (use-package groovy-mode
-    :mode ("Jenkinsfile\\'" . groovy-mode))
+(use-package groovy-mode
+  :mode ("Jenkinsfile\\'" . groovy-mode))
 
-  (use-package dockerfile-mode
-    :mode ("Dockerfile\\'" . dockerfile-mode))
+(use-package dockerfile-mode
+  :mode ("Dockerfile\\'" . dockerfile-mode))
 
-  (use-package go-mode
-    :mode "\\.go\\'")
+(use-package go-mode
+  :mode "\\.go\\'")
 
-  (use-package go-eldoc
-    :commands go-eldoc-setup
-    :hook (go-mode . go-eldoc-setup))
+(use-package go-eldoc
+  :commands go-eldoc-setup
+  :hook (go-mode . go-eldoc-setup))
 
-  (use-package csv-mode
-    :mode "\\.csv\\'")
+(use-package csv-mode
+  :mode "\\.csv\\'")
 
-  (use-package elf-mode
-    :commands elf-mode
-    :magic ("ELF" . elf-mode))
+(use-package elf-mode
+  :commands elf-mode
+  :magic ("ELF" . elf-mode))
 #+end_src
 
 * Misc functions
 #+begin_src emacs-lisp
-  (defun narrow-to-region-indirect (start end)
-    "Restrict editing in this buffer to the current region (from START to END), indirectly."
-    (interactive "r")
-    (deactivate-mark)
-    (let ((buf (clone-indirect-buffer nil nil)))
-      (with-current-buffer buf
-        (narrow-to-region start end))
-      (switch-to-buffer buf)))
+(defun narrow-to-region-indirect (start end)
+  "Restrict editing in this buffer to the current region (from START to END), indirectly."
+  (interactive "r")
+  (deactivate-mark)
+  (let ((buf (clone-indirect-buffer nil nil)))
+    (with-current-buffer buf
+      (narrow-to-region start end))
+    (switch-to-buffer buf)))
 
-  (defun shorten-directory (dir max-length)
-    "Show up to MAX-LENGTH characters of a directory name DIR."
-    (let ((path (reverse (split-string (abbreviate-file-name dir) "/")))
-          (output ""))
-      (when (and path (equal "" (car path)))
-        (setq path (cdr path)))
-      (while (and path (< (length output) (- max-length 4)))
-        (setq output (concat (car path) "/" output))
-        (setq path (cdr path)))
-      (when path
-        (setq output (concat "…/" output)))
-      output))
+(defun shorten-directory (dir max-length)
+  "Show up to MAX-LENGTH characters of a directory name DIR."
+  (let ((path (reverse (split-string (abbreviate-file-name dir) "/")))
+        (output ""))
+    (when (and path (equal "" (car path)))
+      (setq path (cdr path)))
+    (while (and path (< (length output) (- max-length 4)))
+      (setq output (concat (car path) "/" output))
+      (setq path (cdr path)))
+    (when path
+      (setq output (concat "…/" output)))
+    output))
 
-  (defun comment-or-uncomment-region-or-line ()
-    "Comments or uncomments the region or the current line if there's no active region."
-    (interactive)
-    (let (beg end)
-      (if (region-active-p)
-          (setq beg (region-beginning) end (region-end))
-        (setq beg (line-beginning-position) end (line-end-position)))
-      (comment-or-uncomment-region beg end)))
+(defun comment-or-uncomment-region-or-line ()
+  "Comments or uncomments the region or the current line if there's no active region."
+  (interactive)
+  (let (beg end)
+    (if (region-active-p)
+        (setq beg (region-beginning) end (region-end))
+      (setq beg (line-beginning-position) end (line-end-position)))
+    (comment-or-uncomment-region beg end)))
 
-  ;; https://github.com/noctuid/general.el#use-package-keyword
-  ;; https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
-  ;; https://github.com/Fuco1/.emacs.d/blob/af82072196564fa57726bdbabf97f1d35c43b7f7/site-lisp/redef.el#L20-L94
-  (defun Fuco1/lisp-indent-function (indent-point state)
-    "This function is the normal value of the variable `lisp-indent-function'.
+;; https://github.com/noctuid/general.el#use-package-keyword
+;; https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
+;; https://github.com/Fuco1/.emacs.d/blob/af82072196564fa57726bdbabf97f1d35c43b7f7/site-lisp/redef.el#L20-L94
+(defun Fuco1/lisp-indent-function (indent-point state)
+  "This function is the normal value of the variable `lisp-indent-function'.
   The function `calculate-lisp-indent' calls this to determine
   if the arguments of a Lisp function call should be indented specially.
 
@@ -1482,68 +1484,68 @@ Org export.
 
   This function returns either the indentation to use, or nil if the
   Lisp function does not specify a special indentation."
-    (let ((normal-indent (current-column))
-          (orig-point (point)))
-      (goto-char (1+ (elt state 1)))
-      (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
-      (cond
-       ;; car of form doesn't seem to be a symbol, or is a keyword
-       ((and (elt state 2)
-             (or (not (looking-at "\\sw\\|\\s_"))
-                 (looking-at ":")))
-        (if (not (> (save-excursion (forward-line 1) (point))
-                    calculate-lisp-indent-last-sexp))
-            (progn (goto-char calculate-lisp-indent-last-sexp)
-                   (beginning-of-line)
-                   (parse-partial-sexp (point)
-                                       calculate-lisp-indent-last-sexp 0 t)))
-        ;; Indent under the list or under the first sexp on the same
-        ;; line as calculate-lisp-indent-last-sexp.  Note that first
-        ;; thing on that line has to be complete sexp since we are
-        ;; inside the innermost containing sexp.
-        (backward-prefix-chars)
-        (current-column))
-       ((and (save-excursion
-               (goto-char indent-point)
-               (skip-syntax-forward " ")
-               (not (looking-at ":")))
-             (save-excursion
-               (goto-char orig-point)
+  (let ((normal-indent (current-column))
+        (orig-point (point)))
+    (goto-char (1+ (elt state 1)))
+    (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
+    (cond
+     ;; car of form doesn't seem to be a symbol, or is a keyword
+     ((and (elt state 2)
+           (or (not (looking-at "\\sw\\|\\s_"))
                (looking-at ":")))
-        (save-excursion
-          (goto-char (+ 2 (elt state 1)))
-          (current-column)))
-       (t
-        (let ((function (buffer-substring (point)
-                                          (progn (forward-sexp 1) (point))))
-              method)
-          (setq method (or (function-get (intern-soft function)
-                                         'lisp-indent-function)
-                           (get (intern-soft function) 'lisp-indent-hook)))
-          (cond ((or (eq method 'defun)
-                     (and (null method)
-                          (> (length function) 3)
-                          (string-match "\\`def" function)))
-                 (lisp-indent-defform state indent-point))
-                ((integerp method)
-                 (lisp-indent-specform method state
-                                       indent-point normal-indent))
-                (method
-                 (funcall method indent-point state))))))))
+      (if (not (> (save-excursion (forward-line 1) (point))
+                  calculate-lisp-indent-last-sexp))
+          (progn (goto-char calculate-lisp-indent-last-sexp)
+                 (beginning-of-line)
+                 (parse-partial-sexp (point)
+                                     calculate-lisp-indent-last-sexp 0 t)))
+      ;; Indent under the list or under the first sexp on the same
+      ;; line as calculate-lisp-indent-last-sexp.  Note that first
+      ;; thing on that line has to be complete sexp since we are
+      ;; inside the innermost containing sexp.
+      (backward-prefix-chars)
+      (current-column))
+     ((and (save-excursion
+             (goto-char indent-point)
+             (skip-syntax-forward " ")
+             (not (looking-at ":")))
+           (save-excursion
+             (goto-char orig-point)
+             (looking-at ":")))
+      (save-excursion
+        (goto-char (+ 2 (elt state 1)))
+        (current-column)))
+     (t
+      (let ((function (buffer-substring (point)
+                                        (progn (forward-sexp 1) (point))))
+            method)
+        (setq method (or (function-get (intern-soft function)
+                                       'lisp-indent-function)
+                         (get (intern-soft function) 'lisp-indent-hook)))
+        (cond ((or (eq method 'defun)
+                   (and (null method)
+                        (> (length function) 3)
+                        (string-match "\\`def" function)))
+               (lisp-indent-defform state indent-point))
+              ((integerp method)
+               (lisp-indent-specform method state
+                                     indent-point normal-indent))
+              (method
+               (funcall method indent-point state))))))))
 
-  (add-hook 'emacs-lisp-mode-hook
-            (lambda () (setq-local lisp-indent-function #'Fuco1/lisp-indent-function)))
+(add-hook 'emacs-lisp-mode-hook
+          (lambda () (setq-local lisp-indent-function #'Fuco1/lisp-indent-function)))
 #+end_src
 * Epilogue
 
 Here we close the =let= expression from [[*Performance optimization][the preface]].
 
 #+begin_src emacs-lisp
-  )
+)
 #+end_src
 
 We also reset the value of =gc-cons-threshold=, not to its original value, we still leave it larger than default so that GCs don't happen so often.
 
 #+begin_src emacs-lisp
-  (setq gc-cons-threshold (* 2 1000 1000))
+(setq gc-cons-threshold (* 2 1000 1000))
 #+end_src
