@@ -185,11 +185,6 @@ I’m testing out [[https://github.com/swaywm/sway][sway]] as my window manager,
     (setenv "SSH_AUTH_SOCK" (format "/tmp/ssh-agent-%s-tmux" (getenv "USER"))))
 #+end_src
 
-Make sure my local bin dir is in emacs =$PATH=.
-#+begin_src emacs-lisp
-  (setq exec-path (append exec-path '("~/bin")))
-#+end_src
-
 Some text fill options.
 #+begin_src emacs-lisp
   (setq-default fill-column 100)
@@ -392,6 +387,16 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
       "hk" '(helpful-key :which-key "key help")
       "hv" '(helpful-variable :which-key "variable help")))
 #+end_src
+
+Make sure my local bin dir is in emacs =$PATH=, and keep it updated.
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+    :config
+    (setq exec-path (append exec-path '("~/bin")))
+    (when (memq window-system '(mac ns x))
+      (exec-path-from-shell-initialize)))
+#+end_src
+
 * Text mode
 #+begin_src emacs-lisp
   (use-package simple
