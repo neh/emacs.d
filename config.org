@@ -598,8 +598,8 @@ I come from vim, so evil is a necessity.
     (general-define-key
      :keymaps 'ivy-minibuffer-map
      "<escape>" 'keyboard-escape-quit
-     "C-t" 'ivy-next-line
-     "C-n" 'ivy-previous-line
+     "M-t" 'ivy-next-line
+     "M-n" 'ivy-previous-line
      "C-M-t" 'ivy-next-line-and-call
      "C-M-n" 'ivy-previous-line-and-call
      "C-b" 'ivy-scroll-down-command
@@ -751,8 +751,8 @@ Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company.
     :bind (:map company-active-map
            ("M-n" . nil)
            ("M-p" . nil)
-           ("C-t" . #'company-select-next)
-           ("C-n" . #'company-select-previous)
+           ("M-t" . #'company-select-next)
+           ("M-n" . #'company-select-previous)
            ("TAB" . #'company-complete)
            ("<tab>" . #'company-complete)
            ("RET" . #'company-complete-selection))
@@ -856,8 +856,8 @@ Of course, the great magit.
      :keymaps 'magit-mode-map
      "C-b" 'evil-scroll-page-up
      "C-f" 'evil-scroll-page-down
-     "C-t" 'magit-section-forward
-     "C-n" 'magit-section-backward
+     "M-h" 'magit-section-up
+     "M-s" 'magit-section-goto-successor
      "M-t" 'magit-section-forward-sibling
      "M-n" 'magit-section-backward-sibling
      "r" 'magit-refresh
