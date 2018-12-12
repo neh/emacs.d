@@ -22,6 +22,10 @@ This is a handy command I’ve been using to test as I move to a literate config
   emacs -Q -l profile-dotemacs.el --eval "(setq profile-dotemacs-file (setq load-file-name \"/home/nathan/.emacs.d/init.el\"))" -f profile-dotemacs
 #+end_src
 
+#+begin_src emacs-lisp
+  ;; -*- lexical-binding: t -*-
+#+end_src
+
 * Performance optimization
 
 Lately I've been playing with optimizing my Emacs load time. I have found a couple of useful resources, including:
