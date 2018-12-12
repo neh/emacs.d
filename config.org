@@ -568,141 +568,141 @@ I come from vim, so evil is a necessity.
 
 * Navigation?
 #+begin_src emacs-lisp
-  (use-package ivy
-    :init
-    (defun reloading (cmd)
-      (lambda (x)
-        (funcall cmd x)
-        (ivy--reset-state ivy-last)))
+(use-package ivy
+  :init
+  (defun reloading (cmd)
+    (lambda (x)
+      (funcall cmd x)
+      (ivy--reset-state ivy-last)))
 
-    (defun given-file (cmd prompt) ; needs lexical-binding
-      (lambda (source)
-        (let ((target
-               (let ((enable-recursive-minibuffers t))
-                 (read-file-name
-                  (format "%s %s to:" prompt source)))))
-          (funcall cmd source target 1))))
+  (defun given-file (cmd prompt) ; needs lexical-binding
+    (lambda (source)
+      (let ((target
+             (let ((enable-recursive-minibuffers t))
+               (read-file-name
+                (format "%s %s to:" prompt source)))))
+        (funcall cmd source target 1))))
 
-    (defun confirm-delete-file (x)
-      (dired-delete-file x 'confirm-each-subdirectory))
+  (defun confirm-delete-file (x)
+    (dired-delete-file x 'confirm-each-subdirectory))
 
-    (defun neh-open-file-in-vsplit (f)
-      (evil-window-vsplit 80 f)
-      (balance-windows))
+  (defun neh-open-file-in-vsplit (f)
+    (evil-window-vsplit 80 f)
+    (balance-windows))
 
-    (defun neh-open-file-in-frame (f)
-      (find-file-other-frame f))
+  (defun neh-open-file-in-frame (f)
+    (find-file-other-frame f))
 
-    :general
-    (neh/leader-keys
-      "oo" '(ivy-switch-buffer :which-key "switch buffer")
-      "xa" '(ivy-resume :which-key "ivy resume"))
+  :general
+  (neh/leader-keys
+    "oo" '(ivy-switch-buffer :which-key "switch buffer")
+    "xa" '(ivy-resume :which-key "ivy resume"))
 
-    (general-define-key
-     :keymaps 'ivy-minibuffer-map
-     "<escape>" 'keyboard-escape-quit
-     "M-t" 'ivy-next-line
-     "M-n" 'ivy-previous-line
-     "C-M-t" 'ivy-next-line-and-call
-     "C-M-n" 'ivy-previous-line-and-call
-     "C-b" 'ivy-scroll-down-command
-     "C-f" 'ivy-scroll-up-command
-     "C-d" 'ivy-call)
+  (general-define-key
+   :keymaps 'ivy-minibuffer-map
+   "<escape>" 'keyboard-escape-quit
+   "M-t" 'ivy-next-line
+   "M-n" 'ivy-previous-line
+   "C-M-t" 'ivy-next-line-and-call
+   "C-M-n" 'ivy-previous-line-and-call
+   "C-b" 'ivy-scroll-down-command
+   "C-f" 'ivy-scroll-up-command
+   "C-d" 'ivy-call)
 
-    (general-define-key
-     :keymaps 'counsel-find-file-map
-     "TAB" 'ivy-alt-done
-     "C-s" 'neh-open-file-in-vsplit)
+  (general-define-key
+   :keymaps 'counsel-find-file-map
+   "TAB" 'ivy-alt-done
+   "C-s" 'neh-open-file-in-vsplit)
 
-    (general-define-key
-     :keymaps 'ivy-occur-mode-map
-     "t" 'ivy-occur-next-line
-     "n" 'ivy-occur-previous-line
-     "RET" 'ivy-occur-press
-     "a" 'ivy-occur-read-action
-     "c" 'ivy-occur-toggle-calling
-     "C-f" 'evil-scroll-page-down
-     "C-b" 'evil-scroll-page-up)
+  (general-define-key
+   :keymaps 'ivy-occur-mode-map
+   "t" 'ivy-occur-next-line
+   "n" 'ivy-occur-previous-line
+   "RET" 'ivy-occur-press
+   "a" 'ivy-occur-read-action
+   "c" 'ivy-occur-toggle-calling
+   "C-f" 'evil-scroll-page-down
+   "C-b" 'evil-scroll-page-up)
 
-    :config
-    (ivy-mode 1)
+  :config
+  (ivy-mode 1)
 
-    (ivy-add-actions
-     t
-     '(("f" neh-open-file-in-frame "other frame")))
+  (ivy-add-actions
+   t
+   '(("f" neh-open-file-in-frame "other frame")))
 
-    (setq ivy-use-virtual-buffers t
-          ivy-count-format "%d/%d "
-          ivy-format-function #'ivy-format-function-arrow
-          ivy-extra-directories nil
-          ivy-height 15
-          ivy-use-selectable-prompt t
-          ivy-re-builders-alist
-          '((t . ivy--regex-fuzzy))
-          ivy-initial-inputs-alist nil))
+  (setq ivy-use-virtual-buffers t
+        ivy-count-format "%d/%d "
+        ivy-format-function #'ivy-format-function-arrow
+        ivy-extra-directories nil
+        ivy-height 15
+        ivy-use-selectable-prompt t
+        ivy-re-builders-alist
+        '((t . ivy--regex-fuzzy))
+        ivy-initial-inputs-alist nil))
 
-  (use-package amx
-    :disabled t
-    :config
-    (amx-mode))
+(use-package amx
+  :disabled t
+  :config
+  (amx-mode))
 
-  (use-package flx
-    :disabled t)
+(use-package flx
+  :disabled t)
 
-  (use-package prescient
-    :demand t
-    :commands prescient-persist-mode
-    :config
-    (prescient-persist-mode t))
+(use-package prescient
+  :demand t
+  :commands prescient-persist-mode
+  :config
+  (prescient-persist-mode t))
 
-  (use-package ivy-prescient
-    :after (prescient ivy)
-    :demand t
-    :hook (after-init . ivy-prescient-mode)
-    :commands ivy-prescient-mode
-    :config
-    (ivy-prescient-mode t))
+(use-package ivy-prescient
+  :after (prescient ivy)
+  :demand t
+  :hook (after-init . ivy-prescient-mode)
+  :commands ivy-prescient-mode
+  :config
+  (ivy-prescient-mode t))
 
-  (use-package company-prescient
-    ;; I can't actually work out how to use this during company completion
-    :disabled t
-    :after (prescient company)
-    :commands company-prescient-mode
-    :config
-    (company-prescient-mode))
+(use-package company-prescient
+  ;; I can't actually work out how to use this during company completion
+  :disabled t
+  :after (prescient company)
+  :commands company-prescient-mode
+  :config
+  (company-prescient-mode))
 
-  (use-package counsel
-    :general
-    (neh/leader-keys
-      "e" '(counsel-M-x :which-key "M-x")
+(use-package counsel
+  :general
+  (neh/leader-keys
+    "e" '(counsel-M-x :which-key "M-x")
 
-      "ha" '(counsel-apropos :which-key "apropos")
+    "ha" '(counsel-apropos :which-key "apropos")
 
-      "oa" '(counsel-linux-app :which-key "app")
-      "of" '(counsel-find-file :which-key "open file")
+    "oa" '(counsel-linux-app :which-key "app")
+    "of" '(counsel-find-file :which-key "open file")
 
-      "sa" '(swiper-all :which-key "search all buffers")
-      "sf" '(counsel-ag :which-key "search files")
-      "sg" '(counsel-git-grep :which-key "search files in git")
-      "sh" '(counsel-grep-or-swiper :which-key "search buffer")
-      "so" '(counsel-org-goto-all :which-key "search org")
-      "st" '(counsel-semantic-or-imenu :which-key "search tags"))
+    "sa" '(swiper-all :which-key "search all buffers")
+    "sf" '(counsel-ag :which-key "search files")
+    "sg" '(counsel-git-grep :which-key "search files in git")
+    "sh" '(counsel-grep-or-swiper :which-key "search buffer")
+    "so" '(counsel-org-goto-all :which-key "search org")
+    "st" '(counsel-semantic-or-imenu :which-key "search tags"))
 
-    :config
-    (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s"
-          counsel-grep-base-command "grep -inE '%s' %s")
-    (counsel-mode 1)
+  :config
+  (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s"
+        counsel-grep-base-command "grep -inE '%s' %s")
+  (counsel-mode 1)
 
-    ;; These don't work on a fresh load, but seem to start working at some
-    ;; point. Strange.
-    ;; (ivy-add-actions
-    ;;  'counsel-find-file
-    ;;  `(("c" ,(given-file #'copy-file "Copy") "copy")
-    ;;    ;; ("d" ,(reloading #'confirm-delete-file) "delete")
-    ;;    ("f" neh-open-file-in-frame "frame")
-    ;;    ("s" neh-open-file-in-vsplit "vsplit")
-    ;; ("m" ,(reloading (given-file #'rename-file "Move")) "move")))
-    )
+  ;; These don't work on a fresh load, but seem to start working at some
+  ;; point. Strange.
+  ;; (ivy-add-actions
+  ;;  'counsel-find-file
+  ;;  `(("c" ,(given-file #'copy-file "Copy") "copy")
+  ;;    ;; ("d" ,(reloading #'confirm-delete-file) "delete")
+  ;;    ("f" neh-open-file-in-frame "frame")
+  ;;    ("s" neh-open-file-in-vsplit "vsplit")
+  ;; ("m" ,(reloading (given-file #'rename-file "Move")) "move")))
+  )
 #+end_src
 #+begin_src emacs-lisp
 (use-package avy
@@ -756,54 +756,54 @@ I come from vim, so evil is a necessity.
 * Company
 Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company. What. The =prog-mode= hook works though. Or just load it in =:config=.
 #+begin_src emacs-lisp
-  (use-package company
-    ;; :demand t
-    :bind (:map company-active-map
-           ("M-n" . nil)
-           ("M-p" . nil)
-           ("M-t" . #'company-select-next)
-           ("M-n" . #'company-select-previous)
-           ("TAB" . #'company-complete)
-           ("<tab>" . #'company-complete)
-           ("RET" . #'company-complete-selection))
+(use-package company
+  ;; :demand t
+  :bind (:map company-active-map
+         ("M-n" . nil)
+         ("M-p" . nil)
+         ("M-t" . #'company-select-next)
+         ("M-n" . #'company-select-previous)
+         ("TAB" . #'company-complete)
+         ("<tab>" . #'company-complete)
+         ("RET" . #'company-complete-selection))
 
-    ;; :hook (prog-mode . global-company-mode))
-    ;; :hook (after-init . global-company-mode))
-    ;; :init
-    ;; (add-hook 'after-init-hook 'global-company-mode))
-    :config
-    (global-company-mode t))
+  ;; :hook (prog-mode . global-company-mode))
+  ;; :hook (after-init . global-company-mode))
+  ;; :init
+  ;; (add-hook 'after-init-hook 'global-company-mode))
+  :config
+  (global-company-mode t))
 
-  (use-package company-statistics
-    :disabled t
-    :init
-    (add-hook 'company-mode-hook #'company-statistics-mode))
+(use-package company-statistics
+  :disabled t
+  :init
+  (add-hook 'company-mode-hook #'company-statistics-mode))
 
-  (use-package company-terraform
-    :config
-    (company-terraform-init))
+(use-package company-terraform
+  :config
+  (company-terraform-init))
 
-  (use-package company-box
-    :after company
-    :commands (company-box-mode)
-    :hook (company-mode . company-box-mode)
-    :config
-    (setq company-box-enable-icon nil)
-    ;; (add-to-list 'company-box-frame-parameters
-    ;; '(font . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
-    ;; (add-to-list 'company-box-frame-parameters
-    ;; '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
-    )
+(use-package company-box
+  :after company
+  :commands (company-box-mode)
+  :hook (company-mode . company-box-mode)
+  :config
+  (setq company-box-enable-icon nil)
+  ;; (add-to-list 'company-box-frame-parameters
+  ;; '(font . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
+  ;; (add-to-list 'company-box-frame-parameters
+  ;; '(font-parameter . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
+  )
 
-  (use-package company-quickhelp
-    :hook (company-mode . company-quickhelp-mode)
-    :general
-    (:keymaps 'company-active-map
-     "C-m" #'company-quickhelp-manual-begin))
+(use-package company-quickhelp
+  :hook (company-mode . company-quickhelp-mode)
+  :general
+  (:keymaps 'company-active-map
+   "C-m" #'company-quickhelp-manual-begin))
 
-  (use-package company-ansible
-    :config
-    (add-to-list 'company-backends 'company-ansible))
+(use-package company-ansible
+  :config
+  (add-to-list 'company-backends 'company-ansible))
 #+end_src
 
 * Git
@@ -858,55 +858,55 @@ Diff-hl may be better at /showing/ diff info, but git-gutter is better at doing 
 
 Of course, the great magit.
 #+begin_src emacs-lisp
-  (straight-use-package 'magit)
-  (use-package magit
-    :straight nil
-    :general
-    (general-define-key
-     :keymaps 'magit-mode-map
-     "C-b" 'evil-scroll-page-up
-     "C-f" 'evil-scroll-page-down
-     "M-h" 'magit-section-up
-     "M-s" 'magit-section-goto-successor
-     "M-t" 'magit-section-forward-sibling
-     "M-n" 'magit-section-backward-sibling
-     "r" 'magit-refresh
-     "R" 'magit-rebase-popup
-     "g" 'magit-tag-popup
-     "t" 'evil-next-visual-line
-     "n" 'evil-previous-visual-line)
+(straight-use-package 'magit)
+(use-package magit
+  :straight nil
+  :general
+  (general-define-key
+   :keymaps 'magit-mode-map
+   "C-b" 'evil-scroll-page-up
+   "C-f" 'evil-scroll-page-down
+   "M-h" 'magit-section-up
+   "M-s" 'magit-section-goto-successor
+   "M-t" 'magit-section-forward-sibling
+   "M-n" 'magit-section-backward-sibling
+   "r" 'magit-refresh
+   "R" 'magit-rebase-popup
+   "g" 'magit-tag-popup
+   "t" 'evil-next-visual-line
+   "n" 'evil-previous-visual-line)
 
-    (general-define-key
-     :keymaps 'magit-diff-mode-map
-     "/" 'evil-search-forward
-     "l" 'evil-search-next
-     "L" 'evil-search-previous)
+  (general-define-key
+   :keymaps 'magit-diff-mode-map
+   "/" 'evil-search-forward
+   "l" 'evil-search-next
+   "L" 'evil-search-previous)
 
-    (neh/leader-keys
-      "gc" '(magit-commit :which-key "commit")
-      "gd" '(magit-diff-popup :which-key "diff")
-      "gf" '(magit-stage-file :which-key "stage file")
-      "gl" '(magit-log-popup :which-key "log")
-      ;; "glf" '(magit-log-buffer-file :which-key "current buffer log")
-      "gm" '(magit-dispatch-popup :which-key "menu")
-      "gP" '(magit-push-popup :which-key "push")
-      "gs" '(magit-status :which-key "status"))
+  (neh/leader-keys
+    "gc" '(magit-commit :which-key "commit")
+    "gd" '(magit-diff-popup :which-key "diff")
+    "gf" '(magit-stage-file :which-key "stage file")
+    "gl" '(magit-log-popup :which-key "log")
+    ;; "glf" '(magit-log-buffer-file :which-key "current buffer log")
+    "gm" '(magit-dispatch-popup :which-key "menu")
+    "gP" '(magit-push-popup :which-key "push")
+    "gs" '(magit-status :which-key "status"))
 
-    :config
-    ;; There doesn't seem to be a "nice" way to adjust magit popups, so I stole
-    ;; this method from evil-magit
-    ;; refresh
-    (magit-change-popup-key 'magit-dispatch-popup
-                            :action (string-to-char "g") (string-to-char "r"))
-    ;; rebase popup
-    (magit-change-popup-key 'magit-dispatch-popup
-                            :action (string-to-char "r") (string-to-char "R"))
-    ;; tag popup
-    (magit-change-popup-key 'magit-dispatch-popup
-                            :action (string-to-char "t") (string-to-char "g"))
+  :config
+  ;; There doesn't seem to be a "nice" way to adjust magit popups, so I stole
+  ;; this method from evil-magit
+  ;; refresh
+  (magit-change-popup-key 'magit-dispatch-popup
+                          :action (string-to-char "g") (string-to-char "r"))
+  ;; rebase popup
+  (magit-change-popup-key 'magit-dispatch-popup
+                          :action (string-to-char "r") (string-to-char "R"))
+  ;; tag popup
+  (magit-change-popup-key 'magit-dispatch-popup
+                          :action (string-to-char "t") (string-to-char "g"))
 
-    (setq magit-completing-read-function 'ivy-completing-read)
-    (add-hook 'git-commit-mode-hook 'evil-insert-state))
+  (setq magit-completing-read-function 'ivy-completing-read)
+  (add-hook 'git-commit-mode-hook 'evil-insert-state))
 #+end_src
 
 * Org
