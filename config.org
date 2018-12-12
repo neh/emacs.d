@@ -235,7 +235,7 @@ And then make [[https://github.com/jwiegley/use-package][use-package]] use strai
 #+begin_src emacs-lisp
 (setq straight-use-package-by-default t)
 (straight-use-package 'use-package)
-(setq use-package-verbose t
+(setq use-package-verbose nil
       ;; use-package-always-defer t
       )
 #+end_src
