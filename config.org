@@ -590,6 +590,9 @@ I come from vim, so evil is a necessity.
       (evil-window-vsplit 80 f)
       (balance-windows))
 
+    (defun neh-open-file-in-frame (f)
+      (find-file-other-frame f))
+
     :general
     (neh/leader-keys
       "oo" '(ivy-switch-buffer :which-key "switch buffer")
@@ -623,6 +626,11 @@ I come from vim, so evil is a necessity.
 
     :config
     (ivy-mode 1)
+
+    (ivy-add-actions
+     t
+     '(("f" neh-open-file-in-frame "other frame")))
+
     (setq ivy-use-virtual-buffers t
           ivy-count-format "%d/%d "
           ivy-format-function #'ivy-format-function-arrow
@@ -687,12 +695,14 @@ I come from vim, so evil is a necessity.
 
     ;; These don't work on a fresh load, but seem to start working at some
     ;; point. Strange.
-    (ivy-add-actions
-     'counsel-find-file
-     `(("c" ,(given-file #'copy-file "Copy") "copy")
-       ("d" ,(reloading #'confirm-delete-file) "delete")
-       ("s" neh-open-file-in-vsplit "vsplit")
-       ("m" ,(reloading (given-file #'rename-file "Move")) "move"))))
+    ;; (ivy-add-actions
+    ;;  'counsel-find-file
+    ;;  `(("c" ,(given-file #'copy-file "Copy") "copy")
+    ;;    ;; ("d" ,(reloading #'confirm-delete-file) "delete")
+    ;;    ("f" neh-open-file-in-frame "frame")
+    ;;    ("s" neh-open-file-in-vsplit "vsplit")
+    ;; ("m" ,(reloading (given-file #'rename-file "Move")) "move")))
+    )
 #+end_src
 #+begin_src emacs-lisp
 (use-package avy
