@@ -35,10 +35,9 @@ Lately I've been playing with optimizing my Emacs load time. I have found a coup
 
 Based on these, I have added the code below.
 
-First, a hook that reports how long and how many garbage collections the startup took.
+First, a hook that reports how long and how many garbage collections the startup took. Use a hook so the message doesn't get clobbered by other messages.
 
 #+begin_src emacs-lisp
-;; Use a hook so the message doesn't get clobbered by other messages.
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "Emacs ready in %s with %d garbage collections."
@@ -61,7 +60,9 @@ We set =gc-cons-threshold= to its maximum value, to prevent any garbage collecti
 #+end_src
 
 * Base settings
-Turn off all startup messages, splash screens, menus, scrollbars, etc.
+
+Turn off all startup messages, splash screens, menu bars, scrollbars, etc. for a clean start.
+
 #+begin_src emacs-lisp
 (setq inhibit-splash-screen t
       inhibit-startup-message t
@@ -74,6 +75,7 @@ Turn off all startup messages, splash screens, menus, scrollbars, etc.
 #+end_src
 
 Set scrolling options. These stop the half-page jumps while scrolling, and make things smoother. Haven’t tried out =pixel-scroll-mode= yet.
+
 #+begin_src emacs-lisp
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1)) ;; one line at a time
       mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
@@ -87,18 +89,22 @@ Set scrolling options. These stop the half-page jumps while scrolling, and make 
       scroll-down-aggressively 0.01
       scroll-conservatively 101) ;; Don't jump around when scrolling
 #+end_src
+
 And let’s try out the new single-line-horizontal-scroll option in emacs 26.
+
 #+begin_src emacs-lisp
 (setq-default auto-hscroll-mode 'current-line)
 #+end_src
 
 Set the window titles. Nothing fancy, just the buffer name.
+
 #+begin_src emacs-lisp
 (setq frame-title-format "%b" ;; focused window title format
       icon-title-format "%b") ;; unfocused window title format
 #+end_src
 
 Set my preferred font and size, taking display DPI into account. Bits and pieces of this came from various places, but especially [[https://www.reddit.com/r/emacs/comments/a01fs1/dispwatch_watch_the_current_display_for_changes/][this reddit thread]], which led me to [[https://emacs.stackexchange.com/questions/28390/quickly-adjusting-text-to-dpi-changes/44930#44930][this useful StackExchange question]]. I will probably revisit and incorporate more of what’s there later, but for now this will do. I’ll have to test this with different screens and moving frames between them (particularly, the =set-frame-font= args may need adjustment). Also, a hook for a frame moving to a different screen would be useful.
+
 #+begin_src emacs-lisp
 (defun frame-monitor-mm ()
   "Return the size of the current monitor in mm."
@@ -130,36 +136,43 @@ Set my preferred font and size, taking display DPI into account. Bits and pieces
 #+end_src
 
 I don’t really use the customization system in Emacs (yet?) but let’s at least make it use a file that isn’t the main config.
+
 #+begin_src emacs-lisp
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file 'no-error)
 #+end_src
 
 All UTF-8, all the time.
+
 #+begin_src emacs-lisp
 (setq coding-system-for-read 'utf-8
       coding-system-for-write 'utf-8)
 #+end_src
 
-No tabs when indenting.
+Don’t use tabs when indenting.
+
 #+begin_src emacs-lisp
 (setq-default indent-tabs-mode nil)
 #+end_src
 
-More options.
+More options. I’m not sure where to put some things in this file yet. Here are some.
+
 #+begin_src emacs-lisp
 (setq sentence-end-double-space nil)
 (setq ring-bell-function 'ignore)
 (setq enable-recursive-minibuffers t)
+(global-subword-mode 1)
 #+end_src
 
 Don’t warn me when I do these potentially confusing narrowing operations.
+
 #+begin_src emacs-lisp
 (put 'narrow-to-region 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
 #+end_src
 
 Set some backup file options.
+
 #+begin_src emacs-lisp
 (setq make-backup-files nil
       delete-old-versions t
@@ -169,54 +182,58 @@ Set some backup file options.
       `((".*" ,temporary-file-directory t)))
 #+end_src
 
-I’m not sure where to put some things in this file yet. Here’s one. It makes word-based navigation work on parts of things like CamelCase.
-#+begin_src emacs-lisp
-(global-subword-mode 1)
-#+end_src
-
 I view man pages in emacs sometimes, and want a fixed width for them.
+
 #+begin_src emacs-lisp
 (setenv "MANWIDTH" "100")
 #+end_src
 
 I’m testing out [[https://github.com/swaywm/sway][sway]] as my window manager, and apparently ~$SSH_AUTH_SOCK~ doesn’t get set (maybe just for xwayland apps?). So we workaround. I already set a fixed link to the real socket for tmux usage, I can reuse it for this.
+
 #+begin_src emacs-lisp
 (when (string= (getenv "SSH_AUTH_SOCK") nil)
   (setenv "SSH_AUTH_SOCK" (format "/tmp/ssh-agent-%s-tmux" (getenv "USER"))))
 #+end_src
 
 Some text fill options.
+
 #+begin_src emacs-lisp
 (setq-default fill-column 100)
 (setq comment-auto-fill-only-comments t)
 #+end_src
 
 How to make display buffer names.
+
 #+begin_src emacs-lisp
 (setq uniquify-buffer-name-style 'forward)
 #+end_src
 
 Some git/vc options.
+
 #+begin_src emacs-lisp
 (setq auto-revert-check-vc-info t
       vc-follow-symlinks t)
 #+end_src
 
 When pasting (yanking) into emacs, paste at the point, not where I click (I like to paste with the middle mouse button, xorg-style).
+
 #+begin_src emacs-lisp
 (setq mouse-yank-at-point t)
 #+end_src
 
 * Package management
+
 I use [[https://github.com/raxod502/straight.el][straight.el]] instead of package.el.
 
 This setting makes the straight bootstrap /much/ faster. See the discussion [[https://github.com/raxod502/straight.el/issues/304][here]].
+
 #+begin_src emacs-lisp
 (setq straight-check-for-modifications '(check-on-save))
 #+end_src
+
 And now bootstrap straight, using the snippet from the docs.
+
 #+begin_src emacs-lisp
-;; Bootstrap straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -232,6 +249,7 @@ And now bootstrap straight, using the snippet from the docs.
 #+end_src
 
 And then make [[https://github.com/jwiegley/use-package][use-package]] use straight, and install use-package using straight:
+
 #+begin_src emacs-lisp
 (setq straight-use-package-by-default t)
 (straight-use-package 'use-package)
@@ -239,19 +257,24 @@ And then make [[https://github.com/jwiegley/use-package][use-package]] use strai
       ;; use-package-always-defer t
       )
 #+end_src
+
 This =use-package= extension allows declaring dependencies on system commands.
+
 #+begin_src emacs-lisp
 (use-package use-package-ensure-system-package)
 #+end_src
 
 Set up ESUP for startup profiling. In theory. [[https://github.com/jschaf/esup/issues/54][It breaks.]]
+
 #+begin_src emacs-lisp
 (use-package esup
   :disabled t)
 #+end_src
 
 * Keybindings
+
 [[https://github.com/noctuid/general.el][General.el]] handles keybinding management.
+
 #+begin_src emacs-lisp
 (use-package general
   :demand t
@@ -335,6 +358,7 @@ Set up ESUP for startup profiling. In theory. [[https://github.com/jschaf/esup/i
 #+end_src
 
 Which-key shows a handy popup for available keybindings at any given time.
+
 #+begin_src emacs-lisp
 (use-package which-key
   :demand t
@@ -345,6 +369,7 @@ Which-key shows a handy popup for available keybindings at any given time.
 #+end_src
 
 Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-style bindings with leaders is maybe just as good?
+
 #+begin_src emacs-lisp
 (use-package key-chord
   :demand t)
@@ -357,6 +382,9 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 #+end_src
 
 * Base2
+
+Not sure where to put everything yet, so this section is a grab bag of stuff that needs package management (straight) to be in place.
+
 #+begin_src emacs-lisp
 (use-package saveplace
   :demand t
@@ -392,6 +420,7 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 #+end_src
 
 Make sure my local bin dir is in emacs =$PATH=, and keep it updated.
+
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
   :config
@@ -401,6 +430,9 @@ Make sure my local bin dir is in emacs =$PATH=, and keep it updated.
 #+end_src
 
 * Text mode
+
+General settings when in text editing modes.
+
 #+begin_src emacs-lisp
 (use-package simple
   :straight nil
@@ -423,6 +455,7 @@ Make sure my local bin dir is in emacs =$PATH=, and keep it updated.
 #+end_src
 
 I’ll put olivetti mode here since I think it’s mainly a text mode thing rather than for programming, but who knows.
+
 #+begin_src emacs-lisp
 (use-package olivetti
   :commands (olivetti-mode)
@@ -431,6 +464,9 @@ I’ll put olivetti mode here since I think it’s mainly a text mode thing rath
 #+end_src
 
 * Prog mode
+
+General settings for programming modes.
+
 #+begin_src emacs-lisp
 (defun my-prog-mode-hook ()
   "Set line-numbers settings for 'prog-mode'."
@@ -442,7 +478,9 @@ I’ll put olivetti mode here since I think it’s mainly a text mode thing rath
 #+end_src
 
 * Pretty it up
+
 I’ve been liking dark-on-light themes lately, and brutalist with some tweaks has been good.
+
 #+begin_src emacs-lisp
 (use-package brutalist-theme)
 (load-theme 'brutalist t)
@@ -451,19 +489,24 @@ I’ve been liking dark-on-light themes lately, and brutalist with some tweaks h
 But I like some things to be set no matter the theme. There’s probably a hook or something for this.
 
 I like italic comments.
+
 #+begin_src emacs-lisp
 (set-face-italic 'font-lock-comment-face t)
 #+end_src
+
 And the smaller brutalist modeline height is not for me.
+
 #+begin_src emacs-lisp
 (set-face-attribute 'mode-line nil :height 1.0)
 (set-face-attribute 'mode-line-inactive nil :height 1.0)
 #+end_src
 
 * Modeline
+
 Trying out doom-modeline.
 
 I don’t understand why I have to use =:demand= here. My understanding is that the =:hook= should take care of it. I have general troubles with the =after-init= hook (like with =company-mode=), so maybe it’s something there.
+
 #+begin_src emacs-lisp
 (use-package doom-modeline
   :demand t
@@ -484,7 +527,9 @@ I don’t understand why I have to use =:demand= here. My understanding is that 
 #+end_src
 
 * Eeeeevil
+
 I come from vim, so evil is a necessity.
+
 #+begin_src emacs-lisp
 (use-package evil
   :demand t
@@ -564,9 +609,8 @@ I come from vim, so evil is a necessity.
   (use-package evil-ex-fasd))
 #+end_src
 
-** TODO look into evil-collection minibuffer setup
-
 * Navigation?
+
 #+begin_src emacs-lisp
 (use-package ivy
   :init
@@ -723,6 +767,7 @@ I come from vim, so evil is a necessity.
 #+end_src
 
 * Projectile
+
 #+begin_src emacs-lisp
 (use-package projectile
   :general
@@ -754,7 +799,9 @@ I come from vim, so evil is a necessity.
 #+end_src
 
 * Company
+
 Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company. What. The =prog-mode= hook works though. Or just load it in =:config=.
+
 #+begin_src emacs-lisp
 (use-package company
   ;; :demand t
@@ -807,7 +854,9 @@ Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company.
 #+end_src
 
 * Git
+
 I find that diff-hl does a better job of showing diff information than git-gutter does. I’d like to use =diff-hl-flydiff-mode=, but it caused issues, which I can’t remember well enough to document now. Will revisit later.
+
 #+begin_src emacs-lisp
 (use-package diff-hl
   :hook ((after-init . global-diff-hl-mode)
@@ -820,7 +869,8 @@ I find that diff-hl does a better job of showing diff information than git-gutte
   (set-face-attribute 'diff-hl-delete nil :foreground "dark red" :background "red4"))
 #+end_src
 
-Ending up at the bottom of the window and not being able see enought context when jumping around is annoying, so I have this to help deal with that by recentering after jumps.
+Ending up at the bottom of the window and not being able see enough context when jumping around is annoying, so I have this to help deal with that by recentering after jumps.
+
 #+begin_src emacs-lisp
 (defun neh/after-jump (&optional arg)
   "Position text sanely after jumping. ARG is unused but apparently necessary."
@@ -828,6 +878,7 @@ Ending up at the bottom of the window and not being able see enought context whe
 #+end_src
 
 Diff-hl may be better at /showing/ diff info, but git-gutter is better at doing things with diffs. So I have it active for navigation and staging actions. It’s disabled in org mode because I had issues with it before. Now that my config is in org though, it would be handy to have back. Another TODO.
+
 #+begin_src emacs-lisp
 (use-package git-gutter
   :general
@@ -858,6 +909,7 @@ Diff-hl may be better at /showing/ diff info, but git-gutter is better at doing 
 #+end_src
 
 Of course, the great magit.
+
 #+begin_src emacs-lisp
 (straight-use-package 'magit)
 (use-package magit
@@ -911,6 +963,7 @@ Of course, the great magit.
 #+end_src
 
 * Org
+
 #+begin_src emacs-lisp
 (use-package org
   :hook ((org-mode . (lambda () (add-hook 'after-save-hook 'org-babel-tangle
@@ -1060,6 +1113,7 @@ Of course, the great magit.
 #+end_src
 
 Make org-mode prettier.
+
 #+begin_src emacs-lisp
 (use-package org-bullets
   :init
@@ -1068,6 +1122,7 @@ Make org-mode prettier.
 #+end_src
 
 Org export.
+
 #+begin_src emacs-lisp
 (use-package ox-pandoc
   :ensure-system-package (pandoc
@@ -1085,6 +1140,7 @@ Org export.
 #+end_src
 
 * Dired
+
 #+begin_src emacs-lisp
 (use-package dired
   :straight nil
@@ -1117,6 +1173,7 @@ Org export.
 #+end_src
 
 * Imenu
+
 #+begin_src emacs-lisp
 (use-package imenu-list
   :general
@@ -1134,6 +1191,7 @@ Org export.
 #+end_src
 
 * Hydra
+
 #+begin_src emacs-lisp
 (use-package hydra
   :config
@@ -1275,6 +1333,7 @@ Org export.
 #+end_src
 
 * Misc packages
+
 #+begin_src emacs-lisp
 (use-package golden-ratio
   :commands golden-ratio-mode
@@ -1433,6 +1492,7 @@ Org export.
 #+end_src
 
 * Misc functions
+
 #+begin_src emacs-lisp
 (defun narrow-to-region-indirect (start end)
   "Restrict editing in this buffer to the current region (from START to END), indirectly."
@@ -1547,6 +1607,7 @@ Org export.
 (add-hook 'emacs-lisp-mode-hook
           (lambda () (setq-local lisp-indent-function #'Fuco1/lisp-indent-function)))
 #+end_src
+
 * Epilogue
 
 Here we close the =let= expression from [[*Performance optimization][the preface]].
