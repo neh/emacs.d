@@ -609,6 +609,8 @@ I come from vim, so evil is a necessity.
 
 #+begin_src emacs-lisp
 (use-package ivy
+  :hook (after-init . ivy-mode)
+
   :init
   (defun reloading (cmd)
     (lambda (x)
@@ -665,8 +667,6 @@ I come from vim, so evil is a necessity.
    "C-b" 'evil-scroll-page-up)
 
   :config
-  (ivy-mode 1)
-
   (ivy-add-actions
    t
    '(("f" neh-open-file-in-frame "other frame")))
@@ -691,27 +691,18 @@ I come from vim, so evil is a necessity.
 
 (use-package prescient
   :demand t
-  :commands prescient-persist-mode
   :config
   (prescient-persist-mode t))
 
 (use-package ivy-prescient
-  :after (prescient ivy)
-  :demand t
-  :hook (after-init . ivy-prescient-mode)
-  :commands ivy-prescient-mode
-  :config
-  (ivy-prescient-mode t))
+  :hook (ivy-mode . ivy-prescient-mode))
 
 (use-package company-prescient
-  ;; I can't actually work out how to use this during company completion
-  :disabled t
-  :after (prescient company)
-  :commands company-prescient-mode
-  :config
-  (company-prescient-mode))
+  :hook (company-mode . company-prescient-mode))
 
 (use-package counsel
+  :hook (after-init . counsel-mode)
+
   :general
   (neh/leader-keys
     "e" '(counsel-M-x :which-key "M-x")
@@ -728,10 +719,9 @@ I come from vim, so evil is a necessity.
     "so" '(counsel-org-goto-all :which-key "search org")
     "st" '(counsel-semantic-or-imenu :which-key "search tags"))
 
-  :config
+  :init
   (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s"
         counsel-grep-base-command "grep -inE '%s' %s")
-  (counsel-mode 1)
 
   ;; These don't work on a fresh load, but seem to start working at some
   ;; point. Strange.
@@ -766,6 +756,12 @@ I come from vim, so evil is a necessity.
 
 #+begin_src emacs-lisp
 (use-package projectile
+  :init
+  (setq projectile-completion-system 'ivy))
+
+(use-package counsel-projectile
+  :hook (counsel-mode . counsel-projectile-mode)
+
   :general
   (neh/leader-keys
     "oh" '(counsel-projectile-find-file :which-key "open file in project")
@@ -773,25 +769,16 @@ I come from vim, so evil is a necessity.
     "sp" '(counsel-projectile-rg :which-key "search project"))
 
   :config
-  (setq projectile-completion-system 'ivy)
+  ;; Set the default switch project action to find files so that paths are included in the search list
+  (counsel-projectile-modify-action 'counsel-projectile-switch-project-action
+                                    '((default counsel-projectile-switch-project-action-find-file)))
 
-  (projectile-mode)
-
-  (use-package counsel-projectile
-    ;; :disabled t
-    :after (counsel projectile)
-
-    :config
-    ;; Set the default switch project action to find files so that paths are included in the search list
-    (counsel-projectile-modify-action 'counsel-projectile-switch-project-action
-                                      '((default counsel-projectile-switch-project-action-find-file)))
-
-    (ivy-add-actions
-     'counsel-projectile-find-file
-     `(("c" ,(given-file #'copy-file "Copy") "copy")
-       ("d" ,(reloading #'confirm-delete-file) "delete")
-       ("m" ,(reloading (given-file #'rename-file "Move")) "move")
-       ("b" counsel-find-file-cd-bookmark-action "cd bookmark")))))
+  (ivy-add-actions
+   'counsel-projectile-find-file
+   `(("c" ,(given-file #'copy-file "Copy") "copy")
+     ("d" ,(reloading #'confirm-delete-file) "delete")
+     ("m" ,(reloading (given-file #'rename-file "Move")) "move")
+     ("b" counsel-find-file-cd-bookmark-action "cd bookmark"))))
 #+end_src
 
 * Company
