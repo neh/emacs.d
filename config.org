@@ -1005,8 +1005,6 @@ Of course, the great magit.
         '(("TODO" . org-todo)
           ("INPROGRESS" . org-inprogress)))
 
-  (set-face-attribute 'org-ellipsis '(:underline nil :weight normal))
-
   (let* ((variable-tuple (cond ((x-list-fonts "DejaVu Sans") '(:font "DejaVu Sans"))
                                ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
                                (nil (warn "Cannot find a variable width font."))))
@@ -1064,7 +1062,7 @@ Of course, the great magit.
         '((sequence "TODO" "INPROGRESS" "WAITING" "|" "DONE" "CANCELED")))
 
   (setq org-startup-indented t
-        org-ellipsis "  "
+        org-ellipsis " ⋯"
         org-fontify-whole-heading-line t
         org-fontify-done-headline t
         org-hide-emphasis-markers t
