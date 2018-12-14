@@ -436,14 +436,12 @@ General settings when in text editing modes.
 #+begin_src emacs-lisp
 (use-package simple
   :straight nil
-  :commands (visual-line-mode)
-  :hook (text-mode . visual-line-mode)
+  :hook ((text-mode prog-mode) . visual-line-mode)
   :general
   (neh/leader-keys
     "fv" '(visual-line-mode :which-key "visual line mode")))
 
 (use-package visual-fill-column
-  :commands (visual-fill-column-mode)
   :hook (visual-line-mode . visual-fill-column-mode)
   :general
   (neh/leader-keys
@@ -471,10 +469,8 @@ General settings for programming modes.
 (defun my-prog-mode-hook ()
   "Set line-numbers settings for 'prog-mode'."
   ;; (setq display-line-numbers 'relative)
-  (git-gutter-mode)
-  (visual-fill-column-mode))
   (add-hook 'prog-mode-hook #'my-prog-mode-hook)
-  (add-hook 'yaml-mode-hook #'my-prog-mode-hook)
+  (add-hook 'yaml-mode-hook #'my-prog-mode-hook))
 #+end_src
 
 * Pretty it up
@@ -881,6 +877,7 @@ Diff-hl may be better at /showing/ diff info, but git-gutter is better at doing 
 
 #+begin_src emacs-lisp
 (use-package git-gutter
+  :hook (prog-mode . git-gutter-mode)
   :general
   (general-define-key
    :states '(normal visual)
