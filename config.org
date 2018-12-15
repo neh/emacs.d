@@ -59,6 +59,56 @@ We set =gc-cons-threshold= to its maximum value, to prevent any garbage collecti
 (setq gc-cons-threshold most-positive-fixnum)
 #+end_src
 
+* Package management
+
+I use [[https://github.com/raxod502/straight.el][straight.el]] instead of package.el.
+
+This setting makes the straight bootstrap /much/ faster. See the discussion [[https://github.com/raxod502/straight.el/issues/304][here]].
+
+#+begin_src emacs-lisp
+(setq straight-check-for-modifications '(check-on-save))
+#+end_src
+
+And now bootstrap straight, using the snippet from the docs.
+
+#+begin_src emacs-lisp
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+#+end_src
+
+And then make [[https://github.com/jwiegley/use-package][use-package]] use straight, and install use-package using straight:
+
+#+begin_src emacs-lisp
+(setq straight-use-package-by-default t)
+(straight-use-package 'use-package)
+(setq use-package-verbose nil
+      ;; use-package-always-defer t
+      )
+#+end_src
+
+This =use-package= extension allows declaring dependencies on system commands.
+
+#+begin_src emacs-lisp
+(use-package use-package-ensure-system-package)
+#+end_src
+
+Set up ESUP for startup profiling. In theory. [[https://github.com/jschaf/esup/issues/54][It breaks.]]
+
+#+begin_src emacs-lisp
+(use-package esup
+  :disabled t)
+#+end_src
+
 * Base settings
 
 Turn off all startup messages, splash screens, menu bars, scrollbars, etc. for a clean start.
@@ -219,56 +269,6 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
 
 #+begin_src emacs-lisp
 (setq mouse-yank-at-point t)
-#+end_src
-
-* Package management
-
-I use [[https://github.com/raxod502/straight.el][straight.el]] instead of package.el.
-
-This setting makes the straight bootstrap /much/ faster. See the discussion [[https://github.com/raxod502/straight.el/issues/304][here]].
-
-#+begin_src emacs-lisp
-(setq straight-check-for-modifications '(check-on-save))
-#+end_src
-
-And now bootstrap straight, using the snippet from the docs.
-
-#+begin_src emacs-lisp
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-#+end_src
-
-And then make [[https://github.com/jwiegley/use-package][use-package]] use straight, and install use-package using straight:
-
-#+begin_src emacs-lisp
-(setq straight-use-package-by-default t)
-(straight-use-package 'use-package)
-(setq use-package-verbose nil
-      ;; use-package-always-defer t
-      )
-#+end_src
-
-This =use-package= extension allows declaring dependencies on system commands.
-
-#+begin_src emacs-lisp
-(use-package use-package-ensure-system-package)
-#+end_src
-
-Set up ESUP for startup profiling. In theory. [[https://github.com/jschaf/esup/issues/54][It breaks.]]
-
-#+begin_src emacs-lisp
-(use-package esup
-  :disabled t)
 #+end_src
 
 * Keybindings
