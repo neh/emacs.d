@@ -1122,6 +1122,18 @@ Org export.
              org-slack-export-to-clipboard-as-slack))
 #+end_src
 
+* Shackle
+
+Let’s try to get some window behaviour under control.
+
+#+begin_src emacs-lisp
+(use-package shackle
+  :init
+  (setq shackle-rules '((magit-diff-mode :align 'below :size 0.8)))
+  :config
+  (shackle-mode))
+#+end_src
+
 * Dired
 
 #+begin_src emacs-lisp
