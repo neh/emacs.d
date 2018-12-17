@@ -566,7 +566,7 @@ I come from vim, so evil is a necessity.
   :config
   (evil-mode 1)
 
-  (evil-set-initial-state 'ivy-occur-mode 'emacs)
+  (evil-set-initial-state 'ivy-occur-grep-mode 'normal)
 
   (setq evil-normal-state-tag   (propertize " N ")
         evil-emacs-state-tag    (propertize " E ")
