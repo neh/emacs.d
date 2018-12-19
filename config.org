@@ -1446,10 +1446,9 @@ Let’s try to get some window behaviour under control.
   :hook (emacs-lisp-mode . aggressive-indent-mode))
 
 (use-package direnv
-  :demand t
+  :hook (after-init . direnv-mode)
   :config
-  (setq direnv-always-show-summary nil)
-  (direnv-mode))
+  (setq direnv-always-show-summary nil))
 
 (defun my-evil-indent-setup ()
   "Set evil-shift-width to the relevant language indent level (but yaml only, so far)."
@@ -1493,10 +1492,9 @@ Let’s try to get some window behaviour under control.
   :mode ("\\.rs\\'" . rust-mode))
 
 (use-package hcl-mode
-  :commands terraform-mode)
+  :commands hcl-mode)
 
 (use-package terraform-mode
-  :after hcl-mode
   :mode ("\\.tf|tfvars\\'" . terraform-mode)
   :hook (terraform-mode . terraform-format-on-save-mode))
 
