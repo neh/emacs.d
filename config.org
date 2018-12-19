@@ -761,7 +761,7 @@ I come from vim, so evil is a necessity.
 
   :general
   (neh/leader-keys
-    "oh" '(counsel-projectile-find-file :which-key "open file in project")
+    "oh" '(counsel-projectile :which-key "open file/buffer in project")
     "op" '(counsel-projectile-switch-project :which-key "switch project")
     "sp" '(counsel-projectile-rg :which-key "search project"))
 
