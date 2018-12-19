@@ -419,9 +419,10 @@ Make sure my local bin dir is in emacs =$PATH=, and keep it updated.
 
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
-  :config
+  :init
   (setq exec-path (append exec-path '("~/bin"))
         exec-path-from-shell-arguments '("-l"))
+  :config
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 #+end_src
