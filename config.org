@@ -341,20 +341,13 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
     "s" '(:ignore t :which-key "search")
 
     "r" '(:ignore t :which-key "read")
-    "rc" '(hydra-codereading/body :which-key "changes")
-    "rg" '(hydra-git-gutter/body :which-key "changes")
-    "ro" '(hydra-org/body :which-key "org")
-    "rr" '(hydra-reading/body :which-key "plain text")
 
     "v" '(:ignore t :which-key "view")
-    "vw" '(whitespace-mode :which-key "whitespace")
 
     "xb" '(eval-buffer :which-key "eval buffer")
     "xe" '(eval-expression :which-key "eval expression")
     "xr" '(eval-region :which-key "eval region")
-    "xs" '(eval-last-sexp :which-key "eval sexp")
-
-    "zt" '(hydra-zoom/body :which-key "zoom text")))
+    "xs" '(eval-last-sexp :which-key "eval sexp")))
 #+end_src
 
 Which-key shows a handy popup for available keybindings at any given time.
@@ -404,6 +397,9 @@ Not sure where to put everything yet, so this section is a grab bag of stuff tha
 
 (use-package whitespace
   :commands (whitespace-mode)
+  :general
+  (neh/leader-keys
+    "vw" '(whitespace-mode :which-key "whitespace"))
   :init
   (setq whitespace-line-column 80
         whitespace-style '(face trailing tabs lines-tail)))
@@ -1220,6 +1216,14 @@ Let’s try to get some window behaviour under control.
 
 #+begin_src emacs-lisp
 (use-package hydra
+  :general
+  (neh/leader-keys
+    "rc" '(hydra-codereading/body :which-key "changes")
+    "rg" '(hydra-git-gutter/body :which-key "changes")
+    "ro" '(hydra-org/body :which-key "org")
+    "rr" '(hydra-reading/body :which-key "plain text")
+    "zt" '(hydra-zoom/body :which-key "zoom text"))
+
   :config
   (defhydra hydra-reading ()
     "Text reading/navigation"
