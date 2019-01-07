@@ -1084,7 +1084,8 @@ Of course, the great magit.
         org-hide-emphasis-markers t
         org-pretty-entities t
         org-cycle-separator-lines 2
-        org-M-RET-may-split-line '((default . nil)))
+        org-M-RET-may-split-line '((default . nil))
+        org-indirect-buffer-display 'current-window)
 
   (font-lock-add-keywords 'org-mode
                           '(("^ *\\([-]\\) "
