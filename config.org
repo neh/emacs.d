@@ -957,6 +957,10 @@ Of course, the great magit.
          (org-mode . variable-pitch-mode))
 
   :general
+  (general-define-key
+   :prefix "C-c"
+   "c" 'org-capture)
+
   (neh/leader-keys
     "nb" '(org-narrow-to-block :which-key "narrow to block")
     "ne" '(org-narrow-to-element :which-key "narrow to element")
@@ -986,6 +990,24 @@ Of course, the great magit.
 
   :init
   (setq org-use-fast-todo-selection t
+        org-directory "~/org"
+        org-default-notes-file "~/org/incoming.org"
+        org-agenda-files "~/org"
+        org-reverse-note-order t
+        org-capture-templates
+        (quote (("t" "todo" entry
+                 (file+headline "" "Tasks")
+                 "* TODO %?"
+                 :prepend t)
+                ("l" "link" entry
+                 (file+headline "" "Links")
+                 "* [[%x][%?]] %^g"
+                 :prepend t)
+                ("j" "journal" entry
+                 (file+olp+datetree
+                  (lambda ()
+                    (concat org-agenda-files "/journal.org")))
+                 "* %?"))))
 
   (defface org-inprogress
     '((default :inherit default))
