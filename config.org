@@ -985,6 +985,8 @@ Of course, the great magit.
    "S" 'org-shiftright)
 
   :init
+  (setq org-use-fast-todo-selection t
+
   (defface org-inprogress
     '((default :inherit default))
     "Face for INPROGRESS org tasks")
@@ -1053,7 +1055,7 @@ Of course, the great magit.
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
   (setq org-todo-keywords
-        '((sequence "TODO" "INPROGRESS" "WAITING" "|" "DONE" "CANCELED")))
+        '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")))
 
   (setq org-startup-indented t
         org-ellipsis " ⋯"
