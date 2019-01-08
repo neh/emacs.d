@@ -1411,11 +1411,30 @@ Let’s try to get some window behaviour under control.
   :ensure nil
   :hook (after-save . executable-make-buffer-file-executable-if-script-p))
 
+(use-package quick-peek
+  :commands (quick-peek-show
+             quick-peek-hide
+             quick-peek-overlay-contents
+             quick-peek-overlay-ensure-at))
+
 (use-package flycheck
   :hook (prog-mode . flycheck-mode))
 
+(use-package flycheck-inline
+  :hook (flycheck-mode . turn-on-flycheck-inline)
+  :init
+  ;; (setq flycheck-inline-display-function
+  ;;       (lambda (msg pos)
+  ;;         (let* ((ov (quick-peek-overlay-ensure-at pos))
+  ;;                (contents (quick-peek-overlay-contents ov)))
+  ;;           (setf (quick-peek-overlay-contents ov)
+  ;;                 (concat contents (when contents "\n") msg))
+  ;;           (quick-peek-update ov)))
+  ;;       flycheck-inline-clear-function #'quick-peek-hide))
+  )
+
 (use-package flycheck-posframe
-  :after flycheck
+  :disabled
   :hook (flycheck-mode . flycheck-posframe-mode)
   :config
   (set-face-attribute 'flycheck-posframe-warning-face nil :height 1.1 :foreground "#111111" :background "#ffd700" :inherit 'warning)
