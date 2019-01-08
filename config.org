@@ -954,7 +954,8 @@ Of course, the great magit.
   :hook ((org-mode . (lambda () (add-hook 'after-save-hook 'org-babel-tangle
                                           'run-at-end 'only-in-org-mode)))
          (org-mode . org-indent-mode)
-         (org-mode . variable-pitch-mode))
+         (org-mode . variable-pitch-mode)
+         (org-capture-mode . evil-insert-state))
 
   :general
   (general-define-key
