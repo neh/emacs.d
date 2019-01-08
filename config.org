@@ -1046,6 +1046,12 @@ Of course, the great magit.
     "M-T" (my-org-in-calendar calendar-forward-year))
 
   :config
+  ;; from https://twitter.com/jay_f0xtr0t/status/982353141386461188
+  ;; could be better; will currently keep adding to =org-emphasis-regexp-components=
+  (setcar (nthcdr 1 org-emphasis-regexp-components)
+          (concat (nth 1 org-emphasis-regexp-components) "s"))
+  (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
+
   (setq org-todo-keywords
         '((sequence "TODO" "INPROGRESS" "WAITING" "|" "DONE" "CANCELED")))
 
