@@ -1482,7 +1482,8 @@ Let’s try to get some window behaviour under control.
   :commands yaml-mode
   :mode (("\\(host\\|group\\)_vars.*" . yaml-mode)
          ("\\.yml|yaml\\'" . yaml-mode))
-  :hook (yaml-mode . (lambda () (typo-mode -1))))
+  :hook ((yaml-mode . (lambda () (typo-mode -1)))
+         (yaml-mode . git-gutter-mode)))
 
 (use-package json-mode
   :mode (("\\.json\\'" . json-mode)))
