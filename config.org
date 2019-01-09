@@ -1443,7 +1443,8 @@ Let’s try to get some window behaviour under control.
                       :height 1.1 :foreground "#eeeeee" :background "#b22222" :inherit 'error))
 
 (use-package typo
-  :hook (text-mode . typo-mode))
+  :hook ((text-mode . typo-mode)
+         (yaml-mode . (lambda () (typo-mode -1)))))
 
 (use-package rainbow-mode
   :general
