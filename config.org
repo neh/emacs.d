@@ -1443,8 +1443,7 @@ Let’s try to get some window behaviour under control.
                       :height 1.1 :foreground "#eeeeee" :background "#b22222" :inherit 'error))
 
 (use-package typo
-  :hook ((text-mode . typo-mode)
-         (yaml-mode . (lambda () (typo-mode -1)))))
+  :hook (text-mode . typo-mode))
 
 (use-package rainbow-mode
   :general
@@ -1482,7 +1481,8 @@ Let’s try to get some window behaviour under control.
   :gfhook #'my-evil-indent-setup
   :commands yaml-mode
   :mode (("\\(host\\|group\\)_vars.*" . yaml-mode)
-         ("\\.yml|yaml\\'" . yaml-mode)))
+         ("\\.yml|yaml\\'" . yaml-mode))
+  :hook (yaml-mode . (lambda () (typo-mode -1))))
 
 (use-package json-mode
   :mode (("\\.json\\'" . json-mode)))
