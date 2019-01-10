@@ -1075,8 +1075,12 @@ Of course, the great magit.
           (concat (nth 1 org-emphasis-regexp-components) "s"))
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")))
+  (setq org-todo-keywords '((sequence "TODO(t)"
+                                      "INPROGRESS(i)"
+                                      "WAITING(w)"
+                                      "|"
+                                      "DONE(d)"
+                                      "CANCELED(c)")))
 
   (setq org-startup-indented t
         org-ellipsis " ⋯"
