@@ -290,9 +290,9 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
   (general-override-mode)
 
   (general-add-advice (list #'evil-search-previous
-                            #'evil-search-next
-                            #'org-previous-visible-heading
-                            #'org-next-visible-heading)
+                            #'evil-search-next)
+                      ;; #'org-previous-visible-heading
+                      ;; #'org-next-visible-heading)
                       :after #'neh/after-jump)
 
   (general-define-key
