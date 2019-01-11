@@ -1689,6 +1689,26 @@ Let’s try to get some window behaviour under control.
 
 (add-hook 'emacs-lisp-mode-hook
           (lambda () (setq-local lisp-indent-function #'Fuco1/lisp-indent-function)))
+
+
+;; from https://stackoverflow.com/questions/47327066/how-to-open-an-indirect-buffer-in-a-new-frame-in-a-single-call-in-emacs
+(defun clone-indirect-buffer-other-frame (newname display-flag &optional norecord)
+  "Like `clone-indirect-buffer' but display in another frame."
+  (interactive
+   (progn
+     (if (get major-mode 'no-clone-indirect)
+         (error "Cannot indirectly clone a buffer in %s mode" mode-name))
+     (list (if current-prefix-arg
+               (read-buffer "Name of indirect buffer: " (current-buffer)))
+           t)))
+  ;; (let ((pop-up-windows t))
+  (let ((pop-up-frames t)) ; <==========
+    (clone-indirect-buffer newname display-flag norecord)))
+
+(defun org-tree-to-indirect-buffer-other-frame ()
+  (interactive
+   (let ((org-indirect-buffer-display 'new-frame))
+     (org-tree-to-indirect-buffer))))
 #+end_src
 
 * Epilogue
