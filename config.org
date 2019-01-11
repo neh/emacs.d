@@ -947,6 +947,15 @@ Of course, the great magit.
   (add-hook 'git-commit-mode-hook 'evil-insert-state))
 #+end_src
 
+“Forge” can talk to sites like github and provide tools to work with PRs etc. Installing dependencies manually for now [[https://github.com/raxod502/straight.el/issues/336][because]].
+
+#+begin_src emacs-lisp
+(use-package forge
+  :init
+  (use-package closql)
+  (use-package ghub))
+#+end_src
+
 * Org
 
 #+begin_src emacs-lisp
