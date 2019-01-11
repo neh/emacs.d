@@ -1220,10 +1220,10 @@ Let’s try to get some window behaviour under control.
 
 (use-package dired-k
   :disabled t
-  :after dired
-  :hook
-  (dired-initial-position-hook . dired-k)
-  (dired-after-readin-hook . dired-k-no-revert))
+  :hook ((dired-initial-position-hook . dired-k)
+         (dired-after-readin-hook . dired-k-no-revert))
+  :init
+  (setq dired-k-human-readable t))
 #+end_src
 
 * Imenu
