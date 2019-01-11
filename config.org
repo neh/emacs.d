@@ -919,6 +919,9 @@ Of course, the great magit.
     "gg" '(magit-dispatch-popup :which-key "menu")
     "gs" '(magit-status :which-key "status"))
 
+  :init
+  (setq magit-diff-refine-hunk t)
+
   :config
 
   (setq magit-completing-read-function 'ivy-completing-read)
