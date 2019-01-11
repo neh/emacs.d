@@ -956,6 +956,7 @@ Of course, the great magit.
 
 #+begin_src emacs-lisp
 (use-package forge
+  :after markdown-mode
   :init
   (use-package closql)
   (use-package ghub))
@@ -1426,6 +1427,9 @@ Let’s try to get some window behaviour under control.
 * Misc packages
 
 #+begin_src emacs-lisp
+(use-package restart-emacs
+  :commands (restart-emacs))
+
 (use-package golden-ratio
   :commands golden-ratio-mode
   :config
@@ -1555,6 +1559,7 @@ Let’s try to get some window behaviour under control.
    "V" 'er/contract-region))
 
 (use-package markdown-mode
+  :commands (markdown-mode)
   :mode ("\\.md'" . markdown-mode))
 
 (use-package lua-mode
