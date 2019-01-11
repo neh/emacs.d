@@ -905,9 +905,6 @@ Of course, the great magit.
    "M-s" 'magit-section-goto-successor
    "M-t" 'magit-section-forward-sibling
    "M-n" 'magit-section-backward-sibling
-   "r" 'magit-refresh
-   "R" 'magit-rebase-popup
-   "g" 'magit-tag-popup
    "t" 'evil-next-visual-line
    "n" 'evil-previous-visual-line)
 
@@ -918,27 +915,11 @@ Of course, the great magit.
    "L" 'evil-search-previous)
 
   (neh/leader-keys
-    "gc" '(magit-commit :which-key "commit")
-    "gd" '(magit-diff-popup :which-key "diff")
-    "gf" '(magit-stage-file :which-key "stage file")
-    "gl" '(magit-log-popup :which-key "log")
-    ;; "glf" '(magit-log-buffer-file :which-key "current buffer log")
-    "gm" '(magit-dispatch-popup :which-key "menu")
-    "gP" '(magit-push-popup :which-key "push")
+    "gf" '(magit-file-popup :which-key "file")
+    "gg" '(magit-dispatch-popup :which-key "menu")
     "gs" '(magit-status :which-key "status"))
 
   :config
-  ;; There doesn't seem to be a "nice" way to adjust magit popups, so I stole
-  ;; this method from evil-magit
-  ;; refresh
-  (magit-change-popup-key 'magit-dispatch-popup
-                          :action (string-to-char "g") (string-to-char "r"))
-  ;; rebase popup
-  (magit-change-popup-key 'magit-dispatch-popup
-                          :action (string-to-char "r") (string-to-char "R"))
-  ;; tag popup
-  (magit-change-popup-key 'magit-dispatch-popup
-                          :action (string-to-char "t") (string-to-char "g"))
 
   (setq magit-completing-read-function 'ivy-completing-read)
   (add-hook 'git-commit-mode-hook 'evil-insert-state))
