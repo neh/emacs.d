@@ -1030,6 +1030,10 @@ Handy package to browse to git repo web interfaces.
                  (file+headline "" "Tasks")
                  "* TODO %?"
                  :prepend t)
+                ("n" "note" entry
+                 (file+headline "" "Notes")
+                 "* %?"
+                 :prepend t)
                 ("l" "link" entry
                  (file+headline "" "Links")
                  "* [[%x][%?]] %^g"
