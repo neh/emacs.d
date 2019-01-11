@@ -599,7 +599,8 @@ I come from vim, so evil is a necessity.
   (defun neh/evil-key-translations (_mode mode-keymaps &rest _rest)
     (evil-collection-translate-key 'normal mode-keymaps
       "t" "j"
-      "n" "k"))
+      "n" "k"
+      "s" "l"))
 
   (setq evil-collection-outline-bind-tab-p nil
         evil-collection-company-use-tng nil)
