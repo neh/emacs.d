@@ -506,7 +506,6 @@ I don’t understand why I have to use =:demand= here. My understanding is that 
 
 #+begin_src emacs-lisp
 (use-package doom-modeline
-  :demand t
   :hook (after-init . doom-modeline-init)
 
   :config
