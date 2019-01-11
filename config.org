@@ -962,6 +962,21 @@ Of course, the great magit.
   (use-package ghub))
 #+end_src
 
+Handy package to browse to git repo web interfaces.
+#+begin_src emacs-lisp
+(use-package git-link
+  :commands (git-link
+             git-link-commit
+             git-link-homepage)
+  :general
+  (neh/leader-keys
+    "gB" 'git-link
+    "gC" 'git-link-commit
+    "gH" 'git-link-homepage)
+  :init
+  (setq git-link-open-in-browser t))
+#+end_src
+
 * Org
 
 #+begin_src emacs-lisp
