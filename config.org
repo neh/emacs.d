@@ -297,7 +297,10 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
 
   (general-define-key
    "C-M-t" 'scroll-other-window
-   "C-M-n" 'scroll-other-window-down)
+   "C-M-n" 'scroll-other-window-down
+
+   "C-<tab>" 'next-buffer
+   "C-S-<iso-lefttab>" 'previous-buffer)
 
   (neh/leader-keys
     "<SPC>" '(save-buffer :which-key "save")
