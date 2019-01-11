@@ -1024,6 +1024,8 @@ Of course, the great magit.
 
      `(org-ellipsis ((t (:underline nil :weight normal))))
 
+     `(org-tag ((t (:underline nil :weight normal :height 0.9 ,@done))))
+
      `(org-indent ((t (:inherit (org-hide fixed-pitch)))))
      `(org-code ((t (:inherit fixed-pitch))))
      `(org-table ((t (:inherit fixed-pitch))))
