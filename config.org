@@ -923,6 +923,14 @@ Of course, the great magit.
   (setq magit-diff-refine-hunk t)
 
   :config
+  (magit-define-popup-action 'magit-file-popup
+    ?R "Rename file" 'magit-file-rename)
+  (magit-define-popup-action 'magit-file-popup
+    ?K "Delete file" 'magit-file-delete)
+  (magit-define-popup-action 'magit-file-popup
+    ?U "Untrack file" 'magit-file-untrack)
+  (magit-define-popup-action 'magit-file-popup
+    ?C "Checkout file" 'magit-file-checkout)
 
   (setq magit-completing-read-function 'ivy-completing-read)
   (add-hook 'git-commit-mode-hook 'evil-insert-state))
