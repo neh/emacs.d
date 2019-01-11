@@ -1192,6 +1192,17 @@ Let’s try to get some window behaviour under control.
   :init
   (setq dired-omit-files "^\\...+$"))
 
+(use-package dired-single
+  :commands (dired-single-buffer
+             dired-single-buffer-mouse
+             dired-single-up-directory)
+  :general
+  (general-define-key
+   :states 'normal
+   :keymaps 'dired-mode-map
+   "<return>" 'dired-single-buffer
+   "^" 'dired-single-up-directory))
+
 (use-package dired-sidebar
   :disabled t
   :general
