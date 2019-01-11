@@ -1081,11 +1081,11 @@ Of course, the great magit.
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
   (setq org-todo-keywords '((sequence "TODO(t)"
-                                      "INPROGRESS(i)"
-                                      "WAITING(w)"
+                                      "INPROGRESS(i!)"
+                                      "WAITING(w@/!)"
                                       "|"
-                                      "DONE(d)"
-                                      "CANCELED(c)")))
+                                      "DONE(d!)"
+                                      "CANCELED(c@)")))
 
   (setq org-startup-indented t
         org-ellipsis " ⋯"
