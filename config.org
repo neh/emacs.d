@@ -997,7 +997,8 @@ Of course, the great magit.
                  (file+olp+datetree
                   (lambda ()
                     (concat org-agenda-files "/journal.org")))
-                 "* %?"))))
+                 "* %?")))
+        org-tags-column 0)
 
   (defface org-inprogress
     '((default :inherit default))
@@ -1024,7 +1025,7 @@ Of course, the great magit.
 
      `(org-ellipsis ((t (:underline nil :weight normal))))
 
-     `(org-tag ((t (:underline nil :weight normal :height 0.9 ,@done))))
+     `(org-tag ((t (:underline nil :weight normal :height 0.7 ,@done))))
 
      `(org-indent ((t (:inherit (org-hide fixed-pitch)))))
      `(org-code ((t (:inherit fixed-pitch))))
