@@ -601,6 +601,8 @@ I come from vim, so evil is a necessity.
       "t" "j"
       "n" "k"))
 
+  (setq evil-collection-outline-bind-tab-p nil)
+
   :config
   (evil-collection-init)
   (add-hook 'evil-collection-setup-hook  #'neh/evil-key-translations))
