@@ -528,7 +528,7 @@ I come from vim, so evil is a necessity.
 (use-package evil
   :demand t
   :init
-  (setq evil-want-integration nil
+  (setq evil-want-integration t
         evil-want-keybinding nil
         evil-move-cursor-back t
         evil-vsplit-window-right t)
@@ -583,17 +583,6 @@ I come from vim, so evil is a necessity.
     :config
     (global-evil-surround-mode t))
 
-  (defun neh/evil-key-translations (_mode mode-keymaps &rest _rest)
-    (evil-collection-translate-key 'normal mode-keymaps
-      "t" "j"
-      "n" "k"
-      ))
-
-  (use-package evil-collection
-    :hook (evil-collection-setup-hook #'neh/evil-key-translations)
-    :config
-    (evil-collection-init))
-
   (use-package evil-indent-plus
     :config
     (evil-indent-plus-default-bindings))
@@ -601,6 +590,20 @@ I come from vim, so evil is a necessity.
   (use-package evil-textobj-line)
   (use-package evil-textobj-syntax)
   (use-package evil-ex-fasd))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package evil-collection
+  :after evil
+  :init
+  (defun neh/evil-key-translations (_mode mode-keymaps &rest _rest)
+    (evil-collection-translate-key 'normal mode-keymaps
+      "t" "j"
+      "n" "k"))
+
+  :config
+  (evil-collection-init)
+  (add-hook 'evil-collection-setup-hook  #'neh/evil-key-translations))
 #+end_src
 
 * Navigation?
