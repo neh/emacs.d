@@ -1170,15 +1170,8 @@ Let’s try to get some window behaviour under control.
   :commands (dired-jump
              dired-mode)
   :general
-  (general-define-key
-   :states 'normal
-   "U" '(dired-jump :which-key "dired"))
-
-  ;; (general-define-key
-  ;;  :states 'normal
-  ;;  :keymaps 'dired-mode-map
-  ;;  "U" '(dired-up-directory :which-key "go to parent directory"))
-  )
+  (neh/leader-keys
+    "od" 'dired-jump))
 
 (use-package dired-x
   :straight nil
