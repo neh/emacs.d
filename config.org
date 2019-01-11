@@ -777,9 +777,11 @@ I come from vim, so evil is a necessity.
     "sp" '(counsel-projectile-rg :which-key "search project"))
 
   :config
-  ;; Set the default switch project action to find files so that paths are included in the search list
-  (counsel-projectile-modify-action 'counsel-projectile-switch-project-action
-                                    '((default counsel-projectile-switch-project-action-find-file)))
+  ;; Set the default switch project action to find files so that paths are included in the search
+  ;; list
+  (counsel-projectile-modify-action
+   'counsel-projectile-switch-project-action
+   '((default counsel-projectile-switch-project-action-find-file)))
 
   (ivy-add-actions
    'counsel-projectile-find-file
