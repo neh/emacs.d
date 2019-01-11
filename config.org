@@ -1185,6 +1185,7 @@ Let’s try to get some window behaviour under control.
   (setq dired-omit-files "^\\...+$"))
 
 (use-package dired-sidebar
+  :disabled t
   :general
   (neh/leader-keys
     "ot" 'dired-sidebar-toggle-sidebar)
