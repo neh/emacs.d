@@ -601,7 +601,8 @@ I come from vim, so evil is a necessity.
       "t" "j"
       "n" "k"))
 
-  (setq evil-collection-outline-bind-tab-p nil)
+  (setq evil-collection-outline-bind-tab-p nil
+        evil-collection-company-use-tng nil)
 
   :config
   (evil-collection-init)
