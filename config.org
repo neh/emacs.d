@@ -1166,15 +1166,30 @@ Let’s try to get some window behaviour under control.
 #+begin_src emacs-lisp
 (use-package dired
   :straight nil
+  :hook (dired-mode . dired-hide-details-mode)
+  :commands (dired-jump
+             dired-mode)
   :general
   (general-define-key
    :states 'normal
    "U" '(dired-jump :which-key "dired"))
 
+  ;; (general-define-key
+  ;;  :states 'normal
+  ;;  :keymaps 'dired-mode-map
+  ;;  "U" '(dired-up-directory :which-key "go to parent directory"))
+  )
+
+(use-package dired-x
+  :straight nil
+  :hook (dired-mode . dired-omit-mode)
+  :general
   (general-define-key
    :states 'normal
    :keymaps 'dired-mode-map
-   "U" '(dired-jump :which-key "go to parent directory")))
+   ")" 'dired-omit-mode)
+  :init
+  (setq dired-omit-files "^\\...+$"))
 
 (use-package dired-sidebar
   :general
@@ -1182,9 +1197,7 @@ Let’s try to get some window behaviour under control.
     "ot" 'dired-sidebar-toggle-sidebar)
 
   :init
-  (setq dired-sidebar-theme 'nerd)
-  (add-hook 'dired-load-hook
-            (function (lambda () (load "dired-x")))))
+  (setq dired-sidebar-theme 'nerd))
 
 (use-package dired-k
   :disabled t
