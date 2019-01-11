@@ -1179,7 +1179,9 @@ Let’s try to get some window behaviour under control.
              dired-mode)
   :general
   (neh/leader-keys
-    "od" 'dired-jump))
+    "od" 'dired-jump)
+  :init
+  (setq dired-listing-switches "-alh"))
 
 (use-package dired-x
   :straight nil
