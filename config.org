@@ -815,14 +815,13 @@ Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company.
   (add-hook 'company-mode-hook #'company-statistics-mode))
 
 (use-package company-terraform
-  :config
-  (company-terraform-init))
+  :after company
+  :hook (terraform-mode . company-terraform-init))
 
 (use-package company-box
   :after company
-  :commands (company-box-mode)
   :hook (company-mode . company-box-mode)
-  :config
+  :init
   (setq company-box-enable-icon nil)
   ;; (add-to-list 'company-box-frame-parameters
   ;; '(font . "-CYEL-Iosevka-normal-normal-normal-*-14-*-*-*-d-0-iso10646-1"))
@@ -834,9 +833,10 @@ Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company.
   :hook (company-mode . company-quickhelp-mode)
   :general
   (:keymaps 'company-active-map
-   "C-m" #'company-quickhelp-manual-begin))
+   "C-m" 'company-quickhelp-manual-begin))
 
 (use-package company-ansible
+  :commands (company-ansible)
   :config
   (add-to-list 'company-backends 'company-ansible))
 #+end_src
