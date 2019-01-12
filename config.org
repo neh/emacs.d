@@ -800,22 +800,14 @@ Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company.
 
 #+begin_src emacs-lisp
 (use-package company
-  ;; :demand t
-  :bind (:map company-active-map
-         ("M-n" . nil)
-         ("M-p" . nil)
-         ("M-t" . #'company-select-next)
-         ("M-n" . #'company-select-previous)
-         ("TAB" . #'company-complete)
-         ("<tab>" . #'company-complete)
-         ("RET" . #'company-complete-selection))
-
-  ;; :hook (prog-mode . global-company-mode))
-  ;; :hook (after-init . global-company-mode))
-  ;; :init
-  ;; (add-hook 'after-init-hook 'global-company-mode))
+  :commands (global-company-mode)
+  :init
+  (add-hook 'after-init-hook 'global-company-mode)
   :config
-  (global-company-mode t))
+  (evil-define-key 'insert 'company-search-map
+    (kbd "C-t") 'company-select-next)
+  (evil-define-key 'insert 'company-search-map
+    (kbd "C-n") 'company-select-previous))
 
 (use-package company-statistics
   :disabled t
