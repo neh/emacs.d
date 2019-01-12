@@ -650,8 +650,8 @@ I come from vim, so evil is a necessity.
   (general-define-key
    :keymaps 'ivy-minibuffer-map
    "<escape>" 'keyboard-escape-quit
-   "M-t" 'ivy-next-line
-   "M-n" 'ivy-previous-line
+   "C-t" 'ivy-next-line
+   "C-n" 'ivy-previous-line
    "C-M-t" 'ivy-next-line-and-call
    "C-M-n" 'ivy-previous-line-and-call
    "C-b" 'ivy-scroll-down-command
