@@ -996,6 +996,7 @@ Handy package to browse to git repo web interfaces.
     "ne" '(org-narrow-to-element :which-key "narrow to element")
     "ns" '(org-narrow-to-subtree :which-key "narrow to subtree")
 
+    "oc" 'org-capture
     "og" '(org-agenda :which-key "agenda")
     "o." '(org-open-at-point :which-key "follow link"))
 
