@@ -1014,7 +1014,8 @@ Handy package to browse to git repo web interfaces.
                                           'run-at-end 'only-in-org-mode)))
          (org-mode . org-indent-mode)
          (org-mode . variable-pitch-mode)
-         (org-capture-mode . evil-insert-state))
+         (org-capture-mode . evil-insert-state)
+         (org-src-mode . disable-flycheck-in-org-src-block))
 
   :general
   ;; (general-add-advice (list #'org-previous-visible-heading
@@ -1654,6 +1655,13 @@ Ending up at the bottom of the window and not being able see enough context when
 (defun neh/after-jump (&optional arg)
   "Position text sanely after jumping. ARG is unused but apparently necessary."
   (evil-scroll-line-to-center (line-number-at-pos)))
+#+end_src
+
+Attaching this next one to =org-src-mode= will disable the annoying flycheck warnings that are really only relevant to complete files.
+
+#+begin_src emacs-lisp
+(defun disable-flycheck-in-org-src-block ()
+  (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 #+end_src
 
 #+begin_src emacs-lisp
