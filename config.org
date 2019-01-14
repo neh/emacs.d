@@ -295,8 +295,9 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
    "C-M-t" 'scroll-other-window
    "C-M-n" 'scroll-other-window-down
 
-   "C-<tab>" 'next-buffer
-   "C-S-<iso-lefttab>" 'previous-buffer)
+   ;; "C-<tab>" 'next-buffer
+   ;; "C-S-<iso-lefttab>" 'previous-buffer
+   )
 
   (neh/leader-keys
     "<SPC>" '(save-buffer :which-key "save")
@@ -776,6 +777,18 @@ I come from vim, so evil is a necessity.
 
   :init
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package iflipb
+  :commands (iflipb-next-buffer
+             iflipb-previous-buffer)
+  :general
+  (general-def
+    :keymaps 'override
+    :states '(emacs normal insert)
+    "<C-tab>" 'iflipb-previous-buffer
+    "C-S-<iso-lefttab>" 'iflipb-next-buffer))
 #+end_src
 
 * Projectile
