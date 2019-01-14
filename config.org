@@ -504,24 +504,31 @@ And here’s my hook function where I collect my tweaks to the theme.
 
 Trying out doom-modeline.
 
-I don’t understand why I have to use =:demand= here. My understanding is that the =:hook= should take care of it. I have general troubles with the =after-init= hook (like with =company-mode=), so maybe it’s something there.
-
 #+begin_src emacs-lisp
 (use-package doom-modeline
   :hook (after-init . doom-modeline-init)
+
+  :custom-face
+  (doom-modeline-evil-emacs-state
+   ((t (:background "DarkMagenta" :foreground "#ffd700"))))
+  (doom-modeline-evil-insert-state
+   ((t (:background "#ffd700" :foreground "#000000"))))
+  (doom-modeline-evil-motion-state
+   ((t (:background "SteelBlue" :foreground "#ffffff"))))
+  (doom-modeline-evil-normal-state
+   ((t (:background "ForestGreen" :foreground "#ffffff"))))
+  (doom-modeline-evil-operator-state
+   ((t (:background "SteelBlue" :foreground "#ffffff"))))
+  (doom-modeline-evil-visual-state
+   ((t (:background "#fe8019" :foreground "#000000"))))
+  (doom-modeline-evil-replace-state
+   ((t (:background "red4" :foreground "#ffffff"))))
 
   :config
   (setq-default doom-modeline-column-zero-based nil)
   (setq doom-modeline-height 20
         doom-modeline-bar-width 1)
-  (column-number-mode t)
-  (set-face-attribute 'doom-modeline-evil-emacs-state nil :background "DarkMagenta" :foreground "#ffffff")
-  (set-face-attribute 'doom-modeline-evil-insert-state nil :background "#ffd700" :foreground "#000000")
-  (set-face-attribute 'doom-modeline-evil-motion-state nil :background "SteelBlue" :foreground "#ffffff")
-  (set-face-attribute 'doom-modeline-evil-normal-state nil :background "ForestGreen" :foreground "#ffffff")
-  (set-face-attribute 'doom-modeline-evil-operator-state nil :background "SteelBlue" :foreground "#ffffff")
-  (set-face-attribute 'doom-modeline-evil-visual-state nil :background "#fe8019" :foreground "#000000")
-  (set-face-attribute 'doom-modeline-evil-replace-state nil :background "red4" :foreground "#ffffff"))
+  (column-number-mode t))
 #+end_src
 
 * Eeeeevil
