@@ -706,14 +706,6 @@ I come from vim, so evil is a necessity.
         '((t . ivy--regex-fuzzy))
         ivy-initial-inputs-alist nil))
 
-(use-package amx
-  :disabled t
-  :config
-  (amx-mode))
-
-(use-package flx
-  :disabled t)
-
 (use-package prescient
   :demand t
   :config
@@ -777,7 +769,7 @@ I come from vim, so evil is a necessity.
    "h" '(avy-org-goto-heading-timer :which-key "org heading")
    "l" '(avy-goto-line :which-key "line"))
 
-  :config
+  :init
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 #+end_src
 
@@ -833,11 +825,6 @@ Ok, so the =:demand+:hook= combo works with doom-modeline, but not with company.
   ;; (evil-define-key 'insert 'company-search-map
   ;;   (kbd "C-n") 'company-select-previous)
   )
-
-(use-package company-statistics
-  :disabled t
-  :init
-  (add-hook 'company-mode-hook #'company-statistics-mode))
 
 (use-package company-terraform
   :after company
@@ -921,6 +908,9 @@ Of course, the great magit.
 (straight-use-package 'magit)
 (use-package magit
   :straight nil
+  :hook
+  (git-commit-mode . evil-insert-state)
+
   :general
   (general-define-key
    :keymaps 'magit-mode-map
@@ -957,8 +947,7 @@ Of course, the great magit.
   (magit-define-popup-action 'magit-file-popup
     ?C "Checkout file" 'magit-file-checkout)
 
-  (setq magit-completing-read-function 'ivy-completing-read)
-  (add-hook 'git-commit-mode-hook 'evil-insert-state))
+  (setq magit-completing-read-function 'ivy-completing-read))
 #+end_src
 
 “Forge” can talk to sites like github and provide tools to work with PRs etc. Installing dependencies manually for now [[https://github.com/raxod502/straight.el/issues/336][because]].
@@ -1146,9 +1135,10 @@ Handy package to browse to git repo web interfaces.
         org-M-RET-may-split-line '((default . nil))
         org-indirect-buffer-display 'current-window)
 
-  (font-lock-add-keywords 'org-mode
-                          '(("^ *\\([-]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  (font-lock-add-keywords
+   'org-mode
+   '(("^ *\\([-]\\) "
+      (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
   (setq org-confirm-babel-evaluate nil
         org-src-fontify-natively t
@@ -1169,18 +1159,17 @@ Handy package to browse to git repo web interfaces.
 #+begin_src emacs-lisp
 (use-package evil-org
   :after evil
+  :hook ((org-mode . evil-org-mode)
+         (evil-org-mode . (lambda ()
+                            (evil-org-set-key-theme))))
+
   :config
   (setq evil-org-movement-bindings '((up . "n")
                                      (down . "t")
                                      (left . "h")
                                      (right . "s")))
 
-  (add-to-list 'evil-org-key-theme 'shift)
-
-  (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook
-            (lambda ()
-              (evil-org-set-key-theme))))
+  (add-to-list 'evil-org-key-theme 'shift))
 #+end_src
 
 Make org-mode prettier.
@@ -1216,10 +1205,10 @@ Let’s try to get some window behaviour under control.
 
 #+begin_src emacs-lisp
 (use-package shackle
+  :hook (after-init . shackle-mode)
   :init
-  (setq shackle-rules '((magit-diff-mode :align 'below :size 0.8)))
-  :config
-  (shackle-mode))
+  (setq shackle-rules
+        '((magit-diff-mode :align 'below :size 0.8))))
 #+end_src
 
 * Dired
@@ -1452,9 +1441,7 @@ Let’s try to get some window behaviour under control.
 (use-package golden-ratio
   :commands golden-ratio-mode
   :config
-  (setq golden-ratio-auto-scale t)
-  ;; (golden-ratio-mode 1)
-  )
+  (setq golden-ratio-auto-scale t))
 
 ;; The auto-decrypt-encrypt hook complains about the password-file var not being set, even though
 ;; the manual encrypt/decrypt functions work just fine.
