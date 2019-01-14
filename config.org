@@ -1061,6 +1061,7 @@ Handy package to browse to git repo web interfaces.
         org-default-notes-file "~/org/incoming.org"
         org-agenda-files '("~/org/")
         org-refile-targets '((org-agenda-files :maxlevel . 3))
+        org-refile-allow-creating-parent-nodes 'confirm
         org-reverse-note-order t
         org-capture-templates
         (quote (("t" "todo" entry
