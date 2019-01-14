@@ -290,6 +290,8 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
   (general-override-mode)
 
   (general-define-key
+   :keymaps 'override
+   :states '(emacs normal insert)
    "C-M-t" 'scroll-other-window
    "C-M-n" 'scroll-other-window-down
 
@@ -530,14 +532,15 @@ I come from vim, so evil is a necessity.
         evil-vsplit-window-right t)
 
   :general
-  (:keymaps 'normal
+  (general-define-key
+   :keymaps 'override
+   :states '(normal emacs)
    "C-h" nil
    "C-t" nil
    "C-n" nil
    "C-s" nil
-   "C-e" nil)
+   "C-e" nil
 
-  (general-define-key
    "C-h" 'evil-window-left
    "C-t" 'evil-window-down
    "C-n" 'evil-window-up
