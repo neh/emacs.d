@@ -127,17 +127,17 @@ Turn off all startup messages, splash screens, menu bars, scrollbars, etc. for a
 Set scrolling options. These stop the half-page jumps while scrolling, and make things smoother. Haven’t tried out =pixel-scroll-mode= yet.
 
 #+begin_src emacs-lisp
-(setq mouse-wheel-scroll-amount '(2 ((shift) . 1)) ;; one line at a time
-      mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
-      mouse-wheel-follow-mouse 't ;; scroll window under mouse
-      scroll-step 1 ;; keyboard scroll one line at a time
-      scroll-margin 5
-      hscroll-step 5
-      hscroll-margin 5
-      scroll-preserve-screen-position 'always
-      scroll-up-aggressively 0.01
-      scroll-down-aggressively 0.01
-      scroll-conservatively 101) ;; Don't jump around when scrolling
+(setq-default mouse-wheel-scroll-amount '(2 ((shift) . 1)) ;; one line at a time
+              mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
+              mouse-wheel-follow-mouse 't ;; scroll window under mouse
+              scroll-step 1 ;; keyboard scroll one line at a time
+              scroll-margin 5
+              hscroll-step 5
+              hscroll-margin 5
+              scroll-preserve-screen-position 'always
+              scroll-up-aggressively 0.01
+              scroll-down-aggressively 0.01
+              scroll-conservatively 101) ;; Don't jump around when scrolling
 #+end_src
 
 And let’s try out the new single-line-horizontal-scroll option in emacs 26.
