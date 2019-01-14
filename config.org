@@ -289,12 +289,6 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
 
   (general-override-mode)
 
-  (general-add-advice (list #'evil-search-previous
-                            #'evil-search-next)
-                      ;; #'org-previous-visible-heading
-                      ;; #'org-next-visible-heading)
-                      :after #'neh/after-jump)
-
   (general-define-key
    "C-M-t" 'scroll-other-window
    "C-M-n" 'scroll-other-window-down
@@ -306,7 +300,6 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
     "<SPC>" '(save-buffer :which-key "save")
 
     "b" '(:ignore t :which-key "buffer")
-    "bd" '(evil-delete-buffer :which-key "delete buffer")
 
     "cc" '(comment-or-uncomment-region-or-line :which-key "toggle comment")
 
@@ -529,6 +522,7 @@ I come from vim, so evil is a necessity.
 #+begin_src emacs-lisp
 (use-package evil
   :demand t
+  :after general
   :init
   (setq evil-want-integration t
         evil-want-keybinding nil
@@ -562,10 +556,17 @@ I come from vim, so evil is a necessity.
 
    "N" 'evil-narrow-indirect)
 
+  (neh/leader-keys
+    "bd" '(evil-delete-buffer :which-key "delete buffer"))
+
   :config
   (evil-mode 1)
 
   (evil-set-initial-state 'ivy-occur-grep-mode 'normal)
+
+  (general-add-advice (list #'evil-search-next
+                            #'evil-search-previous)
+                      :after #'recenter)
 
   (setq evil-normal-state-tag   (propertize " N ")
         evil-emacs-state-tag    (propertize " E ")
@@ -865,14 +866,6 @@ I find that diff-hl does a better job of showing diff information than git-gutte
   (set-face-attribute 'diff-hl-delete nil :foreground "dark red" :background "red4"))
 #+end_src
 
-Ending up at the bottom of the window and not being able see enough context when jumping around is annoying, so I have this to help deal with that by recentering after jumps.
-
-#+begin_src emacs-lisp
-(defun neh/after-jump (&optional arg)
-  "Position text sanely after jumping. ARG is unused but apparently necessary."
-  (evil-scroll-line-to-center (line-number-at-pos)))
-#+end_src
-
 Diff-hl may be better at /showing/ diff info, but git-gutter is better at doing things with diffs. So I have it active for navigation and staging actions. It’s disabled in org mode because I had issues with it before. Now that my config is in org though, it would be handy to have back. Another TODO.
 
 #+begin_src emacs-lisp
@@ -987,6 +980,10 @@ Handy package to browse to git repo web interfaces.
          (org-capture-mode . evil-insert-state))
 
   :general
+  ;; (general-add-advice (list #'org-previous-visible-heading
+  ;;                           #'org-next-visible-heading)
+  ;;                     :after #'neh/after-jump)
+
   (general-define-key
    :prefix "C-c"
    "c" 'org-capture)
@@ -999,24 +996,25 @@ Handy package to browse to git repo web interfaces.
     "og" '(org-agenda :which-key "agenda")
     "o." '(org-open-at-point :which-key "follow link"))
 
-  (:keymaps 'org-mode-map
-   :states '(normal emacs)
-   :prefix  "g"
-   "." 'org-open-at-point)
+  (general-def
+    :keymaps 'org-mode-map
+    :states '(normal emacs)
+    :prefix  "g"
+    "." 'org-open-at-point)
 
-  (:keymaps 'org-mode-map
-   :states '(normal emacs)
-   "<RET>" 'org-tree-to-indirect-buffer
-   "ze" 'outline-show-branches
-   "C-M-t" 'scroll-other-window
-   "C-M-n" 'scroll-other-window-down)
+  (general-def
+    :keymaps 'org-mode-map
+    :states '(normal emacs)
+    "<RET>" 'org-tree-to-indirect-buffer
+    "ze" 'outline-show-branches)
 
-  (:keymaps 'org-mode-map
-   :states '(normal)
-   "H" 'org-shiftleft
-   "T" 'org-shiftdown
-   "N" 'org-shiftup
-   "S" 'org-shiftright)
+  (general-def
+    :keymaps 'org-mode-map
+    :states '(normal)
+    "H" 'org-shiftleft
+    "T" 'org-shiftdown
+    "N" 'org-shiftup
+    "S" 'org-shiftright)
 
   :init
   (setq org-use-fast-todo-selection t
@@ -1612,6 +1610,14 @@ Let’s try to get some window behaviour under control.
 #+end_src
 
 * Misc functions
+
+Ending up at the bottom of the window and not being able see enough context when jumping around is annoying, so I have this to help deal with that by recentering after jumps.
+
+#+begin_src emacs-lisp
+(defun neh/after-jump (&optional arg)
+  "Position text sanely after jumping. ARG is unused but apparently necessary."
+  (evil-scroll-line-to-center (line-number-at-pos)))
+#+end_src
 
 #+begin_src emacs-lisp
 (defun narrow-to-region-indirect (start end)
