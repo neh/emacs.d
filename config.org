@@ -475,22 +475,29 @@ I’ve been liking dark-on-light themes lately, and brutalist with some tweaks h
 
 #+begin_src emacs-lisp
 (use-package brutalist-theme)
-(load-theme 'brutalist t)
 #+end_src
 
-But I like some things to be set no matter the theme. There’s probably a hook or something for this.
-
-I like italic comments.
+But I like some things to be set no matter the theme. For example, I always like italic code comments. And the brutalist theme has a smaller modeline font size that I don’t like. So I set up a hook/advice method of keeping these things “fixed”. I found the idea in [[https://www.reddit.com/r/emacs/comments/4v7tcj/does_emacs_have_a_hook_for_when_the_theme_changes/][this helpful reddit thread]] while looking for what I thought /must/ have a /good/ solution.
 
 #+begin_src emacs-lisp
-(set-face-italic 'font-lock-comment-face t)
+(defvar after-load-theme-hook nil
+  "Hook run after a color theme is loaded using `load-theme'.")
+(defadvice load-theme (after run-after-load-theme-hook activate)
+  "Run `after-load-theme-hook'."
+  (run-hooks 'after-load-theme-hook))
+
+(add-hook 'after-load-theme-hook #'neh/theme-tweaks)
+(add-hook 'after-init-hook #'neh/theme-tweaks)
 #+end_src
 
-And the smaller brutalist modeline height is not for me.
+And here’s my hook function where I collect my tweaks to the theme.
 
 #+begin_src emacs-lisp
-(set-face-attribute 'mode-line nil :height 1.0)
-(set-face-attribute 'mode-line-inactive nil :height 1.0)
+(defun neh/theme-tweaks ()
+  (interactive)
+  (set-face-italic 'font-lock-comment-face t)
+  (set-face-attribute 'mode-line nil :height 1.0)
+  (set-face-attribute 'mode-line-inactive nil :height 1.0))
 #+end_src
 
 * Modeline
