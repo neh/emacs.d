@@ -382,6 +382,11 @@ Not sure where to put everything yet, so this section is a grab bag of stuff tha
   :config
   (save-place-mode t))
 
+(use-package eldoc
+  :straight nil
+  :init
+  (setq eldoc-echo-area-use-multiline-p nil))
+
 (use-package undo-tree
   :config
   (global-undo-tree-mode t))
