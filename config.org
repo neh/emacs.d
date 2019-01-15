@@ -480,7 +480,11 @@ General settings for programming modes.
 I’ve been liking dark-on-light themes lately, and brutalist with some tweaks has been good.
 
 #+begin_src emacs-lisp
-(use-package brutalist-theme)
+(set-face-attribute 'default nil :family "Iosevka" :height 105)
+(set-face-attribute 'fixed-pitch nil :family "Iosevka")
+(set-face-attribute 'variable-pitch nil :family "DejaVu Sans" :height 105)
+
+(use-package poet-theme)
 #+end_src
 
 But I like some things to be set no matter the theme. For example, I always like italic code comments. And the brutalist theme has a smaller modeline font size that I don’t like. So I set up a hook/advice method of keeping these things “fixed”. I found the idea in [[https://www.reddit.com/r/emacs/comments/4v7tcj/does_emacs_have_a_hook_for_when_the_theme_changes/][this helpful reddit thread]] while looking for what I thought /must/ have a /good/ solution.
@@ -1100,13 +1104,13 @@ Handy package to browse to git repo web interfaces.
                             (nil (warn "Cannot find a fixed width font."))))
 
          (base-font-color     (face-foreground 'default nil 'default))
-         (headline           `(:inherit default :weight bold :foreground ,base-font-color))
+         (headline           `(:inherit default :weight bold))
          (done               `(:weight normal :foreground "#7c6f64")))
 
     (custom-theme-set-faces
      'user
      `(fixed-pitch ((t (,@fixed-tuple))))
-     `(variable-pitch ((t (,@variable-tuple))))
+     `(variable-pitch ((t (,@variable-tuple :height 105))))
 
      `(org-ellipsis ((t (:underline nil :weight normal))))
 
@@ -1118,7 +1122,13 @@ Handy package to browse to git repo web interfaces.
      `(org-verbatim ((t (:inherit fixed-pitch))))
      `(org-block ((t (:inherit fixed-pitch))))
 
-     `(org-todo ((t (,@headline ,@variable-tuple :background "#ddbb00"))))
+     `(org-level-8 ((t (,@headline :height 1.0))))
+     `(org-level-7 ((t (,@headline :height 1.0))))
+     `(org-level-6 ((t (,@headline :height 1.0))))
+     `(org-level-5 ((t (,@headline :height 1.0))))
+     `(org-level-4 ((t (,@headline :height 1.0))))
+     `(org-level-3 ((t (,@headline :height 1.1))))
+     `(org-level-2 ((t (,@headline :height 1.1))))
      `(org-inprogress ((t (,@headline
                            ,@variable-tuple
                            :foreground "white"
