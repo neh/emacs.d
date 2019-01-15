@@ -1129,6 +1129,11 @@ Handy package to browse to git repo web interfaces.
      `(org-level-4 ((t (,@headline :height 1.0))))
      `(org-level-3 ((t (,@headline :height 1.1))))
      `(org-level-2 ((t (,@headline :height 1.1))))
+
+     `(org-todo ((t (,@headline
+                     ,@variable-tuple
+                     :foreground "#000000"
+                     :background "#ddbb00"))))
      `(org-inprogress ((t (,@headline
                            ,@variable-tuple
                            :foreground "white"
