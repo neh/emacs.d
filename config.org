@@ -1484,6 +1484,34 @@ Let’s try to get some window behaviour under control.
   ("q" nil))
 #+end_src
 
+* Reading and Note-taking
+
+First, set up =pdf-tools= for nice PDF handling.
+
+#+begin_src emacs-lisp
+(use-package pdf-tools
+  :magic ("%PDF" . pdf-view-mode)
+  :hook (pdf-view-mode . (lambda () (blink-cursor-mode -1)))
+  :init
+  (setq-default pdf-view-display-size 'fit-page))
+#+end_src
+
+Add =nov.el= for =epub=s.
+
+#+begin_src emacs-lisp 
+(use-package nov
+  :mode (("\\.epub\\'" . nov-mode)))
+#+end_src
+
+Try out =org-noter=.
+
+#+begin_src emacs-lisp
+(use-package org-noter
+  :commands (org-noter)
+  :config
+  (org-noter-set-auto-save-last-location t))
+#+end_src
+
 * Misc packages
 
 #+begin_src emacs-lisp
