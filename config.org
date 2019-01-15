@@ -1111,7 +1111,7 @@ Handy package to browse to git repo web interfaces.
     '((default :inherit org-todo))
     "Face for WAITING org tasks")
 
-  (let* ((headline      `(:inherit variable-pitch :weight normal))
+  (let* ((headline      `(:inherit variable-pitch :weight bold))
          (done          `(:inherit variable-pitch :weight normal :foreground "#7c6f64")))
 
     (custom-theme-set-faces
