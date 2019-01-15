@@ -1184,7 +1184,8 @@ Handy package to browse to git repo web interfaces.
         org-pretty-entities t
         org-cycle-separator-lines 2
         org-M-RET-may-split-line '((default . nil))
-        org-indirect-buffer-display 'current-window)
+        org-indirect-buffer-display 'current-window
+        org-use-sub-superscripts nil)
 
   (font-lock-add-keywords
    'org-mode
