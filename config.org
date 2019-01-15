@@ -1104,7 +1104,7 @@ Handy package to browse to git repo web interfaces.
                             (nil (warn "Cannot find a fixed width font."))))
 
          (base-font-color     (face-foreground 'default nil 'default))
-         (headline           `(:inherit default :weight bold))
+         (headline           `(:inherit default :weight normal))
          (done               `(:weight normal :foreground "#7c6f64")))
 
     (custom-theme-set-faces
