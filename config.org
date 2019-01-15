@@ -505,18 +505,19 @@ And here’s my hook function where I collect my tweaks to the theme.
   (interactive)
 
   (let* ((variable-tuple (cond
-                          ((x-list-fonts "DejaVu Sans") '(:font "DejaVu Sans"))
+                          ((x-list-fonts "InterUI") '(:font "InterUI" :height 112))
+                          ((x-list-fonts "DejaVu Sans") '(:font "DejaVu Sans" :height 105))
                           ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
                           (nil (warn "Cannot find a variable width font."))))
          (fixed-tuple (cond
-                       ((x-list-fonts "Iosevka") '(:font "Iosevka"))
+                       ((x-list-fonts "Iosevka") '(:font "Iosevka" :height 105))
                        ((x-family-fonts "Monospace") '(:family "Monospace"))
                        (nil (warn "Cannot find a fixed width font.")))))
 
     (custom-theme-set-faces
      'user
-     `(fixed-pitch ((t (,@fixed-tuple :height 105))))
-     `(variable-pitch ((t (,@variable-tuple :height 105))))))
+     `(fixed-pitch ((t (,@fixed-tuple))))
+     `(variable-pitch ((t (,@variable-tuple))))))
 
   (set-face-italic 'font-lock-comment-face t)
 
