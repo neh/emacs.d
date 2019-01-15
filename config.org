@@ -1043,16 +1043,13 @@ Handy package to browse to git repo web interfaces.
   ;;                           #'org-next-visible-heading)
   ;;                     :after #'neh/after-jump)
 
-  (general-define-key
-   :prefix "C-c"
-   "c" 'org-capture)
-
   (neh/leader-keys
     "nb" '(org-narrow-to-block :which-key "narrow to block")
     "ne" '(org-narrow-to-element :which-key "narrow to element")
     "ns" '(org-narrow-to-subtree :which-key "narrow to subtree")
 
     "oc" 'org-capture
+    "oC" '(lambda () (interactive) (find-file org-default-notes-file))
     "og" '(org-agenda :which-key "agenda")
     "o." '(org-open-at-point :which-key "follow link"))
 
@@ -1853,6 +1850,16 @@ Attaching this next one to =org-src-mode= will disable the annoying flycheck war
 #+end_src
 
 * Epilogue
+
+Load any host-specific configuration.
+
+#+begin_src emacs-lisp
+(setq neh/local-conf-file (expand-file-name
+                           (concat system-name ".el")
+                           user-emacs-directory))
+(when (file-readable-p neh/local-conf-file)
+  (load-file neh/local-conf-file))
+#+end_src
 
 Here we close the =let= expression from [[*Performance optimization][the preface]].
 
