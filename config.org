@@ -1136,13 +1136,14 @@ Handy package to browse to git repo web interfaces.
 
      `(org-todo ((t (,@headline
                      :weight bold
-                     :foreground "#555555"))))
+                     :foreground "#222222"))))
      `(org-inprogress ((t (,@headline
                            :weight bold
                            :foreground "white"
                            :background "ForestGreen"))))
      `(org-waiting ((t (,@headline
                         :weight bold
+                        :foreground "#222222"
                         :background "#ffd700"))))
      `(org-done ((t (,@done :strike-through t))))
      `(org-archived ((t (,@done :strike-through t))))
