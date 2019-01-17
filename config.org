@@ -1725,6 +1725,24 @@ Try out =org-noter=.
 
 * Misc functions
 
+I wanted a way to move org items to the top of their own level, and found one [[https://emacs.stackexchange.com/questions/43651/moving-a-subtree-to-the-top-or-bottom-of-its-parent][on stackoverflow]]. I inverted its behaviour to move to the top by default, and to the bottom with a prefix arg.
+
+#+begin_src emacs-lisp
+(defun JK-org-move-to-extreme (down)
+  "Move current org subtree to the start of its parent.
+With prefix arg move subtree to the end of its parent."
+  (interactive "P")
+  (condition-case err
+      (while t
+        (funcall (if down
+                     'org-move-subtree-down
+                   'org-move-subtree-up)))
+    (user-error
+     (let ((err-msg (cadr err)))
+       (unless (string-match "Cannot move past superior level or buffer limit" err-msg)
+         (signal 'user-error (list err-msg)))))))
+#+end_src
+
 Ending up at the bottom of the window and not being able see enough context when jumping around is annoying, so I have this to help deal with that by recentering after jumps.
 
 #+begin_src emacs-lisp
