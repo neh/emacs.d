@@ -111,6 +111,16 @@ Set up ESUP for startup profiling. In theory. [[https://github.com/jschaf/esup/i
 
 * Base settings
 
+Load any host-specific configuration. Anything set here will just get overridden by deferred package loads so the way I’m dealing with that is to set vars here with different (=neh/…=) names, then set the real vars conditionally in package configurations elsewhere.
+
+#+begin_src emacs-lisp
+(setq neh/local-conf-file (expand-file-name
+                           (concat system-name ".el")
+                           user-emacs-directory))
+(when (file-readable-p neh/local-conf-file)
+  (load-file neh/local-conf-file))
+#+end_src
+
 Turn off all startup messages, splash screens, menu bars, scrollbars, etc. for a clean start.
 
 #+begin_src emacs-lisp
@@ -1077,7 +1087,9 @@ Handy package to browse to git repo web interfaces.
   :init
   (setq org-use-fast-todo-selection t
         org-directory "~/org"
-        org-default-notes-file "~/org/incoming.org"
+        org-default-notes-file (if (boundp 'neh/org-default-notes-file)
+                                   neh/org-default-notes-file
+                                 "~/org/incoming.org")
         org-agenda-files '("~/org/")
         org-refile-targets '((org-agenda-files :maxlevel . 3))
         org-refile-allow-creating-parent-nodes 'confirm
@@ -1864,16 +1876,6 @@ Attaching this next one to =org-src-mode= will disable the annoying flycheck war
 #+end_src
 
 * Epilogue
-
-Load any host-specific configuration.
-
-#+begin_src emacs-lisp
-(setq neh/local-conf-file (expand-file-name
-                           (concat system-name ".el")
-                           user-emacs-directory))
-(when (file-readable-p neh/local-conf-file)
-  (load-file neh/local-conf-file))
-#+end_src
 
 Here we close the =let= expression from [[*Performance optimization][the preface]].
 
