@@ -918,7 +918,7 @@ I find that diff-hl does a better job of showing diff information than git-gutte
   :init
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   :config
-  (set-face-attribute 'diff-hl-change nil :foreground "medium blue" :background "DodgerBlue1")
+  (set-face-attribute 'diff-hl-change nil :foreground "#222222" :background "#ffd700")
   (set-face-attribute 'diff-hl-insert nil :foreground "dark green" :background "ForestGreen")
   (set-face-attribute 'diff-hl-delete nil :foreground "dark red" :background "red4"))
 #+end_src
