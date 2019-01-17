@@ -1635,6 +1635,9 @@ Try out =org-noter=.
   :config
   (setq direnv-always-show-summary nil))
 
+(use-package jinja2-mode
+  :mode (("\\.j2\\'" . jinja2-mode)))
+
 (defun my-evil-indent-setup ()
   "Set evil-shift-width to the relevant language indent level (but yaml only, so far)."
   (setq evil-shift-width yaml-indent-offset))
