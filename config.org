@@ -134,7 +134,7 @@ Turn off all startup messages, splash screens, menu bars, scrollbars, etc. for a
 (scroll-bar-mode -1)
 #+end_src
 
-Set scrolling options. These stop the half-page jumps while scrolling, and make things smoother. Haven’t tried out =pixel-scroll-mode= yet.
+Set scrolling options. These stop the half-page jumps while scrolling, and make things smoother. Trying out =pixel-scroll-mode=.
 
 #+begin_src emacs-lisp
 (setq-default mouse-wheel-scroll-amount '(2 ((shift) . 1)) ;; one line at a time
@@ -148,6 +148,9 @@ Set scrolling options. These stop the half-page jumps while scrolling, and make 
               scroll-up-aggressively 0.01
               scroll-down-aggressively 0.01
               scroll-conservatively 101) ;; Don't jump around when scrolling
+
+(when (>= emacs-major-version 26)
+  (pixel-scroll-mode t))
 #+end_src
 
 And let’s try out the new single-line-horizontal-scroll option in emacs 26.
