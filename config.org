@@ -473,6 +473,20 @@ I’ll put olivetti mode here since I think it’s mainly a text mode thing rath
   (setq-default olivetti-body-width 100))
 #+end_src
 
+And let’s try out writeroom mode.
+
+#+begin_src emacs-lisp
+(use-package writeroom-mode
+  :commands (writeroom-mode
+             global-writeroom-mode)
+  :init
+  (setq writeroom-width fill-column
+        writeroom-extra-line-spacing 0
+        writeroom-border-width 40)
+  :config
+  (add-to-list 'writeroom-global-effects 'writeroom-set-internal-border-width))
+#+end_src
+
 * Prog mode
 
 General settings for programming modes.
