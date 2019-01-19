@@ -473,7 +473,7 @@ I’ll put olivetti mode here since I think it’s mainly a text mode thing rath
 (use-package olivetti
   :commands (olivetti-mode)
   :config
-  (setq-default olivetti-body-width 100))
+  (setq-default olivetti-body-width fill-column))
 #+end_src
 
 And let’s try out writeroom mode.
