@@ -525,6 +525,13 @@ But I like some things to be set no matter the theme. For example, I always like
 (add-hook 'after-init-hook #'neh/theme-tweaks)
 #+end_src
 
+Emacs colour themes apparently just load on top of each other, so here’s an advice to disable the current theme before loading a new one, thanks to [[https://www.reddit.com/r/emacs/comments/8v9lgu/emacs_theme_configuration_is_very_confusing/][this thread]].
+
+#+begin_src emacs-lisp
+(defadvice load-theme (before theme-dont-propagate activate)
+  (mapc #'disable-theme custom-enabled-themes))
+#+end_src
+
 And here’s my hook function where I collect my tweaks to the theme.
 
 #+begin_src emacs-lisp
