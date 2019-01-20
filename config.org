@@ -308,6 +308,10 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
    "C-M-t" 'scroll-other-window
    "C-M-n" 'scroll-other-window-down
 
+   "C-_" '(lambda () (interactive) (neh/adjust-text-height -10))
+   "C-+" '(lambda () (interactive) (neh/adjust-text-height 10))
+   "C-)" '(lambda () (interactive) (neh/adjust-text-height 0))
+
    ;; "C-<tab>" 'next-buffer
    ;; "C-S-<iso-lefttab>" 'previous-buffer
    )
@@ -532,24 +536,51 @@ Emacs colour themes apparently just load on top of each other, so here’s an ad
   (mapc #'disable-theme custom-enabled-themes))
 #+end_src
 
-And here’s my hook function where I collect my tweaks to the theme.
+Set my default preferred text size.
+
+#+begin_src emacs-lisp
+(setq neh/default-text-size 108)
+(when (not (boundp 'neh/current-text-size))
+  (setq neh/current-text-size neh/default-text-size))
+#+end_src
+
+Change global text sizes with this function. This is the function I bind to a key or use in a hydra to change text sizes. It just changes =neh/current-text-size=, then calls my theme-tweak function below to make the changes. It also calls =visual-fill-column-adjust= so that everything ends up the right size.
+
+#+begin_src emacs-lisp
+(defun neh/adjust-text-height (adjustment)
+  (interactive)
+
+  (if (= adjustment 0)
+      (setq neh/current-text-size neh/default-text-size)
+    (setq neh/current-text-size (+ neh/current-text-size adjustment)))
+  (neh/theme-tweaks)
+  (visual-fill-column-adjust))
+#+end_src
+
+And here’s the function where I collect my tweaks to the theme and set up fonts.
 
 #+begin_src emacs-lisp
 (defun neh/theme-tweaks ()
   (interactive)
 
   (let* ((variable-tuple (cond
-                          ((x-list-fonts "InterUI") '(:font "InterUI" :height 114))
-                          ((x-list-fonts "DejaVu Sans") '(:font "DejaVu Sans" :height 107))
-                          ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
+                          ((x-list-fonts "InterUI")
+                           `(:font "InterUI" :height ,neh/current-text-size))
+                          ((x-list-fonts "DejaVu Sans")
+                           `(:font "DejaVu Sans" :height ,neh/current-text-size))
+                          ((x-family-fonts "Sans Serif")
+                           `(:family "Sans Serif"))
                           (nil (warn "Cannot find a variable width font."))))
          (fixed-tuple (cond
-                       ((x-list-fonts "Iosevka") '(:font "Iosevka" :height 105))
-                       ((x-family-fonts "Monospace") '(:family "Monospace"))
+                       ((x-list-fonts "Iosevka")
+                        `(:font "Iosevka" :height ,neh/current-text-size))
+                       ((x-family-fonts "Monospace")
+                        '(:family "Monospace"))
                        (nil (warn "Cannot find a fixed width font.")))))
 
     (custom-theme-set-faces
      'user
+     `(default ((t (,@fixed-tuple))))
      `(fixed-pitch ((t (,@fixed-tuple))))
      `(variable-pitch ((t (,@variable-tuple))))))
 
@@ -1407,9 +1438,9 @@ Let’s try to get some window behaviour under control.
 
   (defhydra hydra-zoom ()
     "zoom"
-    ("+" text-scale-increase "in")
-    ("-" text-scale-decrease "out")
-    ("0" (text-scale-adjust 0) "reset")
+    ("+" (neh/adjust-text-height 10) "in")
+    ("-" (neh/adjust-text-height -10) "out")
+    ("0" (neh/adjust-text-height 0) "reset")
     ("q" nil "quit" :color blue))
 
   (defhydra hydra-git-gutter ()
