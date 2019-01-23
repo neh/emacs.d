@@ -308,8 +308,8 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
    "C-M-t" 'scroll-other-window
    "C-M-n" 'scroll-other-window-down
 
-   "C-_" '(lambda () (interactive) (neh/adjust-text-height -10))
-   "C-+" '(lambda () (interactive) (neh/adjust-text-height 10))
+   "C-_" '(lambda () (interactive) (neh/adjust-text-height -7))
+   "C-+" '(lambda () (interactive) (neh/adjust-text-height 7))
    "C-)" '(lambda () (interactive) (neh/adjust-text-height 0))
 
    ;; "C-<tab>" 'next-buffer
@@ -1453,8 +1453,8 @@ Let’s try to get some window behaviour under control.
 
   (defhydra hydra-zoom ()
     "zoom"
-    ("+" (neh/adjust-text-height 10) "in")
-    ("-" (neh/adjust-text-height -10) "out")
+    ("+" (neh/adjust-text-height 7) "in")
+    ("-" (neh/adjust-text-height -7) "out")
     ("0" (neh/adjust-text-height 0) "reset")
     ("q" nil "quit" :color blue))
 
