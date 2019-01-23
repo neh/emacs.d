@@ -862,7 +862,7 @@ I come from vim, so evil is a necessity.
 #+end_src
 #+begin_src emacs-lisp
 (use-package avy
-  :chords (("qj" . avy-goto-char-2)
+  :chords (("qj" . avy-goto-char-timer)
            ("jl" . avy-goto-line))
 
   :general
