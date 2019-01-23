@@ -593,6 +593,13 @@ And here’s the function where I collect my tweaks to the theme and set up font
                       :foreground (color-complement-hex
                                    (face-attribute 'default :background)))
 
+  (save-current-buffer
+    (mapc (lambda (b)
+            (set-buffer b)
+            (when (equal major-mode 'org-mode)
+              (font-lock-fontify-buffer)))
+          (buffer-list)))
+
   (set-face-attribute 'org-block-begin-line nil :height 0.75)
   (set-face-attribute 'org-block-end-line nil :height 0.75))
 #+end_src
