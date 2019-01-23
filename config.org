@@ -308,6 +308,8 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
    "C-M-t" 'scroll-other-window
    "C-M-n" 'scroll-other-window-down
 
+   "<C-mouse-5>" '(lambda () (interactive) (neh/adjust-text-height -5))
+   "<C-mouse-4>" '(lambda () (interactive) (neh/adjust-text-height 5))
    "C-_" '(lambda () (interactive) (neh/adjust-text-height -7))
    "C-+" '(lambda () (interactive) (neh/adjust-text-height 7))
    "C-)" '(lambda () (interactive) (neh/adjust-text-height 0))
