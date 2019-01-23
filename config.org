@@ -1608,6 +1608,10 @@ Try out =org-noter=.
 * Misc packages
 
 #+begin_src emacs-lisp
+(use-package image-mode
+  :straight nil
+  :hook (image-mode . (lambda () (blink-cursor-mode -1))))
+
 (use-package restart-emacs
   :commands (restart-emacs))
 
