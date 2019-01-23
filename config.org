@@ -395,6 +395,9 @@ Key chords are interesting, and I’m not sure I’ll keep them yet. Doing vim-s
 Not sure where to put everything yet, so this section is a grab bag of stuff that needs package management (straight) to be in place.
 
 #+begin_src emacs-lisp
+(use-package color
+  :demand t)
+
 (use-package saveplace
   :demand t
   :config
