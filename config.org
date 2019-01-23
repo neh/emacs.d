@@ -589,6 +589,10 @@ And here’s the function where I collect my tweaks to the theme and set up font
   (set-face-attribute 'mode-line nil :height 1.0)
   (set-face-attribute 'mode-line-inactive nil :height 1.0)
 
+  (set-face-attribute 'org-todo nil
+                      :foreground (color-complement-hex
+                                   (face-attribute 'default :background)))
+
   (set-face-attribute 'org-block-begin-line nil :height 0.75)
   (set-face-attribute 'org-block-end-line nil :height 0.75))
 #+end_src
@@ -1204,7 +1208,8 @@ Handy package to browse to git repo web interfaces.
 
      `(org-todo ((t (,@headline
                      :weight bold
-                     :foreground "#222222"))))
+                     :foreground ,(color-complement-hex
+                                   (face-attribute 'default :background))))))
      `(org-inprogress ((t (,@headline
                            :weight bold
                            :foreground "white"
