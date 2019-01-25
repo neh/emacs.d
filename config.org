@@ -1224,12 +1224,12 @@ Handy package to browse to git repo web interfaces.
                                    (face-attribute 'default :background))))))
      `(org-inprogress ((t (,@headline
                            :weight bold
-                           :foreground "white"
-                           :background "ForestGreen"))))
+                           :foreground "#eeeeee"
+                           :background "DarkGreen"))))
      `(org-waiting ((t (,@headline
                         :weight bold
                         :foreground "#222222"
-                        :background "#ffd700"))))
+                        :background "gold2"))))
      `(org-done ((t (,@done :strike-through t))))
      `(org-archived ((t (,@done :strike-through t))))
      `(org-headline-done ((t (,@done))))
