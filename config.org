@@ -312,11 +312,7 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
    "<C-mouse-4>" '(lambda () (interactive) (neh/adjust-text-height 5))
    "C-_" '(lambda () (interactive) (neh/adjust-text-height -7))
    "C-+" '(lambda () (interactive) (neh/adjust-text-height 7))
-   "C-)" '(lambda () (interactive) (neh/adjust-text-height 0))
-
-   ;; "C-<tab>" 'next-buffer
-   ;; "C-S-<iso-lefttab>" 'previous-buffer
-   )
+   "C-)" '(lambda () (interactive) (neh/adjust-text-height 0)))
 
   (neh/leader-keys
     "<SPC>" '(save-buffer :which-key "save")
