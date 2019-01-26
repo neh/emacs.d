@@ -1610,6 +1610,18 @@ Try out =org-noter=.
 * Misc packages
 
 #+begin_src emacs-lisp
+(use-package dumb-jump
+  :commands (dumb-jump-go
+             dumb-jump-go-other-window)
+  :general
+  (general-def
+    :states 'normal
+    :prefix "j"
+    "d" 'dumb-jump-go)
+  :init
+  (setq dumb-jump-selector 'ivy
+        dumb-jump-prefer-searcher 'rg))
+
 (use-package deadgrep
   :commands (deadgrep))
 
