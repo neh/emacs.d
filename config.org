@@ -1301,6 +1301,7 @@ Handy package to browse to git repo web interfaces.
      (emacs-lisp . t))))
 
 (use-package org-tempo
+  :disabled
   :straight nil
   :after org)
 #+end_src
