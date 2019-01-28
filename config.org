@@ -1369,7 +1369,7 @@ Let’s try to get some window behaviour under control.
   (neh/leader-keys
     "od" 'dired-jump)
   :init
-  (setq dired-listing-switches "-alh"))
+  (setq dired-listing-switches "-alhv --group-directories-first"))
 
 (use-package dired-x
   :straight nil
