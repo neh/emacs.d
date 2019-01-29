@@ -861,6 +861,9 @@ I come from vim, so evil is a necessity.
   ;; ("m" ,(reloading (given-file #'rename-file "Move")) "move")))
   )
 #+end_src
+
+Avy is a really handy way to jump around your visible buffer contents. One aspect that doesn’t seem to really be documented is the avy-actions mechanism. It lets you do things other than just jump to the point you select. So you can hit the key for whichever avy function you like, then, /before/ making your selection, press the key associated with an avy-action function to do that thing instead. This way, you can easily copy a word from elsewhere on your screen and paste it at your cursor with avy, no cursor movement needed at all. Also, =avy-copy-line= is a useful standalone function. I find it useful particularly when working in Terraform files, as lines need to be duplicated fairly often there.
+
 #+begin_src emacs-lisp
 (use-package avy
   :chords (("qj" . avy-goto-char-timer)
@@ -875,8 +878,22 @@ I come from vim, so evil is a necessity.
    "h" '(avy-org-goto-heading-timer :which-key "org heading")
    "l" '(avy-goto-line :which-key "line"))
 
+  (neh/leader-keys
+    "cl" 'avy-copy-line)
+
+  :custom
+  (avy-dispatch-alist '((?y . avy-action-copy)
+                        (?m . avy-action-teleport)
+                        (?c . (lambda (pt)
+                                (avy-action-copy pt)
+                                (evil-paste-after 1)))
+                        (?k . avy-action-kill-move)
+                        (?K . avy-action-kill-stay)
+                        (?M . avy-action-mark)))
+
   :init
-  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
+  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s)
+        avy-line-insert-style 'below))
 #+end_src
 
 #+begin_src emacs-lisp
