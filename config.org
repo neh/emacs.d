@@ -897,19 +897,6 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package ace-jump-buffer
-  :commands (ace-jump-buffer
-             ace-jump-buffer-other-window
-             ace-jump-same-mode-buffers
-             ace-jump-projectile-buffers
-             ace-jump-persp-buffers)
-  :general
-  (general-def
-    :states '(emacs normal)
-    "jb" 'ace-jump-buffer))
-#+end_src
-
-#+begin_src emacs-lisp
 (use-package iflipb
   :commands (iflipb-next-buffer
              iflipb-previous-buffer)
