@@ -1119,6 +1119,7 @@ Handy package to browse to git repo web interfaces.
          (org-mode . org-indent-mode)
          (org-mode . variable-pitch-mode)
          (org-capture-mode . evil-insert-state)
+         (org-log-buffer-setup . evil-insert-state)
          (org-src-mode . disable-flycheck-in-org-src-block))
 
   :general
