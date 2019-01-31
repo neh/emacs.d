@@ -121,6 +121,12 @@ Load any host-specific configuration. Anything set here will just get overridden
   (load-file neh/local-conf-file))
 #+end_src
 
+Show a message when garbage collecting, just for some awareness.
+
+#+begin_src emacs-lisp
+(setq garbage-collection-messages t)
+#+end_src
+
 Turn off all startup messages, splash screens, menu bars, scrollbars, etc. for a clean start.
 
 #+begin_src emacs-lisp
@@ -1996,9 +2002,11 @@ Here we close the =let= expression from [[*Performance optimization][the preface
 )
 #+end_src
 
-We also reset the value of =gc-cons-threshold=, not to its original value, we still leave it larger than default so that GCs don't happen so often.
+We also reset the value of =gc-cons-threshold=, not to its original value; we still leave it much larger than default so that GCs don't happen so often and impact performance. We also tweak =gc-cons-percentage= and set an idle timer to run =garbage-collect= whenever emacs is idle for 5 seconds.
 
 #+begin_src emacs-lisp
-(setq gc-cons-threshold (* 2 1000 1000))
+(setq gc-cons-threshold (* 250 1000 1000)
+      gc-cons-percentage 0.5)
+(run-with-idle-timer 5 t #'garbage-collect)
 #+end_src
 
