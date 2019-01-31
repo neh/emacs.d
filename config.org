@@ -1152,7 +1152,7 @@ Handy package to browse to git repo web interfaces.
   (general-def
     :keymaps 'org-mode-map
     :states '(normal emacs)
-    "<RET>" 'org-tree-to-indirect-buffer
+    "<RET>" 'neh/org-ret
     "ze" 'outline-show-branches)
 
   (general-def
@@ -1825,6 +1825,16 @@ Try out =org-noter=.
 #+end_src
 
 * Misc functions
+
+This function gives me a quicker way to edit src blocks in org mode, as well as making indirect buffer cloning a bit /less/ accessible (only on headings), since I do it relatively infrequently and have actually been ending up in indirect buffers a bit /too/ easily. I just bind this to =enter= in org mode.
+
+#+begin_src emacs-lisp
+(defun neh/org-ret ()
+  "Take different actions on RET in org mode."
+  (interactive)
+  (cond ((org-at-heading-p) (org-tree-to-indirect-buffer))
+        ((org-in-src-block-p) (org-edit-src-code))))
+#+end_src
 
 I wanted a way to move org items to the top of their own level, and found one [[https://emacs.stackexchange.com/questions/43651/moving-a-subtree-to-the-top-or-bottom-of-its-parent][on stackoverflow]]. I inverted its behaviour to move to the top by default, and to the bottom with a prefix arg.
 
