@@ -2007,6 +2007,9 @@ We also reset the value of =gc-cons-threshold=, not to its original value; we st
 #+begin_src emacs-lisp
 (setq gc-cons-threshold (* 250 1000 1000)
       gc-cons-percentage 0.5)
-(run-with-idle-timer 5 t #'garbage-collect)
+
+(defvar neh/gc-idle-timer nil)
+(unless (timerp neh/gc-idle-timer)
+  (setq neh/gc-idle-timer (run-with-idle-timer 5 t #'garbage-collect)))
 #+end_src
 
