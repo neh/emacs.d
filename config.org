@@ -154,9 +154,6 @@ Set scrolling options. These stop the half-page jumps while scrolling, and make 
               scroll-up-aggressively 0.01
               scroll-down-aggressively 0.01
               scroll-conservatively 101) ;; Don't jump around when scrolling
-
-(when (>= emacs-major-version 26)
-  (pixel-scroll-mode t))
 #+end_src
 
 And let’s try out the new single-line-horizontal-scroll option in emacs 26.
