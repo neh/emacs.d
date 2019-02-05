@@ -1256,14 +1256,14 @@ Handy package to browse to git repo web interfaces.
          #',name)))
 
   (general-def org-read-date-minibuffer-local-map
-    "M-h" (my-org-in-calendar calendar-backward-day)
-    "M-s" (my-org-in-calendar calendar-forward-day)
-    "M-n" (my-org-in-calendar calendar-backward-week)
-    "M-t" (my-org-in-calendar calendar-forward-week)
-    "M-H" (my-org-in-calendar calendar-backward-month)
-    "M-S" (my-org-in-calendar calendar-forward-month)
-    "M-N" (my-org-in-calendar calendar-backward-year)
-    "M-T" (my-org-in-calendar calendar-forward-year))
+    "n" (my-org-in-calendar calendar-backward-day)
+    "t" (my-org-in-calendar calendar-forward-day)
+    "h" (my-org-in-calendar calendar-backward-week)
+    "s" (my-org-in-calendar calendar-forward-week)
+    "N" (my-org-in-calendar calendar-backward-month)
+    "T" (my-org-in-calendar calendar-forward-month)
+    "H" (my-org-in-calendar calendar-backward-year)
+    "S" (my-org-in-calendar calendar-forward-year))
 
   :config
   ;; from https://twitter.com/jay_f0xtr0t/status/982353141386461188
