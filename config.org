@@ -1123,6 +1123,7 @@ Handy package to browse to git repo web interfaces.
          (org-mode . variable-pitch-mode)
          (org-capture-mode . evil-insert-state)
          (org-log-buffer-setup . evil-insert-state)
+         (org-babel-after-execute . org-redisplay-inline-images)
          (org-src-mode . disable-flycheck-in-org-src-block))
 
   :general
@@ -1303,6 +1304,7 @@ Handy package to browse to git repo web interfaces.
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)
+     (plantuml . t)
      (emacs-lisp . t))))
 
 (use-package org-tempo
