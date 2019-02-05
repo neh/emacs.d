@@ -1136,6 +1136,7 @@ Handy package to browse to git repo web interfaces.
     "ns" '(org-narrow-to-subtree :which-key "narrow to subtree")
 
     "oc" 'org-capture
+    "C" 'org-capture
     "oC" '(lambda () (interactive) (find-file org-default-notes-file))
     "og" '(org-agenda :which-key "agenda")
     "o." '(org-open-at-point :which-key "follow link"))
