@@ -1451,13 +1451,26 @@ Let’s try to get some window behaviour under control.
     "zt" '(hydra-zoom/body :which-key "zoom text"))
 
   :config
-  (defhydra hydra-reading ()
-    "Text reading/navigation"
-    ("t" (evil-scroll-down 0) "down")
-    ("n" (evil-scroll-up 0) "up")
-    ("T" (scroll-up) "next page")
-    ("N" (scroll-down) "prev page")
-    ("q" nil "quit" :color blue))
+  (defhydra hydra-reading (:color red
+                           :hint nil)
+    "
+  _N_ pg up         _H_ line to top
+  _n_ ½ pg up       _Z_ line to center
+  _t_ ½ pg dn       _S_ line to bottom
+  _T_ pg dn
+
+"
+    ("n" (evil-scroll-up 0))
+    ("t" (evil-scroll-down 0))
+    ("T" (scroll-up))
+    ("N" (scroll-down))
+    ("H" (evil-scroll-line-to-top (line-number-at-pos)))
+    ("Z" (evil-scroll-line-to-center (line-number-at-pos)))
+    ("S" (evil-scroll-line-to-bottom (line-number-at-pos)))
+    ("+" (neh/adjust-text-height 7) "bigger")
+    ("-" (neh/adjust-text-height -7) "smaller")
+    ("0" (neh/adjust-text-height 0) "reset")
+    ("q" nil "quit"))
 
   (defhydra hydra-zoom ()
     "zoom"
