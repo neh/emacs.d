@@ -1304,6 +1304,7 @@ Handy package to browse to git repo web interfaces.
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)
+     (sql . t)
      (plantuml . t)
      (emacs-lisp . t))))
 
