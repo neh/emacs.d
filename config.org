@@ -1301,6 +1301,8 @@ Handy package to browse to git repo web interfaces.
         org-src-tab-acts-natively t
         org-src-preserve-indentation t)
 
+  (setq org-plantuml-jar-path "~/bin/plantuml.jar")
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)
@@ -1312,6 +1314,17 @@ Handy package to browse to git repo web interfaces.
   :disabled
   :straight nil
   :after org)
+#+end_src
+
+Add plantuml for nice text-based diagram generation. I’ll mainly use this in org mode files, generating inline diagrams from src blocks.
+
+#+begin_src emacs-lisp
+(use-package plantuml-mode
+  :commands (plantuml-mode)
+  :mode (("\\.plantuml\\'" . plantuml-mode))
+  :init
+  (setq plantuml-jar-path "~/bin/plantuml.jar")
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
 #+end_src
 
 #+begin_src emacs-lisp
