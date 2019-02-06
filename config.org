@@ -1320,6 +1320,7 @@ Add plantuml for nice text-based diagram generation. I’ll mainly use this in o
 
 #+begin_src emacs-lisp
 (use-package plantuml-mode
+  :after org
   :commands (plantuml-mode)
   :mode (("\\.plantuml\\'" . plantuml-mode))
   :init
