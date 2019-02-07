@@ -1472,9 +1472,9 @@ Let’s try to get some window behaviour under control.
   (defhydra hydra-reading (:color red
                            :hint nil)
     "
-  _N_ pg up         _H_ line to top
-  _n_ ½ pg up       _Z_ line to center
-  _t_ ½ pg dn       _S_ line to bottom
+  _N_ pg up         _gg_ go to top        _zt_ line to top
+  _n_ ½ pg up       _G_  go to bottom     _zz_ line to center
+  _t_ ½ pg dn       ^ ^                   _zb_ line to bottom
   _T_ pg dn
 
 "
@@ -1482,9 +1482,14 @@ Let’s try to get some window behaviour under control.
     ("t" (evil-scroll-down 0))
     ("T" (scroll-up))
     ("N" (scroll-down))
-    ("H" (evil-scroll-line-to-top (line-number-at-pos)))
-    ("Z" (evil-scroll-line-to-center (line-number-at-pos)))
-    ("S" (evil-scroll-line-to-bottom (line-number-at-pos)))
+
+    ("gg" evil-goto-first-line)
+    ("G" evil-goto-line)
+
+    ("zt" (evil-scroll-line-to-top (line-number-at-pos)))
+    ("zz" (evil-scroll-line-to-center (line-number-at-pos)))
+    ("zb" (evil-scroll-line-to-bottom (line-number-at-pos)))
+
     ("+" (neh/adjust-text-height 7) "bigger")
     ("-" (neh/adjust-text-height -7) "smaller")
     ("0" (neh/adjust-text-height 0) "reset")
