@@ -349,7 +349,7 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
     "nw" '(widen :which-key "widen")
 
     "o" '(:ignore t :which-key "open")
-    "oe" '(mode-line-other-buffer :which-key "previous buffer")
+    ;; "oe" '(mode-line-other-buffer :which-key "previous buffer")
     ;; "oo" '(persp-switch-to-buffer :which-key "switch buffer")
     ;; "ov" '(persp-switch :which-key "switch perspective")
 
