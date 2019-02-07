@@ -1504,7 +1504,7 @@ Let’s try to get some window behaviour under control.
     ("t" (progn (git-gutter:next-hunk 1)
                 (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
     ("s" git-gutter:stage-hunk "stage hunk")
-    ("r" git-gutter:revert-hunk "revert hunk")
+    ("k" git-gutter:revert-hunk "revert hunk")
     ("q" nil "quit" :color blue))
 
   (defhydra hydra-org (:color red :columns 3)
