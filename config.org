@@ -1766,10 +1766,28 @@ Try out =org-noter=.
 
 (use-package symbol-overlay
   :general
+  (general-def
+    :keymaps 'symbol-overlay-map
+    "i" '(nil)
+    "n" '(nil)
+    "p" '(nil)
+
+    "?" 'symbol-overlay-map-help
+
+    "S" 'symbol-overlay-toggle-in-scope
+
+    "n" '(lambda () (interactive) (symbol-overlay-jump-prev) (recenter))
+    "t" '(lambda () (interactive) (symbol-overlay-jump-next) (recenter))
+    "N" '(lambda () (interactive) (symbol-overlay-switch-backward) (recenter))
+    "T" '(lambda () (interactive) (symbol-overlay-switch-forward) (recenter))
+
+    "c" 'symbol-overlay-put
+    "C" 'symbol-overlay-remove-all)
+
   (neh/leader-keys
     "hs" '(symbol-overlay-put :which-key "highlight symbol")
-    "hp" '(symbol-overlay-switch-backward :which-key "previous highlighted symbol")
-    "hn" '(symbol-overlay-switch-forward :which-key "next highlighted symbol")
+    "hn" '(symbol-overlay-switch-backward :which-key "previous highlighted symbol")
+    "ht" '(symbol-overlay-switch-forward :which-key "next highlighted symbol")
     "hc" '(symbol-overlay-remove-all :which-key "clear highlighted symbols")
     "hM" '(symbol-overlay-mode :which-key "symbol overlay mode")))
 
