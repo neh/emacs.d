@@ -1631,7 +1631,9 @@ Let’s try to get some window behaviour under control.
   ("q" nil))
 #+end_src
 
-#+begin_src emacs-lisp
+=Pretty-hydra= comes from the =major-mode-hydra= package, but I’m using it separately to define various hydras as I begin to use them more. Each hydra is broken out below.
+
+#+begin_src emacs-lisp :noweb yes
 (use-package pretty-hydra
   :after hydra
   :commands (pretty-hydra-define)
@@ -1640,42 +1642,60 @@ Let’s try to get some window behaviour under control.
     "G" 'hydra-git/body
     "rR" 'neh/reading/body)
   :config
-  (pretty-hydra-define neh/reading (:hint nil
-                                    :foreign-keys warn
-                                    :quit-key "q")
-    ("move up/down" (("N" scroll-down "pg up")
-                     ("n" (evil-scroll-up 0) "1/2 pg up")
-                     ("t" (evil-scroll-down 0) "1/2 pg dn")
-                     ("T" scroll-up "pg down"))
-     "current line" (("H" (evil-scroll-line-to-top (line-number-at-pos)) "to top")
-                     ("Z" (evil-scroll-line-to-center (line-number-at-pos)) "to center")
-                     ("S" (evil-scroll-line-to-bottom (line-number-at-pos)) "to bottom"))
-     "text size" (("+" (neh/adjust-text-height 7) "bigger")
-                  ("-" (neh/adjust-text-height -7) "smaller")
-                  ("0" (neh/adjust-text-height 0) "reset"))))
-
-  (pretty-hydra-define hydra-git (:hint nil
-                                  :quit-key "q")
-    ("go" (("gg" (progn (goto-char (point-min))
-                        (git-gutter:next-hunk 1)) "first hunk")
-           ("n" (progn (git-gutter:previous-hunk 1)
-                       (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
-           ("t" (progn (git-gutter:next-hunk 1)
-                       (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
-           ("G" (progn (goto-char (point-min))
-                       (git-gutter:previous-hunk 1)) "last hunk"))
-
-     "do" (("s" git-gutter:stage-hunk "stage")
-           ("k" git-gutter:revert-hunk "revert hunk")
-           ("c" magit-commit-popup "commit" :exit t))
-
-     "see" (("S" magit-status "status" :exit t)
-            ("l" magit-log-buffer-file "log" :exit t)
-            ("L" magit-log-popup "log (menu)" :exit t))
-     ))
+  <<pretty-hydras>>
   )
+#+end_src
 
+Working on a =git= hydra to replace all or most of my usual git keybinds. This is an experiment to see whether I want to use a lot more hydras.
+
+#+begin_src emacs-lisp :noweb-ref pretty-hydras :tangle no
+(pretty-hydra-define hydra-git (:hint nil
+                                :quit-key "q")
+  ("go" (("gg" (progn (goto-char (point-min))
+                      (git-gutter:next-hunk 1)) "first hunk")
+         ("n" (progn (git-gutter:previous-hunk 1)
+                     (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
+         ("t" (progn (git-gutter:next-hunk 1)
+                     (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
+         ("G" (progn (goto-char (point-min))
+                     (git-gutter:previous-hunk 1)) "last hunk"))
+
+   "do" (("s" git-gutter:stage-hunk "stage")
+         ("k" git-gutter:revert-hunk "revert hunk")
+         ("c" magit-commit-popup "commit" :exit t))
+
+   "see" (("S" magit-status "status" :exit t)
+          ("l" magit-log-buffer-file "log" :exit t)
+          ("L" magit-log-popup "log (menu)" :exit t))
+   ))
+#+end_src
+
+Another work-in-progress hydra, this one for a general reading/browsing set of commands. Not sure exactly what it will be yet.
+
+#+begin_src emacs-lisp :noweb-ref pretty-hydras :tangle no
+(pretty-hydra-define neh/reading (:hint nil
+                                  :foreign-keys warn
+                                  :quit-key "q")
+  ("move up/down" (("N" scroll-down "pg up")
+                   ("n" (evil-scroll-up 0) "1/2 pg up")
+                   ("t" (evil-scroll-down 0) "1/2 pg dn")
+                   ("T" scroll-up "pg down"))
+
+   "current line" (("H" (evil-scroll-line-to-top (line-number-at-pos)) "to top")
+                   ("Z" (evil-scroll-line-to-center (line-number-at-pos)) "to center")
+                   ("S" (evil-scroll-line-to-bottom (line-number-at-pos)) "to bottom"))
+
+   "text size" (("+" (neh/adjust-text-height 7) "bigger")
+                ("-" (neh/adjust-text-height -7) "smaller")
+                ("0" (neh/adjust-text-height 0) "reset"))
+   ))
+#+end_src
+
+Not using this one yet, but will allow associating a hydra to any major mode to provide common commands.
+
+#+begin_src emacs-lisp
 (use-package major-mode-hydra
+  :disabled
   :general
   (neh/leader-keys
     "m" 'major-mode-hydra))
