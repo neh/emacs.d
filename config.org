@@ -1502,7 +1502,7 @@ Let’s try to get some window behaviour under control.
     ("0" (neh/adjust-text-height 0) "reset")
     ("q" nil "quit" :color blue))
 
-  (defhydra hydra-git-gutter ()
+  (defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1))
     "Browse/stage/revert git hunks"
     ("n" (progn (git-gutter:previous-hunk 1)
                 (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
