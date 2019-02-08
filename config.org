@@ -1637,6 +1637,7 @@ Let’s try to get some window behaviour under control.
   :commands (pretty-hydra-define)
   :general
   (neh/leader-keys
+    "G" 'hydra-git/body
     "rR" 'neh/reading/body)
   :config
   (pretty-hydra-define neh/reading (:hint nil
@@ -1652,6 +1653,26 @@ Let’s try to get some window behaviour under control.
      "text size" (("+" (neh/adjust-text-height 7) "bigger")
                   ("-" (neh/adjust-text-height -7) "smaller")
                   ("0" (neh/adjust-text-height 0) "reset"))))
+
+  (pretty-hydra-define hydra-git (:hint nil
+                                  :quit-key "q")
+    ("go" (("gg" (progn (goto-char (point-min))
+                        (git-gutter:next-hunk 1)) "first hunk")
+           ("n" (progn (git-gutter:previous-hunk 1)
+                       (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
+           ("t" (progn (git-gutter:next-hunk 1)
+                       (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
+           ("G" (progn (goto-char (point-min))
+                       (git-gutter:previous-hunk 1)) "last hunk"))
+
+     "do" (("s" git-gutter:stage-hunk "stage")
+           ("k" git-gutter:revert-hunk "revert hunk")
+           ("c" magit-commit-popup "commit" :exit t))
+
+     "see" (("S" magit-status "status" :exit t)
+            ("l" magit-log-buffer-file "log" :exit t)
+            ("L" magit-log-popup "log (menu)" :exit t))
+     ))
   )
 
 (use-package major-mode-hydra
