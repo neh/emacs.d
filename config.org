@@ -1632,6 +1632,35 @@ Let’s try to get some window behaviour under control.
   ("q" nil))
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package pretty-hydra
+  :after hydra
+  :commands (pretty-hydra-define)
+  :general
+  (neh/leader-keys
+    "rR" 'neh/reading/body)
+  :config
+  (pretty-hydra-define neh/reading (:hint nil
+                                    :foreign-keys warn
+                                    :quit-key "q")
+    ("move up/down" (("N" scroll-down "pg up")
+                     ("n" (evil-scroll-up 0) "1/2 pg up")
+                     ("t" (evil-scroll-down 0) "1/2 pg dn")
+                     ("T" scroll-up "pg down"))
+     "current line" (("H" (evil-scroll-line-to-top (line-number-at-pos)) "to top")
+                     ("Z" (evil-scroll-line-to-center (line-number-at-pos)) "to center")
+                     ("S" (evil-scroll-line-to-bottom (line-number-at-pos)) "to bottom"))
+     "text size" (("+" (neh/adjust-text-height 7) "bigger")
+                  ("-" (neh/adjust-text-height -7) "smaller")
+                  ("0" (neh/adjust-text-height 0) "reset"))))
+  )
+
+(use-package major-mode-hydra
+  :general
+  (neh/leader-keys
+    "m" 'major-mode-hydra))
+#+end_src
+
 * Reading and Note-taking
 
 First, set up =pdf-tools= for nice PDF handling.
