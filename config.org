@@ -1662,7 +1662,8 @@ Working on a =git= hydra to replace all or most of my usual git keybinds. This i
 
    "do" (("s" git-gutter:stage-hunk "stage")
          ("k" git-gutter:revert-hunk "revert hunk")
-         ("c" magit-commit-popup "commit" :exit t))
+         ("c" magit-commit-popup "commit" :exit t)
+         ("P" magit-push-popup "push" :exit t))
 
    "see" (("S" magit-status "status" :exit t)
           ("l" magit-log-buffer-file "log" :exit t)
