@@ -1650,7 +1650,9 @@ Working on a =git= hydra to replace all or most of my usual git keybinds. This i
 
 #+begin_src emacs-lisp :noweb-ref pretty-hydras :tangle no
 (pretty-hydra-define hydra-git (:hint nil
-                                :quit-key "q")
+                                :quit-key "q"
+                                :body-pre (git-gutter-mode 1))
+
   ("go" (("gg" (progn (goto-char (point-min))
                       (git-gutter:next-hunk 1)) "first hunk")
          ("n" (progn (git-gutter:previous-hunk 1)
