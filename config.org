@@ -913,6 +913,17 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
     "C-S-<iso-lefttab>" 'iflipb-next-buffer))
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package beacon
+  :commands (beacon-mode)
+  :init
+  (setq beacon-color (let ((bg (face-attribute 'default :background)))
+                       (if (< (color-distance bg "black") (color-distance bg "white"))
+                           (color-lighten-name bg 20)
+                         (color-darken-name bg 20))))
+  )
+#+end_src
+
 * Projectile
 
 #+begin_src emacs-lisp
