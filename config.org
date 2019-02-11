@@ -197,8 +197,8 @@ Set my preferred font and size, taking display DPI into account. Bits and pieces
     (set-frame-font (format "%s-%f" myfont mysize) t t)
     (set-face-attribute 'default nil :font (format "%s-%f" myfont mysize))))
 
-(neh/set-frame-options nil)
-(add-hook 'after-make-frame-functions #'neh/set-frame-options)
+;; (neh/set-frame-options nil)
+;; (add-hook 'after-make-frame-functions #'neh/set-frame-options)
 #+end_src
 
 I don’t really use the customization system in Emacs (yet?) but let’s at least make it use a file that isn’t the main config.
