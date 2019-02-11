@@ -1321,6 +1321,7 @@ Handy package to browse to git repo web interfaces.
    '((shell . t)
      (sql . t)
      (plantuml . t)
+     (css . t)
      (emacs-lisp . t))))
 
 (use-package org-tempo
