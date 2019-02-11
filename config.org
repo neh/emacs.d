@@ -567,8 +567,8 @@ And here’s the function where I collect my tweaks to the theme and set up font
   (interactive)
 
   (let* ((variable-tuple (cond
-                          ((x-list-fonts "Inter UI")
-                           `(:font "Inter UI" :height ,neh/current-text-size))
+                          ((x-list-fonts "Inter")
+                           `(:font "Inter" :height ,neh/current-text-size))
                           ((x-list-fonts "DejaVu Sans")
                            `(:font "DejaVu Sans" :height ,neh/current-text-size))
                           ((x-family-fonts "Sans Serif")
