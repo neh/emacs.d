@@ -924,6 +924,70 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
   )
 #+end_src
 
+#+begin_src emacs-lisp
+;; (defun my-View-scroll-half-page-forward-other-window ()
+;;   (interactive)
+;;   (with-selected-window (next-window)
+;;     (call-interactively 'View-scroll-half-page-forward)))
+
+;; (defun my-View-scroll-half-page-backward-other-window ()
+;;   (interactive)
+;;   (with-selected-window (next-window)
+;;     (call-interactively 'View-scroll-half-page-backward)))
+
+(defface neh-highlight
+  '((default :inherit default))
+  "Face for highlighting based on theme.")
+
+;; (let ((bg (face-attribute 'default :background)))
+;;   (if (< (color-distance bg "black") (color-distance bg "white"))
+;;       (set-face-attribute 'neh-highlight nil :background (color-lighten-name bg 20))
+;;     (set-face-attribute 'neh-highlight nil :background (color-darken-name bg 20))))
+
+(set-face-attribute 'neh-highlight nil :background "SpringGreen4")
+
+(defvar neh/scroll-up-functions '(evil-scroll-up
+                                  evil-scroll-page-up))
+(defvar neh/scroll-down-functions '(evil-scroll-down
+                                    evil-scroll-page-down))
+
+;; TODO scroll highlight interferes with hydras
+
+(defun neh/enable-scroll-highlight ()
+  (interactive)
+  (general-add-advice neh/scroll-up-functions
+                      :around #'my-indicate-scroll-backward)
+  (general-add-advice neh/scroll-down-functions
+                      :around #'my-indicate-scroll-forward))
+
+(defun neh/disable-scroll-highlight ()
+  (interactive)
+  (general-remove-advice neh/scroll-up-functions
+                         #'my-indicate-scroll-backward)
+  (general-remove-advice neh/scroll-down-functions
+                         #'my-indicate-scroll-forward))
+
+(defun my-indicate-scroll-get-line (pos)
+  (save-excursion
+    (goto-char pos)
+    (string-to-number (format-mode-line "%l"))))
+
+(defun my-indicate-scroll (linep f args)
+  (let ((linen (my-indicate-scroll-get-line linep))
+        (pulse-delay 0.03))
+    (save-excursion
+      (goto-line linen)
+      (pulse-momentary-highlight-one-line (point) 'neh-highlight))
+    (sit-for 0.1)
+    (apply f args)))
+
+(defun my-indicate-scroll-forward (f &rest args)
+  (my-indicate-scroll (1- (window-end)) f args))
+
+(defun my-indicate-scroll-backward (f &rest args)
+  (my-indicate-scroll (window-start) f args))
+#+end_src
+
 * Projectile
 
 #+begin_src emacs-lisp
