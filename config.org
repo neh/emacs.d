@@ -974,7 +974,7 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
 
 (defun my-indicate-scroll (linep f args)
   (let ((linen (my-indicate-scroll-get-line linep))
-        (pulse-delay 0.03))
+        (pulse-delay 0.06))
     (save-excursion
       (goto-line linen)
       (pulse-momentary-highlight-one-line (point) 'neh-highlight))
