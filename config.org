@@ -568,15 +568,21 @@ And here’s the function where I collect my tweaks to the theme and set up font
 
   (let* ((variable-tuple (cond
                           ((x-list-fonts "Inter")
-                           `(:font "Inter" :height ,neh/current-text-size))
+                           `(:font "Inter"
+                             :height ,(round (* neh/current-text-size 1.02))))
+                          ((x-list-fonts "Noto Sans")
+                           `(:font "Noto Sans"
+                             :height ,(round (* neh/current-text-size 0.96))))
                           ((x-list-fonts "DejaVu Sans")
-                           `(:font "DejaVu Sans" :height ,neh/current-text-size))
+                           `(:font "DejaVu Sans"
+                             :height ,(round (* neh/current-text-size 0.945))))
                           ((x-family-fonts "Sans Serif")
                            `(:family "Sans Serif"))
                           (nil (warn "Cannot find a variable width font."))))
          (fixed-tuple (cond
                        ((x-list-fonts "Iosevka")
-                        `(:font "Iosevka" :height ,neh/current-text-size))
+                        `(:font "Iosevka"
+                          :height ,neh/current-text-size))
                        ((x-family-fonts "Monospace")
                         '(:family "Monospace"))
                        (nil (warn "Cannot find a fixed width font.")))))
