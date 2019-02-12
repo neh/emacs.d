@@ -1357,7 +1357,7 @@ Handy package to browse to git repo web interfaces.
                                       "CANCELED(c@)")))
 
   (setq org-startup-indented t
-        org-ellipsis " ⋯"
+        org-ellipsis " …"
         org-fontify-whole-heading-line t
         org-fontify-done-headline t
         org-hide-emphasis-markers t
