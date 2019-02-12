@@ -1948,6 +1948,7 @@ Try out =org-noter=.
     "hM" '(symbol-overlay-mode :which-key "symbol overlay mode")))
 
 (use-package aggressive-indent
+  :disabled
   :hook (emacs-lisp-mode . aggressive-indent-mode))
 
 (use-package direnv
