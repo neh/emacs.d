@@ -1433,7 +1433,6 @@ Make org-mode prettier.
 
 #+begin_src emacs-lisp
 (use-package org-bullets
-  :disabled
   :init
   (setq org-bullets-bullet-list '(" "))
   :hook (org-mode . org-bullets-mode))
