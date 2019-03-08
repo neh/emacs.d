@@ -248,13 +248,6 @@ Set some backup file options.
       `((".*" ,temporary-file-directory t)))
 #+end_src
 
-I view man pages in emacs sometimes, and want a fixed width for them.
-
-#+begin_src emacs-lisp
-(setenv "MANWIDTH" fill-column)
-(setq Man-notify-method 'pushy)
-#+end_src
-
 I’m testing out [[https://github.com/swaywm/sway][sway]] as my window manager, and apparently ~$SSH_AUTH_SOCK~ doesn’t get set (maybe just for xwayland apps?). So we workaround. I already set a fixed link to the real socket for tmux usage, I can reuse it for this.
 
 #+begin_src emacs-lisp
@@ -267,6 +260,14 @@ Some text fill options.
 #+begin_src emacs-lisp
 (setq-default fill-column 100)
 (setq comment-auto-fill-only-comments t)
+#+end_src
+
+I view man pages in emacs sometimes, and want a fixed width for them.
+
+#+begin_src emacs-lisp
+(setenv "MANWIDTH" (string fill-column))
+(setq Man-notify-method 'pushy
+      woman-fill-column fill-column)
 #+end_src
 
 How to make display buffer names.
