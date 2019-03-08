@@ -124,7 +124,7 @@ Load any host-specific configuration. Anything set here will just get overridden
 Show a message when garbage collecting, just for some awareness.
 
 #+begin_src emacs-lisp
-(setq garbage-collection-messages t)
+(setq garbage-collection-messages nil)
 #+end_src
 
 Turn off all startup messages, splash screens, menu bars, scrollbars, etc. for a clean start.
