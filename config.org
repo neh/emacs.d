@@ -251,7 +251,7 @@ Set some backup file options.
 I view man pages in emacs sometimes, and want a fixed width for them.
 
 #+begin_src emacs-lisp
-(setenv "MANWIDTH" "100")
+(setenv "MANWIDTH" fill-column)
 (setq Man-notify-method 'pushy)
 #+end_src
 
