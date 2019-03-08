@@ -1151,22 +1151,22 @@ Of course, the great magit.
    "L" 'evil-search-previous)
 
   (neh/leader-keys
-    "gf" '(magit-file-popup :which-key "file")
-    "gg" '(magit-dispatch-popup :which-key "menu")
+    "gf" '(magit-file-dispatch :which-key "file")
+    "gg" '(magit-dispatch :which-key "menu")
     "gs" '(magit-status :which-key "status"))
 
   :init
   (setq magit-diff-refine-hunk t)
 
   :config
-  (magit-define-popup-action 'magit-file-popup
-    ?R "Rename file" 'magit-file-rename)
-  (magit-define-popup-action 'magit-file-popup
-    ?K "Delete file" 'magit-file-delete)
-  (magit-define-popup-action 'magit-file-popup
-    ?U "Untrack file" 'magit-file-untrack)
-  (magit-define-popup-action 'magit-file-popup
-    ?C "Checkout file" 'magit-file-checkout)
+  ;; (magit-define-popup-action 'magit-file-popup
+  ;;   ?R "Rename file" 'magit-file-rename)
+  ;; (magit-define-popup-action 'magit-file-popup
+  ;;   ?K "Delete file" 'magit-file-delete)
+  ;; (magit-define-popup-action 'magit-file-popup
+  ;;   ?U "Untrack file" 'magit-file-untrack)
+  ;; (magit-define-popup-action 'magit-file-popup
+  ;;   ?C "Checkout file" 'magit-file-checkout)
 
   (setq magit-completing-read-function 'ivy-completing-read))
 #+end_src
@@ -1596,7 +1596,7 @@ Let’s try to get some window behaviour under control.
                 (git-gutter:next-hunk 1)) "first hunk")
     ("S" (progn (goto-char (point-min))
                 (git-gutter:previous-hunk 1)) "last hunk")
-    ("c" magit-commit-popup "commit" :exit t)
+    ("c" magit-commit "commit" :exit t)
     ("s" git-gutter:stage-hunk "stage hunk")
     ("k" git-gutter:revert-hunk "revert hunk")
     ("q" nil "quit" :color blue))
@@ -1746,12 +1746,12 @@ Working on a =git= hydra to replace all or most of my usual git keybinds. This i
 
    "do" (("s" git-gutter:stage-hunk "stage")
          ("k" git-gutter:revert-hunk "revert hunk")
-         ("c" magit-commit-popup "commit" :exit t)
-         ("P" magit-push-popup "push" :exit t))
+         ("c" magit-commit "commit" :exit t)
+         ("P" magit-push "push" :exit t))
 
    "see" (("S" magit-status "status" :exit t)
           ("l" magit-log-buffer-file "log" :exit t)
-          ("L" magit-log-popup "log (menu)" :exit t))
+          ("L" magit-log "log (menu)" :exit t))
    ))
 #+end_src
 
