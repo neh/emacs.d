@@ -1916,7 +1916,8 @@ Try out =org-noter=.
                       :height 1.1 :foreground "#eeeeee" :background "#b22222" :inherit 'error))
 
 (use-package typo
-  :hook (text-mode . typo-mode))
+  ;; :hook (text-mode . typo-mode)
+  :commands (typo-mode))
 
 (use-package rainbow-mode
   :general
