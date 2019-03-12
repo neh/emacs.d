@@ -613,8 +613,8 @@ And here’s the function where I collect my tweaks to the theme and set up font
 
   (neh/enable-scroll-highlight)
 
-  (set-face-attribute 'org-block-begin-line nil :height 0.75 :slant 'italic)
-  (set-face-attribute 'org-block-end-line nil :height 0.75 :slant 'italic))
+  (set-face-attribute 'org-block-begin-line nil :height 0.85 :slant 'italic)
+  (set-face-attribute 'org-block-end-line nil :height 0.85 :slant 'italic))
 #+end_src
 
 * Modeline
