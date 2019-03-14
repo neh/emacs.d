@@ -1525,6 +1525,14 @@ Let’s try to get some window behaviour under control.
          (dired-after-readin-hook . dired-k-no-revert))
   :init
   (setq dired-k-human-readable t))
+
+(use-package dired-git-info
+  :commands (dired-git-info-mode)
+  :general
+  (general-define-key
+   :states 'normal
+   :keymaps 'dired-mode-map
+   "}" 'dired-git-info-mode))
 #+end_src
 
 * Imenu
