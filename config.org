@@ -780,6 +780,7 @@ I come from vim, so evil is a necessity.
 
   :general
   (neh/leader-keys
+    "u" '(ivy-switch-buffer :which-key "switch buffer")
     "oo" '(ivy-switch-buffer :which-key "switch buffer")
     "xa" '(ivy-resume :which-key "ivy resume"))
 
@@ -855,6 +856,7 @@ I come from vim, so evil is a necessity.
     "sf" '(counsel-ag :which-key "search files")
     "sg" '(counsel-git-grep :which-key "search files in git")
     "sh" '(counsel-grep-or-swiper :which-key "search buffer")
+    "w" '(counsel-grep-or-swiper :which-key "search buffer")
     "so" '(counsel-org-goto-all :which-key "search org")
     "st" '(counsel-semantic-or-imenu :which-key "search tags"))
 
