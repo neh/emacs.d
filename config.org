@@ -1297,15 +1297,15 @@ Handy package to browse to git repo web interfaces.
         org-reverse-note-order t
         org-capture-templates
         (quote (("t" "todo" entry
-                 (file+headline "" "Tasks")
+                 (file+headline "" "Incoming")
                  "* TODO %?"
                  :prepend t)
                 ("n" "note" entry
-                 (file+headline "" "Notes")
+                 (file+headline "" "Incoming")
                  "* %?"
                  :prepend t)
                 ("l" "link" entry
-                 (file+headline "" "Links")
+                 (file+headline "" "Incoming")
                  "* [[%x][%?]] %^g"
                  :prepend t)
                 ("j" "journal" entry
