@@ -780,7 +780,8 @@ I come from vim, so evil is a necessity.
 
   :general
   (neh/leader-keys
-    "u" '(ivy-switch-buffer :which-key "switch buffer")
+    "U" '(ivy-switch-buffer :which-key "switch buffer")
+    "u" '(counsel-projectile-switch-to-buffer :which-key "switch project buffer")
     "oo" '(ivy-switch-buffer :which-key "switch buffer")
     "xa" '(ivy-resume :which-key "ivy resume"))
 
