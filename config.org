@@ -822,8 +822,8 @@ I come from vim, so evil is a necessity.
         ivy-extra-directories nil
         ivy-height 15
         ivy-use-selectable-prompt t
-        ivy-re-builders-alist
-        '((t . ivy--regex-fuzzy))
+        ivy-re-builders-alist '((t . ivy--regex)
+                                (t . ivy--regex-fuzzy))
         ivy-initial-inputs-alist nil))
 
 (use-package prescient
@@ -836,6 +836,7 @@ I come from vim, so evil is a necessity.
 
   :config
   ;; Prescient sorting didn't apply to some counsel-projectile commands without this.
+  (add-to-list 'ivy-prescient-sort-commands 'counsel-projectile)
   (add-to-list 'ivy-prescient-sort-commands 'counsel-projectile-find-file))
 
 (use-package company-prescient
@@ -1043,6 +1044,9 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
     "oh" '(counsel-projectile :which-key "open file/buffer in project")
     "op" '(counsel-projectile-switch-project :which-key "switch project")
     "sp" '(counsel-projectile-rg :which-key "search project"))
+
+  :init
+  (setq counsel-projectile-sort-files t)
 
   :config
   ;; Set the default switch project action to find files so that paths are included in the search
