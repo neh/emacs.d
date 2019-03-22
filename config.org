@@ -1029,6 +1029,15 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
   (my-indicate-scroll (window-start) f args))
 #+end_src
 
+* Snippets
+
+#+begin_src emacs-lisp
+(use-package yasnippet
+  :hook (org-mode . yas-minor-mode)
+  :init
+  (setq yas-snippet-dirs `(,(concat user-emacs-directory "snippets"))))
+#+end_src
+
 * Projectile
 
 #+begin_src emacs-lisp

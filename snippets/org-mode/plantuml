@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: org-plantuml
+# key: npl_
+# --
+#+begin_src plantuml :file $1
+@startuml
+skinparam backgroundcolor transparent
+skinparam monochrome true
+skinparam shadowing false
+
+$0
+
+@enduml
+#+end_src
