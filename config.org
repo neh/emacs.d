@@ -431,6 +431,9 @@ Not sure where to put everything yet, so this section is a grab bag of stuff tha
   (setq whitespace-line-column 80
         whitespace-style '(face trailing tabs lines-tail)))
 
+(use-package ws-butler
+  :hook (prog-mode . ws-butler-mode))
+
 (use-package helpful
   :init
   (setq helpful-max-buffers 1)
