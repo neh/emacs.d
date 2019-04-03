@@ -781,6 +781,12 @@ I come from vim, so evil is a necessity.
   (defun neh-open-file-in-frame (f)
     (find-file-other-frame f))
 
+  (defun ivy-with-thing-at-point (cmd)
+    (let* ((ivy-initial-inputs-alist
+            (list
+             (cons cmd (ivy-thing-at-point)))))
+      (funcall cmd)))
+
   :general
   (neh/leader-keys
     "U" '(ivy-switch-buffer :which-key "switch buffer")
@@ -857,17 +863,21 @@ I come from vim, so evil is a necessity.
     "oa" '(counsel-linux-app :which-key "app")
     "of" '(counsel-find-file :which-key "open file")
 
+    "s/" '(swiper-thing-at-point :which-key "search for this")
     "sa" '(swiper-all :which-key "search all buffers")
-    "sf" '(counsel-ag :which-key "search files")
+    "sf" '(counsel-rg :which-key "search files")
     "sg" '(counsel-git-grep :which-key "search files in git")
     "sh" '(counsel-grep-or-swiper :which-key "search buffer")
-    "w" '(counsel-grep-or-swiper :which-key "search buffer")
     "so" '(counsel-org-goto-all :which-key "search org")
     "st" '(counsel-semantic-or-imenu :which-key "search tags"))
 
   :init
   (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s"
         counsel-grep-base-command "grep -inE '%s' %s")
+
+  (defun swiper-thing-at-point ()
+    (interactive)
+    (ivy-with-thing-at-point #'swiper))
 
   ;; These don't work on a fresh load, but seem to start working at some
   ;; point. Strange.
@@ -1055,10 +1065,22 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
   (neh/leader-keys
     "oh" '(counsel-projectile :which-key "open file/buffer in project")
     "op" '(counsel-projectile-switch-project :which-key "switch project")
+    "s." '(neh-search-thing-at-point :which-key "search for thing at point")
     "sp" '(counsel-projectile-rg :which-key "search project"))
 
   :init
   (setq counsel-projectile-sort-files t)
+
+  (defun counsel-projectile-rg-with-thing-at-point ()
+    (interactive)
+    (let ((counsel-projectile-rg-initial-input '(ivy-thing-at-point)))
+      (counsel-projectile-rg)))
+
+  (defun neh-search-thing-at-point ()
+    (interactive)
+    (if (projectile-project-p)
+        (counsel-projectile-rg-with-thing-at-point)
+      (ivy-with-thing-at-point #'counsel-rg)))
 
   :config
   ;; Set the default switch project action to find files so that paths are included in the search
