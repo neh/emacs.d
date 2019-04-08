@@ -867,7 +867,8 @@ I come from vim, so evil is a necessity.
     "sa" '(swiper-all :which-key "search all buffers")
     "sf" '(counsel-rg :which-key "search files")
     "sg" '(counsel-git-grep :which-key "search files in git")
-    "sh" '(counsel-grep-or-swiper :which-key "search buffer")
+    "sh" '(swiper-isearch :which-key "search buffer")
+    "/" '(swiper-isearch :which-key "search buffer")
     "so" '(counsel-org-goto-all :which-key "search org")
     "st" '(counsel-semantic-or-imenu :which-key "search tags"))
 
