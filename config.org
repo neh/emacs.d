@@ -65,13 +65,13 @@ I use [[https://github.com/raxod502/straight.el][straight.el]] instead of packag
 
 This setting makes the straight bootstrap /much/ faster. See the discussion [[https://github.com/raxod502/straight.el/issues/304][here]].
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (setq straight-check-for-modifications '(check-on-save))
 #+end_src
 
 And now bootstrap straight, using the snippet from the docs.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
