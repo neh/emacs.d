@@ -1779,7 +1779,7 @@ Let’s try to get some window behaviour under control.
   ("H" outline-up-heading "up heading")
   ("<tab>" org-cycle "cycle")
   ("g" org-goto "goto" :exit t)
-  ("q" nil "quit" :color blue)))
+  ("q" nil "quit" :color blue))
 #+end_src
 
 #+begin_src emacs-lisp :noweb-ref hydra-hydras :tangle no
@@ -1956,22 +1956,32 @@ Try out =org-noter=.
   :init
   (setq dumb-jump-selector 'ivy
         dumb-jump-prefer-searcher 'rg))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package deadgrep
   :commands (deadgrep))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package image-mode
   :straight nil
   :hook (image-mode . (lambda () (blink-cursor-mode -1))))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package restart-emacs
   :commands (restart-emacs))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package golden-ratio
   :commands golden-ratio-mode
   :config
   (setq golden-ratio-auto-scale t))
+#+end_src
 
+#+begin_src emacs-lisp
 ;; The auto-decrypt-encrypt hook complains about the password-file var not being set, even though
 ;; the manual encrypt/decrypt functions work just fine.
 (use-package ansible
@@ -1980,7 +1990,9 @@ Try out =org-noter=.
          (ansible . ansible::auto-decrypt-encrypt))
   :init
   (setq ansible::vault-password-file "~/freshgrade/vaultpass"))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package rainbow-delimiters
   :general
   (neh/leader-keys
@@ -1997,24 +2009,34 @@ Try out =org-noter=.
   (set-face-attribute 'rainbow-delimiters-depth-7-face nil :height 1.6)
   (set-face-attribute 'rainbow-delimiters-depth-8-face nil :height 1.7)
   (set-face-attribute 'rainbow-delimiters-depth-9-face nil :height 1.8))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package wgrep
   :commands ivy-wgrep-change-to-wgrep-mode)
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package elec-pair
   :ensure nil
   :hook (prog-mode . electric-pair-mode))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package executable
   :ensure nil
   :hook (after-save . executable-make-buffer-file-executable-if-script-p))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package quick-peek
   :commands (quick-peek-show
              quick-peek-hide
              quick-peek-overlay-contents
              quick-peek-overlay-ensure-at))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package flycheck
   :hook (prog-mode . flycheck-mode))
 
@@ -2038,22 +2060,30 @@ Try out =org-noter=.
                       :height 1.1 :foreground "#111111" :background "#ffd700" :inherit 'warning)
   (set-face-attribute 'flycheck-posframe-error-face nil
                       :height 1.1 :foreground "#eeeeee" :background "#b22222" :inherit 'error))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package typo
   ;; :hook (text-mode . typo-mode)
   :commands (typo-mode))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package rainbow-mode
   :general
   (neh/leader-keys
     "vc" '(rainbow-mode :which-key "colours")))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package hl-line+
   :disabled
   :config
   (setq hl-line-inhibit-highlighting-for-modes '(org-mode))
   (toggle-hl-line-when-idle -1))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package symbol-overlay
   :general
   (general-def
@@ -2080,19 +2110,27 @@ Try out =org-noter=.
     "ht" '(symbol-overlay-switch-forward :which-key "next highlighted symbol")
     "hc" '(symbol-overlay-remove-all :which-key "clear highlighted symbols")
     "hM" '(symbol-overlay-mode :which-key "symbol overlay mode")))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package aggressive-indent
   :disabled
   :hook (emacs-lisp-mode . aggressive-indent-mode))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package direnv
   :hook (after-init . direnv-mode)
   :config
   (setq direnv-always-show-summary nil))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package jinja2-mode
   :mode (("\\.j2\\'" . jinja2-mode)))
+#+end_src
 
+#+begin_src emacs-lisp
 (defun my-evil-indent-setup ()
   "Set evil-shift-width to the relevant language indent level (but yaml only, so far)."
   (setq evil-shift-width yaml-indent-offset))
@@ -2105,24 +2143,34 @@ Try out =org-noter=.
   :hook ((yaml-mode . (lambda () (typo-mode -1)))
          (jinja2-mode . (lambda () (typo-mode -1)))
          (yaml-mode . git-gutter-mode)))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package json-mode
   :mode (("\\.json\\'" . json-mode)))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package expand-region
   :general
   (general-define-key
    :states 'visual
    "v" 'er/expand-region
    "V" 'er/contract-region))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package markdown-mode
   :commands (markdown-mode)
   :mode ("\\.md'" . markdown-mode))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package lua-mode
   :mode ("\\.lua\\'" . lua-mode))
+#+end_src
 
+#+begin_src emacs-lisp
 (defun neh/python-mode-hook ()
   "My python mode settings."
   (add-to-list 'company-backends 'company-jedi))
@@ -2134,10 +2182,14 @@ Try out =org-noter=.
 (use-package company-jedi
   :after company
   :hook (python-mode . neh/python-mode-hook))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package rust-mode
   :mode ("\\.rs\\'" . rust-mode))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package hcl-mode
   :commands hcl-mode)
 
@@ -2145,23 +2197,33 @@ Try out =org-noter=.
   :mode ("\\.tf|tfvars\\'" . terraform-mode)
   :hook ((terraform-mode . terraform-format-on-save-mode)
          (terraform-mode . yas-minor-mode-on)))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package groovy-mode
   :mode ("Jenkinsfile\\'" . groovy-mode))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package dockerfile-mode
   :mode ("Dockerfile\\'" . dockerfile-mode))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package go-mode
   :mode "\\.go\\'")
 
 (use-package go-eldoc
   :commands go-eldoc-setup
   :hook (go-mode . go-eldoc-setup))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package csv-mode
   :mode "\\.csv\\'")
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package elf-mode
   :commands elf-mode
   :magic ("ELF" . elf-mode))
@@ -2221,7 +2283,9 @@ Attaching this next one to =org-src-mode= will disable the annoying flycheck war
     (with-current-buffer buf
       (narrow-to-region start end))
     (switch-to-buffer buf)))
+#+end_src
 
+#+begin_src emacs-lisp
 (defun shorten-directory (dir max-length)
   "Show up to MAX-LENGTH characters of a directory name DIR."
   (let ((path (reverse (split-string (abbreviate-file-name dir) "/")))
@@ -2234,7 +2298,9 @@ Attaching this next one to =org-src-mode= will disable the annoying flycheck war
     (when path
       (setq output (concat "…/" output)))
     output))
+#+end_src
 
+#+begin_src emacs-lisp
 (defun comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if there's no active region."
   (interactive)
@@ -2243,7 +2309,9 @@ Attaching this next one to =org-src-mode= will disable the annoying flycheck war
         (setq beg (region-beginning) end (region-end))
       (setq beg (line-beginning-position) end (line-end-position)))
     (comment-or-uncomment-region beg end)))
+#+end_src
 
+#+begin_src emacs-lisp
 ;; https://github.com/noctuid/general.el#use-package-keyword
 ;; https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 ;; https://github.com/Fuco1/.emacs.d/blob/af82072196564fa57726bdbabf97f1d35c43b7f7/site-lisp/redef.el#L20-L94
@@ -2325,8 +2393,9 @@ Attaching this next one to =org-src-mode= will disable the annoying flycheck war
 
 (add-hook 'emacs-lisp-mode-hook
           (lambda () (setq-local lisp-indent-function #'Fuco1/lisp-indent-function)))
+#+end_src
 
-
+#+begin_src emacs-lisp
 ;; from https://stackoverflow.com/questions/47327066/how-to-open-an-indirect-buffer-in-a-new-frame-in-a-single-call-in-emacs
 (defun clone-indirect-buffer-other-frame (newname display-flag &optional norecord)
   "Like `clone-indirect-buffer' but display in another frame."
@@ -2340,7 +2409,9 @@ Attaching this next one to =org-src-mode= will disable the annoying flycheck war
   ;; (let ((pop-up-windows t))
   (let ((pop-up-frames t)) ; <==========
     (clone-indirect-buffer newname display-flag norecord)))
+#+end_src
 
+#+begin_src emacs-lisp
 (defun org-tree-to-indirect-buffer-other-frame ()
   (interactive
    (let ((org-indirect-buffer-display 'new-frame))
