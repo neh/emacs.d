@@ -355,7 +355,6 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
     ;; "oo" '(persp-switch-to-buffer :which-key "switch buffer")
     ;; "ov" '(persp-switch :which-key "switch perspective")
 
-    "q" #'evil-delete-buffer
     "Q" #'bury-buffer
 
     "s" '(:ignore t :which-key "search")
@@ -657,7 +656,7 @@ Trying out doom-modeline.
 
 I come from vim, so evil is a necessity.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :noweb yes
 (use-package evil
   :demand t
   :after general
@@ -668,58 +667,13 @@ I come from vim, so evil is a necessity.
         evil-vsplit-window-right t)
 
   :general
-  (general-define-key
-   :keymaps 'override
-   :states '(normal emacs)
-   "C-h" nil
-   "C-t" nil
-   "C-n" nil
-   "C-s" nil
-   "C-e" nil
-
-   "C-h" 'evil-window-left
-   "C-t" 'evil-window-down
-   "C-n" 'evil-window-up
-   "C-s" 'evil-window-right)
-
-  (general-define-key
-   :states '(normal visual)
-   "h" 'evil-backward-char
-   "t" 'evil-next-visual-line
-   "n" 'evil-previous-visual-line
-   "s" 'evil-forward-char
-
-   "l" 'evil-search-next
-   "L" 'evil-search-previous
-   "S" 'evil-window-bottom
-
-   "N" 'evil-narrow-indirect)
-
-  (neh/leader-keys
-    "bd" '(evil-delete-buffer :which-key "delete buffer"))
+  <<evil-general>>
 
   :config
   (evil-mode 1)
+  <<evil-config>>
 
   (evil-set-initial-state 'ivy-occur-grep-mode 'normal)
-
-  (general-add-advice (list #'evil-search-next
-                            #'evil-search-previous)
-                      :after #'recenter)
-
-  (setq evil-normal-state-tag   (propertize " N ")
-        evil-emacs-state-tag    (propertize " E ")
-        evil-insert-state-tag   (propertize " I ")
-        evil-replace-state-tag  (propertize " R ")
-        evil-motion-state-tag   (propertize " M ")
-        evil-visual-state-tag   (propertize " V ")
-        evil-operator-state-tag (propertize " O "))
-
-  (evil-define-operator evil-narrow-indirect (beg end type)
-    "Indirectly narrow the region from BEG to END."
-    (interactive "<R>")
-    (evil-normal-state)
-    (narrow-to-region-indirect beg end))
 
   (use-package evil-surround
     :config
@@ -733,6 +687,81 @@ I come from vim, so evil is a necessity.
   (use-package evil-textobj-syntax)
   (use-package evil-ex-fasd))
 #+end_src
+
+I'm one of those strange people that not only uses a dvorak keyboard layout and vim-style navigation, but also moves =hjkl= to =htns=, because I like the physical location. In practice, I don't have to adjust /that/ many other keys for this to work. Here I set up the basic navigation keys and make related adjustments.
+
+#+begin_src emacs-lisp :noweb-ref evil-general :tangle no
+(general-define-key
+ :states '(normal visual)
+ "h" 'evil-backward-char
+ "t" 'evil-next-visual-line
+ "n" 'evil-previous-visual-line
+ "s" 'evil-forward-char
+
+ "l" 'evil-search-next
+ "L" 'evil-search-previous
+ "S" 'evil-window-bottom
+
+ "N" 'evil-narrow-indirect)
+#+end_src
+
+I like using =control+direction= for window navigation. Yes, I'm unbinding =C-h=. I put help functions elsewhere.
+
+#+begin_src emacs-lisp :noweb-ref evil-general :tangle no
+(general-define-key
+ :keymaps 'override
+ :states '(normal emacs)
+ "C-h" nil
+ "C-t" nil
+ "C-n" nil
+ "C-s" nil
+ "C-e" nil
+
+ "C-h" 'evil-window-left
+ "C-t" 'evil-window-down
+ "C-n" 'evil-window-up
+ "C-s" 'evil-window-right)
+#+end_src
+
+And here are just general evil-related bindings.
+
+#+begin_src emacs-lisp :noweb-ref evil-general :tangle no
+(neh/leader-keys
+  "q" '(evil-delete-buffer :which-key "delete buffer")
+  "bd" '(evil-delete-buffer :which-key "delete buffer"))
+#+end_src
+
+Put some whitespace around the evil state modeline labels just so they look better.
+
+#+begin_src emacs-lisp :noweb-ref evil-config :tangle no
+(setq evil-normal-state-tag   (propertize " N ")
+      evil-emacs-state-tag    (propertize " E ")
+      evil-insert-state-tag   (propertize " I ")
+      evil-replace-state-tag  (propertize " R ")
+      evil-motion-state-tag   (propertize " M ")
+      evil-visual-state-tag   (propertize " V ")
+      evil-operator-state-tag (propertize " O "))
+#+end_src
+
+So many searches leave the cursor at the bottom of the window, and I want to see more context. So this recenters the cursor when jumping to a search result. I've been using swiper a lot more though, so I'm not sure how much I care about this any more (at least in this context).
+
+#+begin_src emacs-lisp :noweb-ref evil-config :tangle no
+(general-add-advice (list #'evil-search-next
+                          #'evil-search-previous)
+                    :after #'recenter)
+#+end_src
+
+This defines an evil operator I can use to highlight some text and quickly get an indirect buffer narrowed to that text.
+
+#+begin_src emacs-lisp :noweb-ref evil-config :tangle no
+(evil-define-operator evil-narrow-indirect (beg end type)
+  "Indirectly narrow the region from BEG to END."
+  (interactive "<R>")
+  (evil-normal-state)
+  (narrow-to-region-indirect beg end))
+#+end_src
+
+Evil-collection helps with setting up evil-friendly bindings all over the place, including the handy key translation feature I use here for my crazy =hjkl =-> =htns= ways.
 
 #+begin_src emacs-lisp
 (use-package evil-collection
@@ -1625,7 +1654,7 @@ Let’s try to get some window behaviour under control.
 
 * Hydra
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :noweb yes
 (use-package hydra
   :general
   (neh/leader-keys
@@ -1636,65 +1665,10 @@ Let’s try to get some window behaviour under control.
     "zt" '(hydra-zoom/body :which-key "zoom text"))
 
   :config
-  (defhydra hydra-reading (:color red
-                           :hint nil)
-    "
-  _N_ pg up         _gg_ go to top        _zt_ line to top
-  _n_ ½ pg up       _G_  go to bottom     _zz_ line to center
-  _t_ ½ pg dn       ^ ^                   _zb_ line to bottom
-  _T_ pg dn
+  <<hydra-hydras>>)
+#+end_src
 
-"
-    ("n" (evil-scroll-up 0))
-    ("t" (evil-scroll-down 0))
-    ("T" (scroll-up))
-    ("N" (scroll-down))
-
-    ("gg" evil-goto-first-line)
-    ("G" evil-goto-line)
-
-    ("zt" (evil-scroll-line-to-top (line-number-at-pos)))
-    ("zz" (evil-scroll-line-to-center (line-number-at-pos)))
-    ("zb" (evil-scroll-line-to-bottom (line-number-at-pos)))
-
-    ("+" (neh/adjust-text-height 7) "bigger")
-    ("-" (neh/adjust-text-height -7) "smaller")
-    ("0" (neh/adjust-text-height 0) "reset")
-    ("q" nil "quit"))
-
-  (defhydra hydra-zoom ()
-    "zoom"
-    ("+" (neh/adjust-text-height 7) "in")
-    ("-" (neh/adjust-text-height -7) "out")
-    ("0" (neh/adjust-text-height 0) "reset")
-    ("q" nil "quit" :color blue))
-
-  (defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1))
-    "Browse/stage/revert git hunks"
-    ("n" (progn (git-gutter:previous-hunk 1)
-                (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
-    ("t" (progn (git-gutter:next-hunk 1)
-                (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
-    ("H" (progn (goto-char (point-min))
-                (git-gutter:next-hunk 1)) "first hunk")
-    ("S" (progn (goto-char (point-min))
-                (git-gutter:previous-hunk 1)) "last hunk")
-    ("c" magit-commit "commit" :exit t)
-    ("s" git-gutter:stage-hunk "stage hunk")
-    ("k" git-gutter:revert-hunk "revert hunk")
-    ("q" nil "quit" :color blue))
-
-  (defhydra hydra-org (:color red :columns 3)
-    "Org Mode Movements"
-    ("t" outline-next-visible-heading "next heading")
-    ("n" outline-previous-visible-heading "prev heading")
-    ("T" org-forward-heading-same-level "next heading at same level")
-    ("N" org-backward-heading-same-level "prev heading at same level")
-    ("H" outline-up-heading "up heading")
-    ("<tab>" org-cycle "cycle")
-    ("g" org-goto "goto" :exit t)
-    ("q" nil "quit" :color blue)))
-
+#+begin_src emacs-lisp
 (use-package ivy-hydra
   :config
   (defhydra hydra-ivy (:hint nil
@@ -1739,7 +1713,76 @@ Let’s try to get some window behaviour under control.
     ("D" (ivy-exit-with-action
           (lambda (_) (find-function 'hydra-ivy/body)))
      :exit t)))
+#+end_src
 
+#+begin_src emacs-lisp :noweb-ref hydra-hydras :tangle no
+(defhydra hydra-reading (:color red
+                         :hint nil)
+  "
+  _N_ pg up         _gg_ go to top        _zt_ line to top
+  _n_ ½ pg up       _G_  go to bottom     _zz_ line to center
+  _t_ ½ pg dn       ^ ^                   _zb_ line to bottom
+  _T_ pg dn
+
+"
+  ("n" (evil-scroll-up 0))
+  ("t" (evil-scroll-down 0))
+  ("T" (scroll-up))
+  ("N" (scroll-down))
+
+  ("gg" evil-goto-first-line)
+  ("G" evil-goto-line)
+
+  ("zt" (evil-scroll-line-to-top (line-number-at-pos)))
+  ("zz" (evil-scroll-line-to-center (line-number-at-pos)))
+  ("zb" (evil-scroll-line-to-bottom (line-number-at-pos)))
+
+  ("+" (neh/adjust-text-height 7) "bigger")
+  ("-" (neh/adjust-text-height -7) "smaller")
+  ("0" (neh/adjust-text-height 0) "reset")
+  ("q" nil "quit"))
+#+end_src
+
+#+begin_src emacs-lisp :noweb-ref hydra-hydras :tangle no
+(defhydra hydra-zoom ()
+  "zoom"
+  ("+" (neh/adjust-text-height 7) "in")
+  ("-" (neh/adjust-text-height -7) "out")
+  ("0" (neh/adjust-text-height 0) "reset")
+  ("q" nil "quit" :color blue))
+#+end_src
+
+#+begin_src emacs-lisp :noweb-ref hydra-hydras :tangle no
+(defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1))
+  "Browse/stage/revert git hunks"
+  ("n" (progn (git-gutter:previous-hunk 1)
+              (evil-scroll-line-to-center (line-number-at-pos))) "previous hunk")
+  ("t" (progn (git-gutter:next-hunk 1)
+              (evil-scroll-line-to-center (line-number-at-pos))) "next hunk")
+  ("H" (progn (goto-char (point-min))
+              (git-gutter:next-hunk 1)) "first hunk")
+  ("S" (progn (goto-char (point-min))
+              (git-gutter:previous-hunk 1)) "last hunk")
+  ("c" magit-commit "commit" :exit t)
+  ("s" git-gutter:stage-hunk "stage hunk")
+  ("k" git-gutter:revert-hunk "revert hunk")
+  ("q" nil "quit" :color blue))
+#+end_src
+
+#+begin_src emacs-lisp :noweb-ref hydra-hydras :tangle no
+(defhydra hydra-org (:color red :columns 3)
+  "Org Mode Movements"
+  ("t" outline-next-visible-heading "next heading")
+  ("n" outline-previous-visible-heading "prev heading")
+  ("T" org-forward-heading-same-level "next heading at same level")
+  ("N" org-backward-heading-same-level "prev heading at same level")
+  ("H" outline-up-heading "up heading")
+  ("<tab>" org-cycle "cycle")
+  ("g" org-goto "goto" :exit t)
+  ("q" nil "quit" :color blue)))
+#+end_src
+
+#+begin_src emacs-lisp :noweb-ref hydra-hydras :tangle no
 (defhydra hydra-windows (:hint nil)
   "
      Go: _h_ _t_ _n_ _s_
@@ -1764,7 +1807,9 @@ Let’s try to get some window behaviour under control.
   ("c" evil-window-delete)
 
   ("q" nil))
+#+end_src
 
+#+begin_src emacs-lisp :noweb-ref hydra-hydras :tangle no
 ;; from https://github.com/abo-abo/hydra/wiki/straight.el
 (defhydra hydra-straight-helper (:hint nil)
   "
