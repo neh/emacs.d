@@ -2191,6 +2191,7 @@ Try out =org-noter=.
   :gfhook #'my-evil-indent-setup
   :commands yaml-mode
   :mode (("\\(host\\|group\\)_vars.*" . yaml-mode)
+         ("\\.*cloud-\\(init\\|config\\).*" . yaml-mode)
          ("\\.yml|yaml\\'" . yaml-mode))
   :hook ((yaml-mode . (lambda () (typo-mode -1)))
          (jinja2-mode . (lambda () (typo-mode -1)))
