@@ -1303,7 +1303,7 @@ Handy package to browse to git repo web interfaces.
 
 #+begin_src emacs-lisp
 (use-package org
-  :hook ((org-mode . (lambda () (add-hook 'after-save-hook 'org-babel-tangle
+  :hook ((org-mode . (lambda () (add-hook 'after-save-hook 'neh/config-tangle
                                           'run-at-end 'only-in-org-mode)))
          (org-mode . org-indent-mode)
          (org-mode . variable-pitch-mode)
@@ -1349,6 +1349,11 @@ Handy package to browse to git repo web interfaces.
     "S" 'org-shiftright)
 
   :init
+  (defun neh/config-tangle ()
+    (interactive)
+    (let ((gc-cons-threshold most-positive-fixnum))
+      (org-babel-tangle)))
+
   (setq org-use-fast-todo-selection t
         org-directory "~/org"
         org-default-notes-file (if (boundp 'neh/org-default-notes-file)
