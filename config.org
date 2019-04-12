@@ -1670,6 +1670,22 @@ Let’s try to get some window behaviour under control.
   (neh/set-dired-subtree-background))
 #+end_src
 
+This seems useful, especially in combination with =dired-subtree=, as then it's active in the buffer as you view subtrees.
+
+#+begin_src emacs-lisp
+(use-package dired-collapse
+  :commands (dired-collapse-mode))
+#+end_src
+
+Handy live filtering of dired buffers.
+
+#+begin_src emacs-lisp
+(use-package dired-narrow
+  :commands (dired-narrow
+             dired-narrow-regexp
+             dired-narrow-fuzzy))
+#+end_src
+
 * Imenu
 
 #+begin_src emacs-lisp
