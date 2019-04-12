@@ -1585,7 +1585,9 @@ Let’s try to get some window behaviour under control.
     "od" 'dired-jump)
   :init
   (setq dired-listing-switches "-alhv --group-directories-first"))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package dired-x
   :straight nil
   :hook (dired-mode . dired-omit-mode)
@@ -1596,7 +1598,9 @@ Let’s try to get some window behaviour under control.
    ")" 'dired-omit-mode)
   :init
   (setq dired-omit-files "^\\...+$"))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package dired-single
   :after dired
   :commands (dired-single-buffer
@@ -1608,7 +1612,9 @@ Let’s try to get some window behaviour under control.
    :keymaps 'dired-mode-map
    "<return>" 'dired-single-buffer
    "^" 'dired-single-up-directory))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package dired-sidebar
   :disabled t
   :general
@@ -1617,14 +1623,18 @@ Let’s try to get some window behaviour under control.
 
   :init
   (setq dired-sidebar-theme 'nerd))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package dired-k
   :disabled t
   :hook ((dired-initial-position-hook . dired-k)
          (dired-after-readin-hook . dired-k-no-revert))
   :init
   (setq dired-k-human-readable t))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package dired-git-info
   :commands (dired-git-info-mode)
   :general
