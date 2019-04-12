@@ -1644,6 +1644,16 @@ Let’s try to get some window behaviour under control.
    "}" 'dired-git-info-mode))
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package dired-subtree
+  :after dired
+  :general
+  (general-define-key
+   :states 'normal
+   :keymaps 'dired-mode-map
+    "<tab>" 'dired-subtree-toggle))
+#+end_src
+
 * Imenu
 
 #+begin_src emacs-lisp
