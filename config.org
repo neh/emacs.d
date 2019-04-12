@@ -1647,11 +1647,27 @@ Let’s try to get some window behaviour under control.
 #+begin_src emacs-lisp
 (use-package dired-subtree
   :after dired
+  :hook (after-load-theme . neh/set-dired-subtree-background)
+
   :general
   (general-define-key
    :states 'normal
    :keymaps 'dired-mode-map
-    "<tab>" 'dired-subtree-toggle))
+   "<tab>" 'dired-subtree-toggle)
+
+  :init
+  (defun neh/set-dired-subtree-background ()
+    (let ((even (color-lighten-name (face-attribute 'default :background) 8))
+          (odd (color-lighten-name (face-attribute 'default :background) 4)))
+      (set-face-attribute 'dired-subtree-depth-1-face nil :background odd)
+      (set-face-attribute 'dired-subtree-depth-2-face nil :background even)
+      (set-face-attribute 'dired-subtree-depth-3-face nil :background odd)
+      (set-face-attribute 'dired-subtree-depth-4-face nil :background even)
+      (set-face-attribute 'dired-subtree-depth-5-face nil :background odd)
+      (set-face-attribute 'dired-subtree-depth-6-face nil :background even)))
+
+  :config
+  (neh/set-dired-subtree-background))
 #+end_src
 
 * Imenu
