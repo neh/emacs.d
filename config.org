@@ -1593,19 +1593,6 @@ Let’s try to get some window behaviour under control.
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package dired-x
-  :straight nil
-  :hook (dired-mode . dired-omit-mode)
-  :general
-  (general-define-key
-   :states 'normal
-   :keymaps 'dired-mode-map
-   ")" 'dired-omit-mode)
-  :init
-  (setq dired-omit-files "^\\...+$"))
-#+end_src
-
-#+begin_src emacs-lisp
 (use-package dired-single
   :after dired
   :commands (dired-single-buffer
@@ -1689,6 +1676,21 @@ Handy live filtering of dired buffers.
   :commands (dired-narrow
              dired-narrow-regexp
              dired-narrow-fuzzy))
+#+end_src
+
+Nice dired filtering, plus it replaces =dired-omit-mode=.
+
+#+begin_src emacs-lisp
+(use-package dired-filter
+  :hook ((dired-mode . dired-filter-mode)
+         (dired-filter-mode . dired-filter-by-dot-files))
+
+  :general
+  (general-define-key
+   :states 'normal
+   :keymaps 'dired-mode-map
+   "{" '(lambda () (interactive) (counsel-M-x "dired-filter-by-"))
+   ")" 'dired-filter-pop))
 #+end_src
 
 * Imenu
