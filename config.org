@@ -1299,6 +1299,12 @@ Handy package to browse to git repo web interfaces.
   (setq git-link-open-in-browser t))
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package git-timemachine
+  :commands (git-timemachine
+             git-timemachine-toggle))
+#+end_src
+
 * Org
 
 #+begin_src emacs-lisp
