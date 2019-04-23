@@ -1307,89 +1307,25 @@ Handy package to browse to git repo web interfaces.
 
 * Org
 
-#+begin_src emacs-lisp
+My org config is pretty long, so I've broken it up for easier reading and explanation. The main structure of it is here, with the details following.
+
+#+begin_src emacs-lisp :noweb yes
 (use-package org
-  :hook ((org-mode . (lambda () (add-hook 'after-save-hook 'neh/config-tangle
-                                          'run-at-end 'only-in-org-mode)))
-         (org-mode . org-indent-mode)
-         (org-mode . variable-pitch-mode)
-         (org-capture-mode . evil-insert-state)
-         (org-log-buffer-setup . evil-insert-state)
-         (org-babel-after-execute . org-redisplay-inline-images)
-         (org-src-mode . disable-flycheck-in-org-src-block))
+  :hook (
+         <<org-hooks>>)
 
   :general
-  ;; (general-add-advice (list #'org-previous-visible-heading
-  ;;                           #'org-next-visible-heading)
-  ;;                     :after #'neh/after-jump)
+  <<org-keys>>
 
-  (neh/leader-keys
-    "nb" '(org-narrow-to-block :which-key "narrow to block")
-    "ne" '(org-narrow-to-element :which-key "narrow to element")
-    "ns" '(org-narrow-to-subtree :which-key "narrow to subtree")
-
-    "oc" 'org-capture
-    "C" 'org-capture
-    "oC" '(lambda () (interactive) (find-file org-default-notes-file))
-    "og" '(org-agenda :which-key "agenda")
-    "o." '(org-open-at-point :which-key "follow link"))
-
-  (general-def
-    :keymaps 'org-mode-map
-    :states '(normal emacs)
-    :prefix  "g"
-    "." 'org-open-at-point)
-
-  (general-def
-    :keymaps 'org-mode-map
-    :states '(normal emacs)
-    "<RET>" 'neh/org-ret
-    "ze" 'outline-show-branches)
-
-  (general-def
-    :keymaps 'org-mode-map
-    :states '(normal)
-    "H" 'org-shiftleft
-    "T" 'org-shiftdown
-    "N" 'org-shiftup
-    "S" 'org-shiftright)
+  :custom
+  <<org-custom>>
 
   :init
+  <<org-init>>
   (defun neh/config-tangle ()
     (interactive)
     (let ((gc-cons-threshold most-positive-fixnum))
       (org-babel-tangle)))
-
-  (setq org-use-fast-todo-selection t
-        org-directory "~/org"
-        org-default-notes-file (if (boundp 'neh/org-default-notes-file)
-                                   neh/org-default-notes-file
-                                 "~/org/incoming.org")
-        org-agenda-files '("~/org/")
-        org-refile-targets '((org-agenda-files :maxlevel . 3))
-        org-refile-allow-creating-parent-nodes 'confirm
-        org-refile-use-outline-path 'file
-        org-outline-path-complete-in-steps nil
-        org-reverse-note-order t
-        org-capture-templates
-        (quote (("t" "todo" entry
-                 (file+headline "" "Incoming")
-                 "* TODO %?"
-                 :prepend t)
-                ("n" "note" entry
-                 (file+headline "" "Incoming")
-                 "* %?"
-                 :prepend t)
-                ("l" "link" entry
-                 (file+headline "" "Incoming")
-                 "* [[%x][%?]] %^g"
-                 :prepend t)
-                ("j" "journal" entry
-                 (file+olp+datetree
-                  (lambda ()
-                    (concat org-agenda-files "/journal.org")))
-                 "* %?")))
-        org-tags-column 0)
 
   (defface org-inprogress
     '((default :inherit org-todo))
@@ -1463,6 +1399,7 @@ Handy package to browse to git repo web interfaces.
     "S" (my-org-in-calendar calendar-forward-year))
 
   :config
+  <<org-config>>
   ;; from https://twitter.com/jay_f0xtr0t/status/982353141386461188
   ;; could be better; will currently keep adding to =org-emphasis-regexp-components=
   (setcar (nthcdr 1 org-emphasis-regexp-components)
@@ -1568,6 +1505,142 @@ Org export.
   :commands (org-slack-export-as-slack
              org-slack-export-to-slack
              org-slack-export-to-clipboard-as-slack))
+#+end_src
+
+** Options
+
+When using =C-c C-t=, allow todo state selection using single letters instead of cycling through choices.
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-custom
+(org-use-fast-todo-selection t "Enable fast todo state selection")
+#+end_src
+
+Org file locations.
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-custom
+(org-directory "~/org")
+(org-default-notes-file (if (boundp 'neh/org-default-notes-file)
+                            neh/org-default-notes-file
+                          "~/org/incoming.org"))
+(org-agenda-files '("~/org/"))
+#+end_src
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-custom
+(org-refile-targets '((org-agenda-files :maxlevel . 3)))
+(org-refile-allow-creating-parent-nodes 'confirm)
+(org-refile-use-outline-path 'file)
+(org-outline-path-complete-in-steps nil)
+(org-reverse-note-order t)
+(org-tags-column 0)
+#+end_src
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-custom
+(org-capture-templates
+ (quote (("t" "todo" entry
+          (file+headline "" "Incoming")
+          "* TODO %?"
+          :prepend t)
+         ("n" "note" entry
+          (file+headline "" "Incoming")
+          "* %?"
+          :prepend t)
+         ("l" "link" entry
+          (file+headline "" "Incoming")
+          "* [[%x][%?]] %^g"
+          :prepend t)
+         ("j" "journal" entry
+          (file+olp+datetree
+           (lambda ()
+             (concat org-agenda-files "/journal.org")))
+          "* %?"))))
+#+end_src
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-custom
+#+end_src
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-custom
+#+end_src
+
+** Hooks
+
+I like Org files to look reasonably pretty, so I enable =org-indent-mode=, which, you know, indents subheadings, and =variable-pitch-mode=, which sets up different fonts for different parts of the file, specifically, monospace fonts for src blocks, and variable width fonts elsewhere.
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-hooks
+(org-mode . org-indent-mode)
+(org-mode . variable-pitch-mode)
+#+end_src
+
+I want to go straight into =evil-insert-states= in some modes so I can just start typing.
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-hooks
+(org-capture-mode . evil-insert-state)
+(org-log-buffer-setup . evil-insert-state)
+#+end_src
+
+I auto-tangle org files on save. Tangling this file is getting slow though, so I'm attempting things to make it faster.
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-hooks
+(org-mode . (lambda () (add-hook 'after-save-hook 'neh/config-tangle
+                                 'run-at-end 'only-in-org-mode)))
+#+end_src
+
+I use plantuml to generate various images, and this makes sure that generated images are redisplayed after re-processing diagram source code in a block.
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-hooks
+(org-babel-after-execute . org-redisplay-inline-images)
+#+end_src
+
+Flycheck gives way too many errors when editing src blocks in their own buffer. I should probably look into re-enabling useful parts of it though.
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-hooks
+(org-src-mode . disable-flycheck-in-org-src-block)
+#+end_src
+
+** Keybindings
+
+General purpose org keybindings.
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-keys
+(neh/leader-keys
+  "nb" '(org-narrow-to-block :which-key "narrow to block")
+  "ne" '(org-narrow-to-element :which-key "narrow to element")
+  "ns" '(org-narrow-to-subtree :which-key "narrow to subtree")
+
+  "oc" 'org-capture
+  "C" 'org-capture
+  "oC" '(lambda () (interactive) (find-file org-default-notes-file))
+  "og" '(org-agenda :which-key "agenda")
+  "o." '(org-open-at-point :which-key "follow link"))
+#+end_src
+
+Add a binding for =org-open-at-point=. I need to look into whether this is worth it, and the differences between this and =browse-url-at-point=.
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-keys
+(general-def
+  :keymaps 'org-mode-map
+  :states '(normal emacs)
+  :prefix  "g"
+  "." 'org-open-at-point)
+#+end_src
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-keys
+(general-def
+  :keymaps 'org-mode-map
+  :states '(normal emacs)
+  "<RET>" 'neh/org-ret
+  "ze" 'outline-show-branches)
+#+end_src
+
+Quick heading movement and task item state changes. I'm getting into the habit of using =C-c C-t= for task statuses though, so we'll see if this stays in.
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-keys
+(general-def
+  :keymaps 'org-mode-map
+  :states '(normal)
+  "H" 'org-shiftleft
+  "T" 'org-shiftdown
+  "N" 'org-shiftup
+  "S" 'org-shiftright)
 #+end_src
 
 * Shackle
