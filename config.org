@@ -990,6 +990,13 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
     "C-S-<iso-lefttab>" 'nswbuff-switch-to-previous-buffer)
 
   :init
+  (defun neh/nswbuff-switch-to-previous-buffer ()
+    (interactive)
+    ;; (let (nswbuff-buffer-list-function '(lambda () (nreverse (nswbuff-buffer-list))))
+    (let (nswbuff-buffer-list-function #'nswbuff-buffer-list)
+      (message nswbuff-buffer-list-function)
+      (nswbuff-switch-to-previous-buffer)))
+
   (setq nswbuff-display-intermediate-buffers t
         nswbuff-exclude-buffer-regexps '("^ "
                                          "^\*.*\*"
