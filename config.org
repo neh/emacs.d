@@ -547,7 +547,7 @@ Emacs colour themes apparently just load on top of each other, so here’s an ad
 Set my default preferred text size.
 
 #+begin_src emacs-lisp
-(setq neh/default-text-size 108)
+(setq neh/default-text-size 118)
 (when (not (boundp 'neh/current-text-size))
   (setq neh/current-text-size neh/default-text-size))
 #+end_src
@@ -574,7 +574,7 @@ And here’s the function where I collect my tweaks to the theme and set up font
   (let* ((variable-tuple (cond
                           ((x-list-fonts "Inter")
                            `(:font "Inter"
-                             :height ,(round (* neh/current-text-size 1.02))))
+                             :height ,(round (* neh/current-text-size 1.01))))
                           ((x-list-fonts "Noto Sans")
                            `(:font "Noto Sans"
                              :height ,(round (* neh/current-text-size 0.96))))
