@@ -854,6 +854,11 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
   (ivy-add-actions
    t
    '(("f" neh-open-file-in-frame "other frame")))
+  ;; this adds the action, but switching to other buffers tries to open a buffer relative to the
+  ;; current dir/project, which doesn't exist
+  (ivy-add-actions
+   'ivy-switch-buffer
+   '(("f" display-buffer-other-frame "other frame")))
 
   (setq ivy-use-virtual-buffers t
         ivy-count-format "%d/%d "
