@@ -2226,9 +2226,12 @@ Try out =org-noter=.
   :general
   (general-def
     :keymaps 'symbol-overlay-map
-    "i" '(nil)
-    "n" '(nil)
-    "p" '(nil)
+    "i" nil
+    "n" nil
+    "p" nil
+    "t" nil
+    "s" nil
+    "h" nil
 
     "?" 'symbol-overlay-map-help
 
