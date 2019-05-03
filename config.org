@@ -920,6 +920,9 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
   (add-to-list 'ivy-prescient-sort-commands 'counsel-projectile)
   (add-to-list 'ivy-prescient-sort-commands 'counsel-projectile-find-file))
 
+(use-package ivy-rich
+  :hook (ivy-mode . ivy-rich-mode))
+
 (use-package company-prescient
   :hook (company-mode . company-prescient-mode))
 
