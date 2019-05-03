@@ -2132,6 +2132,11 @@ Try out =org-noter=.
 * Misc packages
 
 #+begin_src emacs-lisp
+(use-package edit-indirect
+  :commands (edit-indirect-region))
+#+end_src
+
+#+begin_src emacs-lisp
 (use-package dumb-jump
   :commands (dumb-jump-go
              dumb-jump-go-other-window)
