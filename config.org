@@ -644,6 +644,11 @@ And here’s the function where I collect my tweaks to the theme and set up font
                       :foreground (color-complement-hex
                                    (face-attribute 'default :background)))
 
+  (set-face-attribute 'ivy-org nil
+                      :inherit 'fixed-pitch
+                      :weight 'bold
+                      :foreground (face-attribute 'org-level-1 :foreground))
+
   (save-current-buffer
     (mapc (lambda (b)
             (set-buffer b)
@@ -823,6 +828,13 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
 #+begin_src emacs-lisp
 (use-package ivy
   :hook (after-init . ivy-mode)
+
+  :custom-face
+  ;; this doesn't seem to work: https://github.com/jwiegley/use-package/issues/696
+  ;; doing it in neh/theme-tweaks for now instead.
+  (ivy-org ((t `(:inherit fixed-pitch
+                 :weight bold
+                 :foreground ,(face-attribute 'org-level-1 :foreground)))))
 
   :init
   (defun reloading (cmd)
