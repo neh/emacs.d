@@ -642,7 +642,9 @@ And here’s the function where I collect my tweaks to the theme and set up font
 
   (set-face-attribute 'org-todo nil
                       :foreground (color-complement-hex
-                                   (face-attribute 'default :background)))
+                                   (face-attribute 'default :background))
+                      :background (color-lighten-name
+                                   (face-attribute 'default :background) 10))
 
   (set-face-attribute 'ivy-org nil
                       :inherit 'fixed-pitch
