@@ -1573,6 +1573,11 @@ Org export.
              org-slack-export-to-clipboard-as-slack))
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package org-pomodoro
+  :commands (org-pomodoro))
+#+end_src
+
 ** Options
 
 When using =C-c C-t=, allow todo state selection using single letters instead of cycling through choices.
