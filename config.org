@@ -29,15 +29,21 @@ Right up front, enable [[https://www.emacswiki.org/emacs/DynamicBindingVsLexical
 ;; -*- lexical-binding: t -*-
 #+end_src
 
-Next, we wrap the whole init file in a block that sets =file-name-handler-alist= to =nil= to prevent any special-filename parsing of files loaded from the init file (e.g. remote files loaded through tramp, etc.). The =let= block gets closed at the end of this section.
+Next, we wrap the whole init file in a block that sets =file-name-handler-alist= to =nil= to prevent any special-filename parsing of files loaded from the init file (e.g. remote files loaded through tramp, etc.). Rather than having a block that closes this later, let's pull in the rest of the init file bits with noweb references.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :noweb yes
 (let ((file-name-handler-alist nil))
+  <<init-gc-init>>
+  <<init-straight>>
+  <<init-use-package>>
+  <<init-org>>
+  <<init-tangle>>
+  <<init-gc-setup>>)
 #+end_src
 
 We set =gc-cons-threshold= to its maximum value, to prevent any garbage collection from happening during load time. We also reset this value in the [[Epilogue][Epilogue]].
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no :noweb-ref init-gc-init
 (setq gc-cons-threshold most-positive-fixnum)
 #+end_src
 
@@ -45,13 +51,13 @@ I use [[https://github.com/raxod502/straight.el][straight.el]] instead of packag
 
 This setting makes the straight bootstrap /much/ faster. See the discussion [[https://github.com/raxod502/straight.el/issues/304][here]].
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no :noweb-ref init-straight
 (setq straight-check-for-modifications '(check-on-save))
 #+end_src
 
 And now bootstrap straight, using the snippet from the docs.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no :noweb-ref init-straight
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -68,7 +74,7 @@ And now bootstrap straight, using the snippet from the docs.
 
 And then make [[https://github.com/jwiegley/use-package][use-package]] use straight, and install use-package using straight:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no :noweb-ref init-use-package
 (setq straight-use-package-by-default t)
 (straight-use-package 'use-package)
 (setq use-package-verbose nil
@@ -78,14 +84,14 @@ And then make [[https://github.com/jwiegley/use-package][use-package]] use strai
 
 Load =org-mode= using straight. This needs to happen early, or emacs will load and use its bundled version of =org-mode=, which is just too old.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no :noweb-ref init-org
 (use-package org
   :demand t)
 #+end_src
 
 Here's where the rest of this file gets tangled and loaded, but only if it's newer than the existing tangled file. Tangling is slow (at least it is when you start using no-web references...), so we don't want to do it for no good reason.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no :noweb-ref init-tangle
 (let ((orgfile (concat user-emacs-directory "config.org"))
       (elfile (concat user-emacs-directory "config.el")))
   (when (or (not (file-exists-p elfile))
@@ -96,19 +102,13 @@ Here's where the rest of this file gets tangled and loaded, but only if it's new
 
 Then reset the value of =gc-cons-threshold=, not to its original value; we still leave it much larger than default so that GCs don't happen so often and impact performance. We also tweak =gc-cons-percentage= and set an idle timer to run =garbage-collect= whenever emacs is idle for 5 seconds.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no :noweb-ref init-gc-setup
 (setq gc-cons-threshold (* 250 1000 1000)
       gc-cons-percentage 0.5)
 
 (defvar neh/gc-idle-timer nil)
 (unless (timerp neh/gc-idle-timer)
   (setq neh/gc-idle-timer (run-with-idle-timer 5 t #'garbage-collect)))
-#+end_src
-
-Here we close the =let= expression from earlier.
-
-#+begin_src emacs-lisp
-)
 #+end_src
 
 * Performance optimization
