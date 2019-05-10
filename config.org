@@ -1627,7 +1627,10 @@ Org file locations.
           "* %?"))))
 #+end_src
 
+This setting should make edits around special characters and collapsed outlines better. I haven't tested the various settings out yet, so this is just the first one to try.
+
 #+begin_src emacs-lisp :tangle no :noweb-ref org-custom
+(org-catch-invisible-edits 'show-and-error)
 #+end_src
 
 #+begin_src emacs-lisp :tangle no :noweb-ref org-custom
