@@ -25,7 +25,8 @@
       ;; use-package-always-defer t
       )
 
-(straight-use-package 'org)
+(use-package org
+  :demand t)
 
 (let ((orgfile (concat user-emacs-directory "config.org"))
       (elfile (concat user-emacs-directory "config.el")))

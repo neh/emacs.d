@@ -79,7 +79,8 @@ And then make [[https://github.com/jwiegley/use-package][use-package]] use strai
 Load =org-mode= using straight. This needs to happen early, or emacs will load and use its bundled version of =org-mode=, which is just too old.
 
 #+begin_src emacs-lisp
-(straight-use-package 'org)
+(use-package org
+  :demand t)
 #+end_src
 
 Here's where the rest of this file gets tangled and loaded, but only if it's newer than the existing tangled file. Tangling is slow (at least it is when you start using no-web references...), so we don't want to do it for no good reason.
