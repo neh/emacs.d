@@ -2395,7 +2395,8 @@ Try out =org-noter=.
 #+begin_src emacs-lisp
 (defun neh/python-mode-hook ()
   "My python mode settings."
-  (add-to-list 'company-backends 'company-jedi))
+  (add-to-list 'company-backends 'company-jedi)
+  (setq-local fill-column 80))
 (use-package elpy
   :commands elpy-enable
   :init
