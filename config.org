@@ -2178,9 +2178,6 @@ Try out =org-noter=.
 
 #+begin_src emacs-lisp
 (use-package deadgrep
-  :commands (deadgrep
-             deadgrep-restart)
-
   :init
   (defun neh/deadgrep-context-adjust (amount)
     (let* ((old-before (or (car deadgrep--context) 0))
@@ -2193,6 +2190,9 @@ Try out =org-noter=.
       (deadgrep-restart)))
 
   :general
+  (neh/leader-keys
+    "sr" #'deadgrep)
+
   (general-define-key
    :keymaps 'deadgrep-mode-map
    :states '(emacs normal)
