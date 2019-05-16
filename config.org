@@ -2178,7 +2178,30 @@ Try out =org-noter=.
 
 #+begin_src emacs-lisp
 (use-package deadgrep
-  :commands (deadgrep))
+  :commands (deadgrep
+             deadgrep-restart)
+
+  :init
+  (defun neh/deadgrep-context-adjust (amount)
+    (let* ((old-before (or (car deadgrep--context) 0))
+           (old-after (or (cdr deadgrep--context) 0))
+           (before (+ old-before amount))
+           (after (+ old-after amount)))
+
+      (setq-local deadgrep--context (cons (if (< before 0) 0 before)
+                                          (if (< after 0) 0 after)))
+      (deadgrep-restart)))
+
+  :general
+  (general-define-key
+   :keymaps 'deadgrep-mode-map
+   :states '(emacs normal)
+   "+" (lambda ()
+         (interactive)
+         (neh/deadgrep-context-adjust 2))
+   "-" (lambda ()
+         (interactive)
+         (neh/deadgrep-context-adjust -2))))
 #+end_src
 
 #+begin_src emacs-lisp
