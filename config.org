@@ -1886,6 +1886,11 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
    ")" 'dired-filter-pop))
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package dired-du
+  :commands (dired-du-mode))
+#+end_src
+
 * Imenu
 
 #+begin_src emacs-lisp
