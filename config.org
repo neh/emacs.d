@@ -1913,7 +1913,36 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
 
 #+begin_src emacs-lisp :noweb yes
 (use-package posframe
-  :commands (posframe-show))
+  :commands (posframe-show)
+  :config
+  (defun posframe-poshandler-frame-bottom-center (info)
+    "Posframe's position handler.
+
+    Get a position which let posframe stay onto its parent-frame's
+    bottom center.  The structure of INFO can be found
+    in docstring of `posframe-show'."
+    (cons (/ (- (plist-get info :parent-frame-width)
+                (plist-get info :posframe-width))
+             2)
+          (- 0
+             (plist-get info :mode-line-height)
+             (plist-get info :minibuffer-height))))
+
+  (defun posframe-poshandler-window-bottom-center (info)
+    "Posframe's position handler.
+
+    Get a position which let posframe stay onto current window's
+    center.  The structure of INFO can be found in docstring
+    of `posframe-show'."
+    (let* ((window-left (plist-get info :parent-window-left))
+           (window-top (plist-get info :parent-window-top))
+           (window-width (plist-get info :parent-window-width))
+           (window-height (plist-get info :parent-window-height))
+           (mode-line-height (plist-get info :mode-line-height))
+           (posframe-width (plist-get info :posframe-width))
+           (posframe-height (plist-get info :posframe-height)))
+      (cons (+ window-left (/ (- window-width posframe-width) 2))
+            (- (+ window-top window-height) (+ posframe-height mode-line-height))))))
 #+end_src
 
 #+begin_src emacs-lisp :noweb yes
@@ -1930,7 +1959,7 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
   (setq hydra-hint-display-type 'posframe
         hydra-posframe-show-params '(:internal-border-width 1
                                      :internal-border-color "red"
-                                     :poshandler posframe-poshandler-window-bottom-left-corner))
+                                     :poshandler posframe-poshandler-window-bottom-center))
 
   :config
   <<hydra-hydras>>)
