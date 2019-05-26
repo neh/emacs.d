@@ -561,7 +561,11 @@ General settings for programming modes.
 I’ve been liking dark-on-light themes lately, and brutalist with some tweaks has been good.
 
 #+begin_src emacs-lisp
+(use-package gruvbox-theme
+  :config
+  (load-theme 'gruvbox t))
 (use-package poet-theme
+  :disabled
   :config
   (load-theme 'poet t))
 #+end_src
