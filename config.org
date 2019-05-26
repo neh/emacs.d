@@ -1927,6 +1927,11 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
 * Hydra
 
 #+begin_src emacs-lisp :noweb yes
+(use-package posframe
+  :commands (posframe-show))
+#+end_src
+
+#+begin_src emacs-lisp :noweb yes
 (use-package hydra
   :general
   (neh/leader-keys
