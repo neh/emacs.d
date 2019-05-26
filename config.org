@@ -1941,6 +1941,12 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
     "rr" '(hydra-reading/body :which-key "plain text")
     "zt" '(hydra-zoom/body :which-key "zoom text"))
 
+  :init
+  (setq hydra-hint-display-type 'posframe
+        hydra-posframe-show-params '(:internal-border-width 1
+                                     :internal-border-color "red"
+                                     :poshandler posframe-poshandler-window-bottom-left-corner))
+
   :config
   <<hydra-hydras>>)
 #+end_src
