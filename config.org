@@ -1024,19 +1024,6 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package iflipb
-  :disabled
-  :commands (iflipb-next-buffer
-             iflipb-previous-buffer)
-  :general
-  (general-def
-    :keymaps 'override
-    :states '(emacs normal insert)
-    "<C-tab>" 'iflipb-previous-buffer
-    "C-S-<iso-lefttab>" 'iflipb-next-buffer))
-#+end_src
-
-#+begin_src emacs-lisp
 (use-package nswbuff
   :commands (nswbuff-switch-to-previous-buffer
              nswbuff-switch-to-next-buffer)
@@ -1067,17 +1054,6 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
                                         (if (projectile-project-p)
                                             (nreverse (nswbuff-projectile-buffer-list))
                                           (nreverse (buffer-list))))))
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package beacon
-  :commands (beacon-mode)
-  :init
-  (setq beacon-color (let ((bg (face-attribute 'default :background)))
-                       (if (< (color-distance bg "black") (color-distance bg "white"))
-                           (color-lighten-name bg 20)
-                         (color-darken-name bg 20))))
-  )
 #+end_src
 
 #+begin_src emacs-lisp
