@@ -307,8 +307,8 @@ Some text fill options.
 I view man pages in emacs sometimes, and want a fixed width for them.
 
 #+begin_src emacs-lisp
-(setenv "MANWIDTH" (string fill-column))
-(setq Man-notify-method 'pushy
+(setq Man-width fill-column
+      Man-notify-method 'pushy
       woman-fill-column fill-column)
 #+end_src
 
