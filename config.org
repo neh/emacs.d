@@ -2223,6 +2223,12 @@ First, set up =pdf-tools= for nice PDF handling.
   (setq-default pdf-view-display-size 'fit-page))
 #+end_src
 
+PDF link handling in =org-mode=.
+
+#+begin_src emacs-lisp
+(use-package org-pdfview)
+#+end_src
+
 Add =nov.el= for =epub=s.
 
 #+begin_src emacs-lisp 
