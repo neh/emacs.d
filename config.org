@@ -1780,6 +1780,50 @@ Let’s try to get some window behaviour under control.
         '((magit-diff-mode :align 'below :size 0.8))))
 #+end_src
 
+* Shells
+
+#+begin_src emacs-lisp
+(use-package eshell
+  :ensure nil
+  :custom
+  (eshell-scroll-to-bottom-on-input 'this)
+  (eshell-error-if-no-glob t)
+  (eshell-hist-ignoredups t)
+  (eshell-save-history-on-exit t)
+  (eshell-destroy-buffer-when-process-dies t)
+
+  :hook (eshell-mode . neh/eshell-mode-hook)
+
+  :init
+  (defun neh/eshell-mode-hook ()
+    (add-to-list 'eshell-visual-commands "htop")
+    (add-to-list 'eshell-visual-commands "tail")
+    (add-to-list 'eshell-visual-commands "ssh")
+
+    (eshell/alias "ll" "ls -l")
+    (eshell/alias "la" "ls -al")
+    (eshell/alias "ff" "find-file $1")))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package aweshell
+  :straight (aweshell
+             :type git
+             :host github
+             :repo "manateelazycat/aweshell")
+
+  :commands (aweshell-new
+             aweshell-next
+             aweshell-prev
+             aweshell-toggle
+             aweshell-clear-buffer
+             aweshell-sudo-toggle
+             aweshell-switch-buffer)
+
+  :custom
+  (eshell-prompt-function 'epe-theme-pipeline))
+#+end_src
+
 * Dired
 
 #+begin_src emacs-lisp
