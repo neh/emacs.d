@@ -1705,8 +1705,8 @@ I want to go straight into =evil-insert-states= in some modes so I can just star
 I auto-tangle org files on save. Tangling this file is getting slow though, so I'm attempting things to make it faster.
 
 #+begin_src emacs-lisp :tangle no :noweb-ref org-hooks
-(org-mode . (lambda () (add-hook 'after-save-hook 'neh/config-tangle
-                                 'run-at-end 'only-in-org-mode)))
+;; (org-mode . (lambda () (add-hook 'after-save-hook 'neh/config-tangle
+;;                                  'run-at-end 'only-in-org-mode)))
 #+end_src
 
 I use plantuml to generate various images, and this makes sure that generated images are redisplayed after re-processing diagram source code in a block.
