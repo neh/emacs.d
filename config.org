@@ -1791,6 +1791,7 @@ Let’s try to get some window behaviour under control.
   (eshell-hist-ignoredups t)
   (eshell-save-history-on-exit t)
   (eshell-destroy-buffer-when-process-dies t)
+  (eshell-banner-message "")
 
   :hook (eshell-mode . neh/eshell-mode-hook)
 
