@@ -1888,10 +1888,17 @@ Let’s try to get some window behaviour under control.
   :hook (dired-mode . dired-hide-details-mode)
   :commands (dired-jump
              dired-mode)
+
   :general
+  (general-define-key
+    :keymaps 'dired-mode-map
+    :states '(normal)
+    "t" nil)
+
   (neh/leader-keys
     "^" 'dired-jump
     "od" 'dired-jump)
+
   :init
   (setq dired-listing-switches "-alhv --group-directories-first"))
 #+end_src
