@@ -1806,6 +1806,64 @@ Let’s try to get some window behaviour under control.
 #+end_src
 
 #+begin_src emacs-lisp
+(use-package eshell-prompt-extras
+  :init
+  (defun epe-theme-neh ()
+    ""
+    (setq eshell-prompt-regexp "^[^#\n]* [#]* ")
+    (concat
+     (if (epe-remote-p)
+         (progn
+           (concat
+            (epe-colorize-with-face "─ " 'epe-neh-delimiter-face)
+            (epe-colorize-with-face (epe-remote-user) 'epe-neh-user-face)
+            (epe-colorize-with-face "@" 'epe-neh-delimiter-face)
+            (epe-colorize-with-face (epe-remote-host) 'epe-neh-host-face)))
+       (progn
+         (concat
+          (epe-colorize-with-face "─ " 'epe-neh-delimiter-face)
+          (epe-colorize-with-face (user-login-name) 'epe-neh-user-face)
+          (epe-colorize-with-face "@" 'epe-neh-delimiter-face)
+          (epe-colorize-with-face (system-name) 'epe-neh-host-face))))
+     (concat
+      ;; (epe-colorize-with-face "───" 'epe-neh-delimiter-face)
+      (epe-colorize-with-face " ─ " 'epe-neh-delimiter-face)
+      (epe-colorize-with-face (concat (eshell/pwd)) 'epe-dir-face)
+      ;; (epe-colorize-with-face "─ " 'epe-neh-delimiter-face))
+      (when (epe-git-p)
+        (concat
+         (epe-colorize-with-face " ─ " 'epe-neh-delimiter-face)
+         (epe-colorize-with-face ":" 'epe-dir-face)
+         (epe-colorize-with-face
+          (concat (epe-git-branch)
+                  (epe-git-dirty)
+                  (epe-git-untracked)
+                  (let ((unpushed (epe-git-unpushed-number)))
+                    (unless (= unpushed 0)
+                      (concat ":" (number-to-string unpushed)))))
+          'epe-git-face)))
+      (epe-colorize-with-face  "\n" 'epe-neh-delimiter-face))
+     (when (and epe-show-python-info (bound-and-true-p venv-current-name))
+       (epe-colorize-with-face (concat "(" venv-current-name ") ") 'epe-venv-face))
+     (epe-colorize-with-face "" 'epe-symbol-face)
+     (epe-colorize-with-face (if (= (user-uid) 0) "#" "") 'epe-sudo-symbol-face)
+     " "))
+
+  :custom-face
+  (epe-neh-delimiter-face ((t (:inherit 'shadow))))
+  (epe-neh-user-face ((t (:inherit 'default))))
+  (epe-neh-host-face ((t (:inherit 'default))))
+
+  :custom
+  (epe-show-python-info t)
+  (epe-git-dirty-char "*")
+  (epe-git-untracked-char "?")
+  (epe-git-detached-HEAD-char "D:")
+  (epe-path-style 'fish)
+  (eshell-prompt-function 'epe-theme-neh))
+#+end_src
+
+#+begin_src emacs-lisp
 (use-package aweshell
   :straight (aweshell
              :type git
@@ -1818,10 +1876,7 @@ Let’s try to get some window behaviour under control.
              aweshell-toggle
              aweshell-clear-buffer
              aweshell-sudo-toggle
-             aweshell-switch-buffer)
-
-  :custom
-  (eshell-prompt-function 'epe-theme-pipeline))
+             aweshell-switch-buffer))
 #+end_src
 
 * Dired
