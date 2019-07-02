@@ -1801,6 +1801,21 @@ Let’s try to get some window behaviour under control.
     (add-to-list 'eshell-visual-commands "tail")
     (add-to-list 'eshell-visual-commands "ssh")
 
+    (add-to-list 'eshell-modules-list 'eshell-tramp)
+
+    (general-def
+      :keymaps 'eshell-mode-map
+      :states '(insert)
+      "C-r" #'counsel-esh-history
+      "M-n" #'eshell-previous-input
+      "M-t" #'eshell-next-input)
+
+    (general-def
+      :keymaps 'eshell-mode-map
+      :states '(normal)
+      "M-n" #'eshell-previous-prompt
+      "M-t" #'eshell-next-prompt)
+
     (eshell/alias "ll" "ls -l")
     (eshell/alias "la" "ls -al")
     (eshell/alias "ff" "find-file $1")))
@@ -1811,15 +1826,18 @@ Let’s try to get some window behaviour under control.
   :init
   (defun epe-theme-neh ()
     ""
-    (setq eshell-prompt-regexp "^[^#\n]* [#]* ")
+    (setq eshell-prompt-regexp "^[^#\n]*[#]* ")
+
     (concat
+     "\n"
      (if (epe-remote-p)
          (progn
            (concat
             (epe-colorize-with-face "─ " 'epe-neh-delimiter-face)
             (epe-colorize-with-face (epe-remote-user) 'epe-neh-user-face)
             (epe-colorize-with-face "@" 'epe-neh-delimiter-face)
-            (epe-colorize-with-face (epe-remote-host) 'epe-neh-host-face)))
+            (epe-colorize-with-face (epe-remote-host) 'epe-neh-host-face)
+            ""))
        (progn
          (when (not (string= user-login-name "nathan"))
            (concat
@@ -1827,14 +1845,16 @@ Let’s try to get some window behaviour under control.
             (epe-colorize-with-face (user-login-name) 'epe-neh-user-face)
             (epe-colorize-with-face (system-name) 'epe-neh-host-face)
             " "))))
+
      (concat
       (epe-colorize-with-face "─ " 'epe-neh-delimiter-face)
       (epe-colorize-with-face (concat (eshell/pwd)) 'epe-dir-face)
       " "
+
       (when (epe-git-p)
         (concat
          (epe-colorize-with-face "─ " 'epe-neh-delimiter-face)
-         ;; (epe-colorize-with-face ":" 'epe-dir-face)
+         (epe-colorize-with-face " " 'epe-git-face)
          (epe-colorize-with-face
           (concat (epe-git-branch)
                   (epe-git-dirty)
@@ -1843,7 +1863,12 @@ Let’s try to get some window behaviour under control.
                     (unless (= unpushed 0)
                       (concat ":" (number-to-string unpushed)))))
           'epe-git-face)))
+
       (epe-colorize-with-face  "\n" 'epe-neh-delimiter-face))
+
+     (when (> 0 eshell-last-command-status)
+       (epe-colorize-with-face eshell-last-command-status 'epe-symbol-face))
+
      (when (and epe-show-python-info (bound-and-true-p venv-current-name))
        (epe-colorize-with-face (concat "(" venv-current-name ") ") 'epe-venv-face))
      (epe-colorize-with-face "" 'epe-symbol-face)
