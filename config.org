@@ -970,6 +970,11 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
     "so" '(counsel-org-goto-all :which-key "search org")
     "st" '(counsel-semantic-or-imenu :which-key "search tags"))
 
+  (general-def
+    :states '(normal)
+    "g/" #'neh/counsel-switch-to-dired-buffer
+    "g!" #'neh/counsel-switch-to-eshell-buffer)
+
   :init
   (setq counsel-ag-base-command "ag --nocolor --nogroup --ignore-case %s"
         counsel-grep-base-command "grep -inE '%s' %s")
@@ -977,6 +982,21 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
   (defun swiper-thing-at-point ()
     (interactive)
     (ivy-with-thing-at-point #'swiper))
+
+  :config
+  (defun neh/counsel-switch-to-eshell-buffer ()
+    "Switch to an eshell buffer, or create one."
+    (interactive)
+    (ivy-read "Eshell buffer: " (counsel--buffers-with-mode #'eshell-mode)
+              :action #'ivy--switch-buffer-action
+              :caller 'neh/counsel-switch-to-eshell-buffer))
+
+  (defun neh/counsel-switch-to-dired-buffer ()
+    "Switch to an dired buffer, or create one."
+    (interactive)
+    (ivy-read "Dired buffer: " (counsel--buffers-with-mode #'dired-mode)
+              :action #'ivy--switch-buffer-action
+              :caller 'neh/counsel-switch-to-dired-buffer))
 
   ;; These don't work on a fresh load, but seem to start working at some
   ;; point. Strange.
