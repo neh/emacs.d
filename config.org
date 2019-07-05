@@ -1210,6 +1210,11 @@ FACE defaults to inheriting from default and highlight."
     ol))
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package eyebrowse
+  :commands (eyebrowse-mode))
+#+end_src
+
 * Snippets
 
 #+begin_src emacs-lisp
