@@ -2412,6 +2412,11 @@ Try out =org-noter=.
 * Misc packages
 
 #+begin_src emacs-lisp
+(use-package dimmer
+  :commands (dimmer-mode))
+#+end_src
+
+#+begin_src emacs-lisp
 (use-package edit-indirect
   :commands (edit-indirect-region))
 #+end_src
