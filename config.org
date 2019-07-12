@@ -933,6 +933,9 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
                                 (t . ivy--regex-fuzzy))
         ivy-initial-inputs-alist nil))
 
+(use-package ivy-posframe
+  :commands (ivy-posframe-mode))
+
 (use-package prescient
   :demand t
   :config
