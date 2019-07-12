@@ -2034,7 +2034,7 @@ This seems useful, especially in combination with =dired-subtree=, as then it's 
 
 #+begin_src emacs-lisp
 (use-package dired-collapse
-  :commands (dired-collapse-mode))
+  :hook (dired-mode . dired-collapse-mode))
 #+end_src
 
 Handy live filtering of dired buffers.
