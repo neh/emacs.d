@@ -2007,6 +2007,7 @@ Let’s try to get some window behaviour under control.
 #+begin_src emacs-lisp
 (use-package dired-subtree
   :after dired
+  :demand
   :hook (after-load-theme . neh/set-dired-subtree-background)
 
   :general
