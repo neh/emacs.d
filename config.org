@@ -2143,7 +2143,7 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
     "zt" '(hydra-zoom/body :which-key "zoom text"))
 
   :init
-  (setq hydra-hint-display-type 'posframe
+  (setq hydra-hint-display-type 'lv
         hydra-posframe-show-params '(:internal-border-width 1
                                      :internal-border-color "red"
                                      :poshandler posframe-poshandler-window-bottom-center))
