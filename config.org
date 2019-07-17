@@ -2514,7 +2514,7 @@ Try out =org-noter=.
   :hook ((yaml-mode . ansible)
          (ansible . ansible::auto-decrypt-encrypt))
   :init
-  (setq ansible::vault-password-file "~/freshgrade/vaultpass"))
+  (setq ansible-vault-password-file "~/freshgrade/vaultpass"))
 #+end_src
 
 #+begin_src emacs-lisp
