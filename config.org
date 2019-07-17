@@ -1787,6 +1787,12 @@ Add a binding for =org-open-at-point=. I need to look into whether this is worth
   "ze" 'outline-show-branches)
 #+end_src
 
+#+begin_src emacs-lisp :tangle no :noweb-ref org-keys
+(general-def
+  :keymaps 'org-src-mode-map
+  "C-c C-c" #'org-edit-src-exit)
+#+end_src
+
 Quick heading movement and task item state changes. I'm getting into the habit of using =C-c C-t= for task statuses though, so we'll see if this stays in.
 
 #+begin_src emacs-lisp :tangle no :noweb-ref org-keys
