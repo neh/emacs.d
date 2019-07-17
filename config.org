@@ -2424,7 +2424,21 @@ Try out =org-noter=.
 
 #+begin_src emacs-lisp
 (use-package dimmer
-  :commands (dimmer-mode))
+  :commands (dimmer-mode
+             dimmer-restore-all
+             dimmer-process-all)
+
+  :hook (after-load-theme . neh/reset-dimmer-mode)
+
+  :custom
+  (dimmer-fraction 0.3)
+
+  :init
+  (defun neh/reset-dimmer-mode ()
+    (message "resetting dimmer mode")
+    (when dimmer-mode
+      (dimmer-restore-all)
+      (dimmer-process-all))))
 #+end_src
 
 #+begin_src emacs-lisp
