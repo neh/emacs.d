@@ -2492,11 +2492,15 @@ Try out =org-noter=.
 
 #+begin_src emacs-lisp
 (use-package dimmer
+  :disabled
   :commands (dimmer-mode
              dimmer-restore-all
              dimmer-process-all)
 
   :hook (after-load-theme . neh/reset-dimmer-mode)
+
+  :custom
+  (dimmer-exclusion-regexp "*LV*")
 
   :init
   (defun neh/reset-dimmer-mode ()
