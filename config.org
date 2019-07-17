@@ -2409,7 +2409,7 @@ Another work-in-progress hydra, this one for a general reading/browsing set of c
    "UI"
    (("l" global-hl-line-mode "highlight line" :toggle t)
     ("k" neh/toggle-dark-mode "dark mode" :toggle neh/dark-mode)
-    ("D" dimmer-mode "dimmer" :toggle t)
+    ("D" auto-dim-other-buffers-mode "dimmer" :toggle t)
     ("O" olivetti-mode "olivetti" :toggle t)
     ("W" writeroom-mode "writeroom" :toggle t)
     ("+" (neh/adjust-text-height 7) "bigger text")
@@ -2510,6 +2510,11 @@ Try out =org-noter=.
 
   :config
   (neh/reset-dimmer-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package auto-dim-other-buffers
+  :commands (auto-dim-other-buffers-mode))
 #+end_src
 
 #+begin_src emacs-lisp
