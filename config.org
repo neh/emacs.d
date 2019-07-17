@@ -564,9 +564,14 @@ General settings for programming modes.
 I’ve been liking dark-on-light themes lately, and brutalist with some tweaks has been good.
 
 #+begin_src emacs-lisp
+(setq neh/dark-theme 'gruvbox-dark-hard
+      neh/light-theme 'gruvbox-light-hard)
+
 (use-package gruvbox-theme
   :config
-  (load-theme 'gruvbox t))
+  (setq neh/dark-mode t)
+  (load-theme neh/dark-theme t))
+
 (use-package poet-theme
   :disabled
   :config
@@ -2386,13 +2391,11 @@ Another work-in-progress hydra, this one for a general reading/browsing set of c
 #+begin_src emacs-lisp :noweb-ref pretty-hydras :tangle no
 (defun neh/toggle-dark-mode ()
   (interactive)
-  (let ((neh/light-theme 'gruvbox-light-hard)
-        (neh/dark-theme 'gruvbox-dark-hard))
-    (if (member neh/light-theme custom-enabled-themes)
-        (progn (setq neh/dark-mode t)
-               (load-theme neh/dark-theme t))
-      (setq neh/dark-mode nil)
-      (load-theme neh/light-theme t))))
+  (if (member neh/light-theme custom-enabled-themes)
+      (progn (setq neh/dark-mode t)
+             (load-theme neh/dark-theme t))
+    (setq neh/dark-mode nil)
+    (load-theme neh/light-theme t)))
 
 (pretty-hydra-define neh/toggles
   (:color amaranth :quit-key ("q" "<escape>") :title "  Options")
@@ -2499,7 +2502,10 @@ Try out =org-noter=.
 
     (when dimmer-mode
       (dimmer-restore-all)
-      (dimmer-process-all))))
+      (dimmer-process-all)))
+
+  :config
+  (neh/reset-dimmer-mode))
 #+end_src
 
 #+begin_src emacs-lisp
