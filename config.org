@@ -2381,10 +2381,33 @@ Not using this one yet, but will allow associating a hydra to any major mode to 
 
 #+begin_src emacs-lisp
 (use-package major-mode-hydra
-  :disabled
   :general
   (neh/leader-keys
-    "m" 'major-mode-hydra))
+    "." #'major-mode-hydra)
+
+  :init
+  (setq major-mode-hydra-title-generator
+        '(lambda (mode)
+           (s-concat (s-repeat 1 " ")
+                     (all-the-icons-icon-for-mode mode :v-adjust 0.05)
+                     " "
+                     (symbol-name mode)
+                     " commands")))
+
+  :config
+  (major-mode-hydra-define emacs-lisp-mode
+    (:color amaranth :quit-key ("q" "<escape>"))
+    ("Eval"
+     (("b" eval-buffer "buffer" :exit t)
+      ("e" eval-defun "defun")
+      ("r" eval-region "region"))
+     "REPL"
+     (("I" ielm "ielm"))
+     "Doc"
+     (("d" describe-foo-at-point "thing-at-pt")
+      ("f" describe-function "function")
+      ("v" describe-variable "variable"))))
+  )
 #+end_src
 
 * Reading and Note-taking
