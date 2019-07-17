@@ -2383,6 +2383,37 @@ Another work-in-progress hydra, this one for a general reading/browsing set of c
    ))
 #+end_src
 
+#+begin_src emacs-lisp :noweb-ref pretty-hydras :tangle no
+(defun neh/toggle-dark-mode ()
+  (interactive)
+  (let ((neh/light-theme 'gruvbox-light-hard)
+        (neh/dark-theme 'gruvbox-dark-hard))
+    (if (member neh/light-theme custom-enabled-themes)
+        (progn (setq neh/dark-mode t)
+               (load-theme neh/dark-theme t))
+      (setq neh/dark-mode nil)
+      (load-theme neh/light-theme t))))
+
+(pretty-hydra-define neh/toggles
+  (:color amaranth :quit-key ("q" "<escape>") :title "  Options")
+  ("Formatting"
+   (("v" global-visual-line-mode "visual lines" :toggle t)
+    ("w" whitespace-mode "whitespace" :toggle t)
+    ("f" visual-fill-column-mode "visual fill" :toggle t)
+    ("c" rainbow-mode "colours" :toggle t)
+    ("t" toggle-truncate-lines "truncate lines" :toggle truncate-lines)
+    ("d" rainbow-delimiters-mode "delimiters" :toggle t))
+   "UI"
+   (("l" global-hl-line-mode "highlight line" :toggle t)
+    ("k" neh/toggle-dark-mode "dark mode" :toggle neh/dark-mode)
+    ("D" dimmer-mode "dimmer" :toggle t)
+    ("O" olivetti-mode "olivetti" :toggle t)
+    ("W" writeroom-mode "writeroom" :toggle t))))
+
+(neh/leader-keys
+  "," #'neh/toggles/body)
+#+end_src
+
 Not using this one yet, but will allow associating a hydra to any major mode to provide common commands.
 
 #+begin_src emacs-lisp
