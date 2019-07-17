@@ -2460,12 +2460,12 @@ Try out =org-noter=.
 
   :hook (after-load-theme . neh/reset-dimmer-mode)
 
-  :custom
-  (dimmer-fraction 0.3)
-
   :init
   (defun neh/reset-dimmer-mode ()
-    (message "resetting dimmer mode")
+    (if neh/dark-mode
+        (setq dimmer-fraction 0.25)
+      (setq dimmer-fraction 0.35))
+
     (when dimmer-mode
       (dimmer-restore-all)
       (dimmer-process-all))))
