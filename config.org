@@ -2411,7 +2411,11 @@ Another work-in-progress hydra, this one for a general reading/browsing set of c
     ("k" neh/toggle-dark-mode "dark mode" :toggle neh/dark-mode)
     ("D" dimmer-mode "dimmer" :toggle t)
     ("O" olivetti-mode "olivetti" :toggle t)
-    ("W" writeroom-mode "writeroom" :toggle t))))
+    ("W" writeroom-mode "writeroom" :toggle t)
+    ("+" (neh/adjust-text-height 7) "bigger text")
+    ("-" (neh/adjust-text-height -7) "smaller text")
+    ("0" (neh/adjust-text-height 0) "reset text size"))
+   ))
 
 (neh/leader-keys
   "," #'neh/toggles/body)
