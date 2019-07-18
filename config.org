@@ -2143,13 +2143,24 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
     "zt" '(hydra-zoom/body :which-key "zoom text"))
 
   :init
-  (setq hydra-hint-display-type 'lv
-        hydra-posframe-show-params '(:internal-border-width 1
-                                     :internal-border-color "red"
-                                     :poshandler posframe-poshandler-window-bottom-center))
+  (setq hydra-hint-display-type 'posframe
+        hydra--work-around-dedicated nil)
 
   :config
   <<hydra-hydras>>)
+
+(use-package hydra-posframe
+  :straight (hydra-posframe
+             :type git
+             :host github
+             :repo "Ladicle/hydra-posframe")
+  :commands (hydra-posframe-enable)
+  :init
+  (setq hydra-posframe-show-params '(:internal-border-width 25
+                                     :internal-border-color "black"
+                                     :poshandler posframe-poshandler-window-bottom-center
+                                     :min-height 100))
+  :hook (after-init . hydra-posframe-enable))
 #+end_src
 
 #+begin_src emacs-lisp
