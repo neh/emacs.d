@@ -2442,6 +2442,10 @@ Another work-in-progress hydra, this one for a general reading/browsing set of c
     ("t" windmove-down "down")
     ("n" windmove-up "up")
     ("s" windmove-right "right"))
+   "Close"
+   (("x" bury-buffer "bury buffer")
+    ("X" evil-delete-buffer "delete buffer")
+    ("c" evil-window-delete "close window"))
    ))
 
 (neh/leader-keys
