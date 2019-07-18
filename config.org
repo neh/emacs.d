@@ -885,6 +885,25 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
              (cons cmd (ivy-thing-at-point)))))
       (funcall cmd)))
 
+  (defun ivy-display-function-window (text)
+    (let ((buffer (get-buffer-create "*ivy-candidate-window*"))
+          (str (with-current-buffer (get-buffer-create " *Minibuf-1*")
+                 (let ((point (point))
+                       (string (concat (buffer-string) "  " text)))
+                   (ivy-add-face-text-property
+                    (- point 1) point 'ivy-cursor string t)
+                   string))))
+      (with-current-buffer buffer
+        (let ((inhibit-read-only t))
+          (erase-buffer)
+          (insert str)))
+      (with-ivy-window
+        (display-buffer
+         buffer
+         `((display-buffer-reuse-window
+            display-buffer-below-selected)
+           (window-height . ,(1+ (ivy--height (ivy-state-caller ivy-last)))))))))
+
   :general
   (neh/leader-keys
     "U" '(ivy-switch-buffer :which-key "switch buffer")
@@ -927,6 +946,8 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
   (ivy-add-actions
    'ivy-switch-buffer
    '(("f" display-buffer-other-frame "other frame")))
+
+  (add-to-list 'ivy-display-functions-alist '(t . ivy-display-function-window))
 
   (setq ivy-use-virtual-buffers t
         ivy-count-format "%d/%d "
