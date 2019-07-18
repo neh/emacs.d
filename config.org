@@ -2129,7 +2129,7 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
            (posframe-width (plist-get info :posframe-width))
            (posframe-height (plist-get info :posframe-height)))
       (cons (+ window-left (/ (- window-width posframe-width) 2))
-            (- (+ window-top window-height) (+ posframe-height mode-line-height))))))
+            (- (+ window-top window-height) (+ posframe-height mode-line-height 15))))))
 #+end_src
 
 #+begin_src emacs-lisp :noweb yes
