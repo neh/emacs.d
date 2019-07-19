@@ -2526,6 +2526,14 @@ Try out =org-noter=.
 * Misc packages
 
 #+begin_src emacs-lisp
+(use-package hl-line-mode
+  :straight nil
+  :commands (hl-line-mode
+             global-hl-line-mode)
+  :hook (after-init . global-hl-line-mode))
+#+end_src
+
+#+begin_src emacs-lisp
 (use-package dimmer
   :disabled
   :commands (dimmer-mode
