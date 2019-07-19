@@ -2160,28 +2160,36 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
     "rc" '(hydra-codereading/body :which-key "changes")
     "rg" '(hydra-git-gutter/body :which-key "changes")
     "ro" '(hydra-org/body :which-key "org")
-    "rr" '(hydra-reading/body :which-key "plain text")
-    "zt" '(hydra-zoom/body :which-key "zoom text"))
+    "rr" '(hydra-reading/body :which-key "plain text"))
 
   :init
   (setq hydra-hint-display-type 'posframe
         hydra--work-around-dedicated nil)
+  (setq hydra-posframe-show-params '(:internal-border-width 2
+                                     :internal-border-color "gray21"
+                                     ;; :min-height 15
+                                     :poshandler posframe-poshandler-point-bottom-left-corner))
 
   :config
-  <<hydra-hydras>>)
+  <<hydra-hydras>>
 
-(use-package hydra-posframe
-  :straight (hydra-posframe
-             :type git
-             :host github
-             :repo "Ladicle/hydra-posframe")
-  :commands (hydra-posframe-enable)
-  :init
-  (setq hydra-posframe-show-params '(:internal-border-width 25
-                                     :internal-border-color "black"
-                                     :poshandler posframe-poshandler-window-bottom-center
-                                     :min-height 100))
-  :hook (after-init . hydra-posframe-enable))
+  (use-package hydra-posframe
+    :disabled
+    :straight (hydra-posframe
+               :type git
+               :host github
+               :repo "Ladicle/hydra-posframe")
+
+    :commands (hydra-posframe-enable)
+
+    :config
+    (setq hydra-posframe-show-params '(:internal-border-width 2
+                                       :internal-border-color "green"
+                                       ;; :min-height 15
+                                       :poshandler posframe-poshandler-point-bottom-left-corner))
+
+    (hydra-posframe-enable))
+  )
 #+end_src
 
 #+begin_src emacs-lisp
@@ -2260,15 +2268,6 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
 #+end_src
 
 #+begin_src emacs-lisp :noweb-ref hydra-hydras :tangle no
-(defhydra hydra-zoom ()
-  "zoom"
-  ("+" (neh/adjust-text-height 7) "in")
-  ("-" (neh/adjust-text-height -7) "out")
-  ("0" (neh/adjust-text-height 0) "reset")
-  ("q" nil "quit" :color blue))
-#+end_src
-
-#+begin_src emacs-lisp :noweb-ref hydra-hydras :tangle no
 (defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1))
   "Browse/stage/revert git hunks"
   ("n" (progn (git-gutter:previous-hunk 1)
@@ -2296,33 +2295,6 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
   ("<tab>" org-cycle "cycle")
   ("g" org-goto "goto" :exit t)
   ("q" nil "quit" :color blue))
-#+end_src
-
-#+begin_src emacs-lisp :noweb-ref hydra-hydras :tangle no
-(defhydra hydra-windows (:hint nil)
-  "
-     Go: _h_ _t_ _n_ _s_
-   Move: _H_ _T_ _N_ _S_
-
-   Only: _o_
-  Close: _c_
-
-   Exit: _q_
-  "
-  ("h" evil-window-left)
-  ("n" evil-window-up)
-  ("t" evil-window-down)
-  ("s" evil-window-right)
-
-  ("H" evil-window-move-far-left)
-  ("T" evil-window-move-very-bottom)
-  ("N" evil-window-move-very-top)
-  ("S" evil-window-move-far-right)
-
-  ("o" delete-other-windows)
-  ("c" evil-window-delete)
-
-  ("q" nil))
 #+end_src
 
 #+begin_src emacs-lisp :noweb-ref hydra-hydras :tangle no
@@ -2458,11 +2430,21 @@ Another work-in-progress hydra, this one for a general reading/browsing set of c
     ("T" buf-move-down "down")
     ("N" buf-move-up "up")
     ("S" buf-move-right "right"))
-   "Select Window"
+   "Move to Window"
    (("h" windmove-left "left")
     ("t" windmove-down "down")
     ("n" windmove-up "up")
     ("s" windmove-right "right"))
+   "Split Window"
+   (("|" evil-window-vsplit "vertical")
+    ("-" evil-window-split "horizontal")
+    ("=" balance-windows "balance")
+    ("o" delete-other-windows "delete others"))
+   "Move Window"
+   (("M-h" evil-window-move-far-left "far left")
+    ("M-t" evil-window-move-very-bottom "bottom")
+    ("M-n" evil-window-move-very-top "top")
+    ("M-s" evil-window-move-far-right "far right"))
    "Close"
    (("x" bury-buffer "bury buffer")
     ("X" evil-delete-buffer "delete buffer")
