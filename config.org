@@ -947,7 +947,7 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
    'ivy-switch-buffer
    '(("f" display-buffer-other-frame "other frame")))
 
-  (add-to-list 'ivy-display-functions-alist '(t . ivy-display-function-window))
+  ;; (add-to-list 'ivy-display-functions-alist '(t . ivy-display-function-window))
 
   (setq ivy-use-virtual-buffers t
         ivy-count-format "%d/%d "
