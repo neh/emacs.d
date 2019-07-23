@@ -941,6 +941,9 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
   (ivy-add-actions
    t
    '(("f" neh-open-file-in-frame "other frame")))
+  (ivy-add-actions
+   t
+   '(("|" neh-open-file-in-vsplit "vsplit")))
   ;; this adds the action, but switching to other buffers tries to open a buffer relative to the
   ;; current dir/project, which doesn't exist
   (ivy-add-actions
