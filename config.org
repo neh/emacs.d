@@ -2644,9 +2644,9 @@ Try out =org-noter=.
 ;; The auto-decrypt-encrypt hook complains about the password-file var not being set, even though
 ;; the manual encrypt/decrypt functions work just fine.
 (use-package ansible
-  :commands (ansible ansible::auto-decrypt-encrypt)
+  :commands (ansible ansible-auto-decrypt-encrypt)
   :hook ((yaml-mode . ansible)
-         (ansible . ansible::auto-decrypt-encrypt))
+         (ansible . ansible-auto-decrypt-encrypt))
   :init
   (setq ansible-vault-password-file "~/freshgrade/vaultpass"))
 #+end_src
