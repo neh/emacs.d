@@ -873,7 +873,7 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
     (dired-delete-file x 'confirm-each-subdirectory))
 
   (defun neh-open-file-in-vsplit (f)
-    (evil-window-vsplit 80 f)
+    (evil-window-vsplit fill-column f)
     (balance-windows))
 
   (defun neh-open-file-in-frame (f)
