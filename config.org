@@ -2168,8 +2168,8 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
   :init
   (setq hydra-hint-display-type 'posframe
         hydra--work-around-dedicated nil)
-  (setq hydra-posframe-show-params '(:internal-border-width 2
-                                     :internal-border-color "gray21"
+  (setq hydra-posframe-show-params '(:internal-border-width 10
+                                     :internal-border-color "grey21"
                                      ;; :min-height 15
                                      :poshandler posframe-poshandler-point-bottom-left-corner))
 
