@@ -907,7 +907,6 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
   :general
   (neh/leader-keys
     "U" '(ivy-switch-buffer :which-key "switch buffer")
-    "u" '(counsel-projectile-switch-to-buffer :which-key "switch project buffer")
     "oo" '(ivy-switch-buffer :which-key "switch buffer")
     "xa" '(ivy-resume :which-key "ivy resume"))
 
@@ -1272,6 +1271,7 @@ FACE defaults to inheriting from default and highlight."
   :general
   (neh/leader-keys
     "oh" '(counsel-projectile :which-key "open file/buffer in project")
+    "u" '(counsel-projectile :which-key "switch project buffer/file")
     "op" '(counsel-projectile-switch-project :which-key "switch project")
     "s." '(neh-search-thing-at-point :which-key "search for thing at point")
     "sp" '(counsel-projectile-rg :which-key "search project"))
