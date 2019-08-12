@@ -1126,6 +1126,29 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
 #+end_src
 
 #+begin_src emacs-lisp
+(use-package ibuffer
+  :straight nil
+  :hook ((ibuffer . (lambda ()
+                      (ibuffer-projectile-set-filter-groups)
+                      (unless (eq ibuffer-sorting-mode 'alphabetic)
+                        (ibuffer-do-sort-by-alphabetic)))))
+  :init
+  (setq ibuffer-formats
+        '((mark modified read-only locked " "
+                (name 18 18 :left :elide)
+                " "
+                (size 9 -1 :right)
+                " "
+                (mode 16 16 :left :elide)
+                " " project-relative-file)
+          (mark " "
+                (name 16 -1)
+                " " filename))))
+
+(use-package ibuffer-projectile )
+#+end_src
+
+#+begin_src emacs-lisp
 ;; (defun my-View-scroll-half-page-forward-other-window ()
 ;;   (interactive)
 ;;   (with-selected-window (next-window)
