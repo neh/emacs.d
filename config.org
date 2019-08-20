@@ -1101,8 +1101,8 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
   (general-def
     :keymaps 'override
     :states '(emacs normal insert)
-    "<C-tab>" 'nswbuff-switch-to-next-buffer
-    "C-S-<iso-lefttab>" 'nswbuff-switch-to-previous-buffer)
+    "<C-tab>" 'nswbuff-switch-to-previous-buffer
+    "C-S-<iso-lefttab>" 'nswbuff-switch-to-next-buffer)
 
   :init
   (defun neh/nswbuff-switch-to-previous-buffer ()
@@ -1121,8 +1121,8 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
         nswbuff-buffer-list-function '(lambda ()
                                         (interactive)
                                         (if (projectile-project-p)
-                                            (nreverse (nswbuff-projectile-buffer-list))
-                                          (nreverse (buffer-list))))))
+                                            (nswbuff-projectile-buffer-list)
+                                          (buffer-list)))))
 #+end_src
 
 #+begin_src emacs-lisp
