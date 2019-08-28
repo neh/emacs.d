@@ -788,8 +788,8 @@ And here are just general evil-related bindings.
 
 #+begin_src emacs-lisp :noweb-ref evil-general :tangle no
 (neh/leader-keys
-  "q" '(evil-delete-buffer :which-key "delete buffer")
-  "bd" '(evil-delete-buffer :which-key "delete buffer"))
+  "q" '(kill-current-buffer :which-key "delete buffer")
+  "bd" '(kill-current-buffer :which-key "delete buffer"))
 #+end_src
 
 Put some whitespace around the evil state modeline labels just so they look better.
@@ -2473,7 +2473,7 @@ Another work-in-progress hydra, this one for a general reading/browsing set of c
     ("M-s" evil-window-move-far-right "far right"))
    "Close"
    (("x" bury-buffer "bury buffer")
-    ("X" evil-delete-buffer "delete buffer")
+    ("X" kill-current-buffer "delete buffer")
     ("c" evil-window-delete "close window"))
    ))
 
