@@ -842,6 +842,15 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
   (add-hook 'evil-collection-setup-hook  #'neh/evil-key-translations))
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package evil-owl
+  :commands (evil-owl-mode)
+  :config
+  (setq evil-owl-extra-posframe-args '(:internal-border-width 2
+                                       :internal-border-color "grey")
+        evil-owl-idle-delay 0.5))
+#+end_src
+
 * Navigation?
 
 #+begin_src emacs-lisp
