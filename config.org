@@ -1994,6 +1994,14 @@ Let’s try to get some window behaviour under control.
              aweshell-switch-buffer))
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package sane-term
+  :commands (sane-term
+             sane-term-create)
+  :custom
+  (sane-term-shell-command "/usr/bin/zsh"))
+#+end_src
+
 * Dired
 
 #+begin_src emacs-lisp
