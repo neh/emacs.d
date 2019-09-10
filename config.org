@@ -2737,7 +2737,8 @@ Try out =org-noter=.
 
 #+begin_src emacs-lisp
 (use-package flycheck
-  :hook (prog-mode . flycheck-mode))
+  :hook (prog-mode . flycheck-mode)
+  :custom (flycheck-check-syntax-automatically '(save mode-enabled)))
 
 (use-package flycheck-inline
   :hook (flycheck-mode . turn-on-flycheck-inline)
