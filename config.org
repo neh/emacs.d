@@ -2011,6 +2011,10 @@ Let’s try to get some window behaviour under control.
   (sane-term-shell-command "/usr/bin/zsh"))
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package fish-mode)
+#+end_src
+
 * Dired
 
 #+begin_src emacs-lisp
