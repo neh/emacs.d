@@ -1721,6 +1721,19 @@ Org export.
   :commands (org-pomodoro))
 #+end_src
 
+#+begin_src elisp
+(use-package org-tanglesync
+  :hook ((org-mode . org-tanglesync-mode)
+         ((prog-mode text-mode) . org-tanglesync-watch-mode))
+  :custom
+  (org-tanglesync-watch-files '("config.org"))
+  :general
+  (general-define-key
+   :keymaps 'org-mode-map
+    "C-c M-i" 'org-tanglesync-process-buffer-interactive
+    "C-c M-a" 'org-tanglesync-process-buffer-automatic))
+#+end_src
+
 ** Options
 
 When using =C-c C-t=, allow todo state selection using single letters instead of cycling through choices.
