@@ -2882,7 +2882,8 @@ Try out =org-noter=.
 (defun neh/python-mode-hook ()
   "My python mode settings."
   (add-to-list 'company-backends 'company-jedi)
-  (setq-local fill-column 80))
+  (setq-local fill-column 80
+              python-shell-interpreter "python3"))
 (use-package elpy
   :commands elpy-enable
   :init
