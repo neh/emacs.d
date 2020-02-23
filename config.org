@@ -961,6 +961,7 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
   ;; (add-to-list 'ivy-display-functions-alist '(t . ivy-display-function-window))
 
   (setq ivy-use-virtual-buffers t
+        ivy-dynamic-exhibit-delay-ms 250
         ivy-count-format "%d/%d "
         ivy-format-function #'ivy-format-function-arrow
         ivy-extra-directories nil
@@ -983,8 +984,9 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
 
   :config
   ;; Prescient sorting didn't apply to some counsel-projectile commands without this.
-  (add-to-list 'ivy-prescient-sort-commands 'counsel-projectile)
-  (add-to-list 'ivy-prescient-sort-commands 'counsel-projectile-find-file))
+  ;; (add-to-list 'ivy-prescient-sort-commands 'counsel-projectile)
+  ;; (add-to-list 'ivy-prescient-sort-commands 'counsel-projectile-find-file)
+  )
 
 (use-package ivy-rich
   :hook (ivy-mode . ivy-rich-mode))
@@ -1142,6 +1144,12 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
                       (unless (eq ibuffer-sorting-mode 'alphabetic)
                         (ibuffer-do-sort-by-alphabetic)))))
   :init
+  (defun neh/ibuffer-magit ()
+    "Open `magit-status' for the current buffer."
+    (interactive)
+    (let ((buf (ibuffer-current-buffer t)))
+      (magit-status (cdr (ibuffer-projectile-root buf)))))
+
   (setq ibuffer-formats
         '((mark modified read-only locked " "
                 (name 18 18 :left :elide)
@@ -1929,7 +1937,26 @@ Let’s try to get some window behaviour under control.
 
     (eshell/alias "ll" "ls -l")
     (eshell/alias "la" "ls -al")
-    (eshell/alias "ff" "find-file $1")))
+    (eshell/alias "ff" "find-file $1"))
+
+  (defun eshell-here ()
+    "Opens up a new shell in the directory associated with the
+current buffer's file. The eshell is renamed to match that
+directory to make multiple eshell windows easier."
+    (interactive)
+    (let* ((parent (if (buffer-file-name)
+                       (file-name-directory (buffer-file-name))
+                     default-directory))
+           (height (/ (window-total-height) 3))
+           (name   (car (last (split-string parent "/" t)))))
+      (split-window-vertically (- height))
+      (other-window 1)
+      (eshell "new")
+      (rename-buffer (concat "*eshell: " name "*"))
+
+      (insert (concat "ls"))
+      (eshell-send-input)))
+  )
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1982,8 +2009,13 @@ Let’s try to get some window behaviour under control.
 
      (when (and epe-show-python-info (bound-and-true-p venv-current-name))
        (epe-colorize-with-face (concat "(" venv-current-name ") ") 'epe-venv-face))
+
+     ;; (when (and epe-terraform (bound-and-true-p terraform-workspace))
+     ;;   (epe-colorize-with-face (concat "(" terraform-workspace ") ") 'epe-terraform-face))
+
      (epe-colorize-with-face "" 'epe-symbol-face)
      (epe-colorize-with-face (if (= (user-uid) 0) "#" "") 'epe-sudo-symbol-face)
+
      " "))
 
   :custom-face
@@ -2735,7 +2767,9 @@ Try out =org-noter=.
 #+begin_src emacs-lisp
 (use-package elec-pair
   :ensure nil
-  :hook (prog-mode . electric-pair-mode))
+  :hook (prog-mode . electric-pair-mode)
+  :custom
+  (electric-pair-skip-whitespace nil))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -2848,6 +2882,11 @@ Try out =org-noter=.
 #+begin_src emacs-lisp
 (use-package jinja2-mode
   :mode (("\\.j2\\'" . jinja2-mode)))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package clojure-mode)
+(use-package cider)
 #+end_src
 
 #+begin_src emacs-lisp
