@@ -1731,6 +1731,7 @@ Org export.
 
 #+begin_src elisp
 (use-package org-tanglesync
+  :disabled
   :hook ((org-mode . org-tanglesync-mode)
          ((prog-mode text-mode) . org-tanglesync-watch-mode))
   :custom
