@@ -2620,7 +2620,9 @@ Try out =org-noter=.
 
 #+begin_src emacs-lisp
 (use-package frames-only-mode
-  :commands (frames-only-mode))
+  :commands (frames-only-mode)
+  :init
+  (frames-only-mode t))
 #+end_src
 
 #+begin_src emacs-lisp
