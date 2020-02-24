@@ -301,6 +301,7 @@ Some text fill options.
 
 #+begin_src emacs-lisp
 (setq-default fill-column 100)
+(add-to-list 'default-frame-alist `(width  . ,fill-column))
 (setq comment-auto-fill-only-comments t)
 #+end_src
 
