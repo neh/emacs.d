@@ -2653,7 +2653,9 @@ Try out =org-noter=.
 
 #+begin_src emacs-lisp
 (use-package auto-dim-other-buffers
-  :commands (auto-dim-other-buffers-mode))
+  :commands (auto-dim-other-buffers-mode)
+  :init
+  (auto-dim-other-buffers-mode t))
 #+end_src
 
 #+begin_src emacs-lisp
