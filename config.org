@@ -2618,6 +2618,11 @@ Try out =org-noter=.
 * Misc packages
 
 #+begin_src emacs-lisp
+(use-package frames-only-mode
+  :commands (frames-only-mode))
+#+end_src
+
+#+begin_src emacs-lisp
 (use-package hl-line-mode
   :straight nil
   :commands (hl-line-mode
