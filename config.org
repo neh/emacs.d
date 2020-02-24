@@ -478,7 +478,7 @@ Not sure where to put everything yet, so this section is a grab bag of stuff tha
 
 (use-package helpful
   :init
-  (setq helpful-max-buffers 1)
+  (setq helpful-max-buffers 5)
   :general
   (neh/leader-keys
     "h." '(helpful-at-point :which-key "point help")
