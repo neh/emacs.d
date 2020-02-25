@@ -375,6 +375,9 @@ When pasting (yanking) into emacs, paste at the point, not where I click (I like
     "fp" '(fill-paragraph :which-key "paragraph")
     "fr" '(fill-region :which-key "fill region")
     "ft" '(toggle-truncate-lines :which-key "truncate lines")
+    ;; "ff" '(lambda () (interactive) (make-frame `((width . ,(+ fill-column 3)))))
+    ;; "ff" '(lambda () (interactive) (set-frame-parameter (selected-frame) 'width fill-column))
+    "ff" '(lambda () (interactive) (set-frame-parameter (selected-frame) 'width (+ fill-column 2)))
 
     "g" '(:ignore t :which-key "git")
 
