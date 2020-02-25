@@ -595,7 +595,8 @@ But I like some things to be set no matter the theme. For example, I always like
   (run-hooks 'after-load-theme-hook))
 
 (add-hook 'after-load-theme-hook #'neh/theme-tweaks)
-(add-hook 'after-init-hook #'neh/theme-tweaks)
+(add-hook 'after-make-frame-functions #'neh/theme-tweaks)
+(add-hook 'focus-in-hook #'neh/theme-tweaks)
 #+end_src
 
 Emacs colour themes apparently just load on top of each other, so here’s an advice to disable the current theme before loading a new one, thanks to [[https://www.reddit.com/r/emacs/comments/8v9lgu/emacs_theme_configuration_is_very_confusing/][this thread]].
@@ -629,63 +630,67 @@ Change global text sizes with this function. This is the function I bind to a ke
 And here’s the function where I collect my tweaks to the theme and set up fonts.
 
 #+begin_src emacs-lisp
-(defun neh/theme-tweaks ()
+(defun neh/theme-tweaks (&optional frame)
   (interactive)
 
-  (let* ((variable-tuple (cond
-                          ((x-list-fonts "Inter")
-                           `(:font "Inter"
-                             :height ,(round (* neh/current-text-size 1.01))))
-                          ((x-list-fonts "Noto Sans")
-                           `(:font "Noto Sans"
-                             :height ,(round (* neh/current-text-size 0.96))))
-                          ((x-list-fonts "DejaVu Sans")
-                           `(:font "DejaVu Sans"
-                             :height ,(round (* neh/current-text-size 0.945))))
-                          ((x-family-fonts "Sans Serif")
-                           `(:family "Sans Serif"))
-                          (nil (warn "Cannot find a variable width font."))))
-         (fixed-tuple (cond
-                       ((x-list-fonts "Iosevka")
-                        `(:font "Iosevka"
-                          :height ,neh/current-text-size))
-                       ((x-family-fonts "Monospace")
-                        '(:family "Monospace"))
-                       (nil (warn "Cannot find a fixed width font.")))))
+  (with-selected-frame (or frame (selected-frame))
+    (when (display-graphic-p)
+      (let* ((variable-tuple (cond
+                              ((x-list-fonts "Inter")
+                               `(:font "Inter"
+                                 :height ,(round (* neh/current-text-size 1.01))))
+                              ((x-list-fonts "Noto Sans")
+                               `(:font "Noto Sans"
+                                 :height ,(round (* neh/current-text-size 0.96))))
+                              ((x-list-fonts "DejaVu Sans")
+                               `(:font "DejaVu Sans"
+                                 :height ,(round (* neh/current-text-size 0.945))))
+                              ((x-family-fonts "Sans Serif")
+                               `(:family "Sans Serif"))
+                              (nil (warn "Cannot find a variable width font."))))
+             (fixed-tuple (cond
+                           ((x-list-fonts "Iosevka")
+                            `(:font "Iosevka"
+                              :height ,neh/current-text-size))
+                           ((x-family-fonts "Monospace")
+                            '(:family "Monospace"))
+                           (nil (warn "Cannot find a fixed width font.")))))
 
-    (custom-theme-set-faces
-     'user
-     `(default ((t (,@fixed-tuple))))
-     `(fixed-pitch ((t (,@fixed-tuple))))
-     `(variable-pitch ((t (,@variable-tuple))))))
+        (custom-theme-set-faces
+         'user
+         `(default ((t (,@fixed-tuple))))
+         `(fixed-pitch ((t (,@fixed-tuple))))
+         `(variable-pitch ((t (,@variable-tuple))))))
 
-  (set-face-italic 'font-lock-comment-face t)
+      (set-face-italic 'font-lock-comment-face t)
 
-  (set-face-attribute 'mode-line nil :height 1.0)
-  (set-face-attribute 'mode-line-inactive nil :height 1.0)
+      (set-face-attribute 'mode-line nil :height 1.0)
+      (set-face-attribute 'mode-line-inactive nil :height 1.0)
 
-  (set-face-attribute 'org-todo nil
-                      :foreground (color-complement-hex
-                                   (face-attribute 'default :background))
-                      :background (color-lighten-name
-                                   (face-attribute 'default :background) 10))
+      (set-face-attribute 'org-todo nil
+                          :foreground (color-complement-hex
+                                       (face-attribute 'default :background))
+                          :background (color-lighten-name
+                                       (face-attribute 'default :background) 10))
 
-  (set-face-attribute 'ivy-org nil
-                      :inherit 'fixed-pitch
-                      :weight 'bold
-                      :foreground (face-attribute 'org-level-1 :foreground))
+      (set-face-attribute 'ivy-org nil
+                          :inherit 'fixed-pitch
+                          :weight 'bold
+                          :foreground (face-attribute 'org-level-1 :foreground))
 
-  (save-current-buffer
-    (mapc (lambda (b)
-            (set-buffer b)
-            (when (equal major-mode 'org-mode)
-              (font-lock-fontify-buffer)))
-          (buffer-list)))
+      (save-current-buffer
+        (mapc (lambda (b)
+                (set-buffer b)
+                (when (equal major-mode 'org-mode)
+                  (font-lock-fontify-buffer)))
+              (buffer-list)))
 
-  (neh/enable-scroll-highlight)
+      (neh/enable-scroll-highlight)
 
-  (set-face-attribute 'org-block-begin-line nil :height 0.85 :slant 'italic)
-  (set-face-attribute 'org-block-end-line nil :height 0.85 :slant 'italic))
+      (setq doom-modeline-icon t)
+
+      (set-face-attribute 'org-block-begin-line nil :height 0.85 :slant 'italic)
+      (set-face-attribute 'org-block-end-line nil :height 0.85 :slant 'italic))))
 #+end_src
 
 * Modeline
@@ -1551,58 +1556,63 @@ My org config is pretty long, so I've broken it up for easier reading and explan
     (let ((gc-cons-threshold most-positive-fixnum))
       (org-babel-tangle)))
 
-  (defface org-inprogress
-    '((default :inherit org-todo))
-    "Face for INPROGRESS org tasks")
-  (defface org-waiting
-    '((default :inherit org-todo))
-    "Face for WAITING org tasks")
+  (defun neh/org-style ()
+    (interactive)
 
-  (let* ((headline      `(:inherit variable-pitch :weight bold))
-         (done          `(:inherit variable-pitch :weight normal :foreground "#7c6f64")))
+    (with-selected-frame (selected-frame)
+      (when (display-graphic-p)
+        (defface org-inprogress
+          '((default :inherit org-todo))
+          "Face for INPROGRESS org tasks")
+        (defface org-waiting
+          '((default :inherit org-todo))
+          "Face for WAITING org tasks")
 
-    (custom-theme-set-faces
-     'user
-     `(org-ellipsis ((t (:inherit variable-pitch :underline nil))))
-     `(org-tag ((t (,@done :underline nil :height 0.7))))
+        (let* ((headline      `(:inherit variable-pitch :weight bold))
+               (done          `(:inherit variable-pitch :weight normal :foreground "#7c6f64")))
 
-     `(org-indent ((t (:inherit (org-hide fixed-pitch)))))
-     `(org-code ((t (:inherit fixed-pitch))))
-     `(org-table ((t (:inherit fixed-pitch))))
-     `(org-verbatim ((t (:inherit fixed-pitch))))
-     `(org-block ((t (:inherit fixed-pitch))))
+          (custom-theme-set-faces
+           'user
+           `(org-ellipsis ((t (:inherit variable-pitch :underline nil))))
+           `(org-tag ((t (,@done :underline nil :height 0.7))))
 
-     `(org-level-8 ((t (,@headline :height 1.0))))
-     `(org-level-7 ((t (,@headline :height 1.0))))
-     `(org-level-6 ((t (,@headline :height 1.0))))
-     `(org-level-5 ((t (,@headline :height 1.0))))
-     `(org-level-4 ((t (,@headline :height 1.0))))
-     `(org-level-3 ((t (,@headline :height 1.0))))
-     `(org-level-2 ((t (,@headline :height 1.0))))
-     `(org-level-1 ((t (,@headline :weight normal :height 1.4))))
+           `(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+           `(org-code ((t (:inherit fixed-pitch))))
+           `(org-table ((t (:inherit fixed-pitch))))
+           `(org-verbatim ((t (:inherit fixed-pitch))))
+           `(org-block ((t (:inherit fixed-pitch))))
 
-     `(org-todo ((t (,@headline
-                     :weight bold
-                     :foreground ,(color-complement-hex
-                                   (face-attribute 'default :background))))))
-     `(org-inprogress ((t (,@headline
+           `(org-level-8 ((t (,@headline :height 1.0))))
+           `(org-level-7 ((t (,@headline :height 1.0))))
+           `(org-level-6 ((t (,@headline :height 1.0))))
+           `(org-level-5 ((t (,@headline :height 1.0))))
+           `(org-level-4 ((t (,@headline :height 1.0))))
+           `(org-level-3 ((t (,@headline :height 1.0))))
+           `(org-level-2 ((t (,@headline :height 1.0))))
+           `(org-level-1 ((t (,@headline :weight normal :height 1.4))))
+
+           `(org-todo ((t (,@headline
                            :weight bold
-                           :foreground "#eeeeee"
-                           :background "DarkGreen"))))
-     `(org-waiting ((t (,@headline
-                        :weight bold
-                        :foreground "#222222"
-                        :background "gold2"))))
-     `(org-done ((t (,@done :strike-through t))))
-     `(org-archived ((t (,@done :strike-through t))))
-     `(org-headline-done ((t (,@done))))
+                           :foreground ,(color-complement-hex
+                                         (face-attribute 'default :background))))))
+           `(org-inprogress ((t (,@headline
+                                 :weight bold
+                                 :foreground "#eeeeee"
+                                 :background "DarkGreen"))))
+           `(org-waiting ((t (,@headline
+                              :weight bold
+                              :foreground "#222222"
+                              :background "gold2"))))
+           `(org-done ((t (,@done :strike-through t))))
+           `(org-archived ((t (,@done :strike-through t))))
+           `(org-headline-done ((t (,@done))))
 
-     `(org-document-title ((t (,@headline :height 1.3 :underline nil))))))
+           `(org-document-title ((t (,@headline :height 1.3 :underline nil))))))
 
-  (setq org-todo-keyword-faces
-        '(("TODO" . org-todo)
-          ("INPROGRESS" . org-inprogress)
-          ("WAITING" . org-waiting)))
+        (setq org-todo-keyword-faces
+              '(("TODO" . org-todo)
+                ("INPROGRESS" . org-inprogress)
+                ("WAITING" . org-waiting))))))
 
   (defmacro my-org-in-calendar (command)
     (let ((name (intern (format "my-org-in-calendar-%s" command))))
@@ -1814,6 +1824,7 @@ I like Org files to look reasonably pretty, so I enable =org-indent-mode=, which
 #+begin_src emacs-lisp :tangle no :noweb-ref org-hooks
 (org-mode . org-indent-mode)
 (org-mode . variable-pitch-mode)
+(org-mode . neh/org-style)
 #+end_src
 
 I want to go straight into =evil-insert-states= in some modes so I can just start typing.
@@ -2150,14 +2161,16 @@ directory to make multiple eshell windows easier."
 
   :init
   (defun neh/set-dired-subtree-background ()
-    (let ((even (color-lighten-name (face-attribute 'default :background) 8))
-          (odd (color-lighten-name (face-attribute 'default :background) 4)))
-      (set-face-attribute 'dired-subtree-depth-1-face nil :background odd)
-      (set-face-attribute 'dired-subtree-depth-2-face nil :background even)
-      (set-face-attribute 'dired-subtree-depth-3-face nil :background odd)
-      (set-face-attribute 'dired-subtree-depth-4-face nil :background even)
-      (set-face-attribute 'dired-subtree-depth-5-face nil :background odd)
-      (set-face-attribute 'dired-subtree-depth-6-face nil :background even)))
+    (with-selected-frame (selected-frame)
+      (when (display-graphic-p)
+        (let ((even (color-lighten-name (face-attribute 'default :background) 8))
+              (odd (color-lighten-name (face-attribute 'default :background) 4)))
+          (set-face-attribute 'dired-subtree-depth-1-face nil :background odd)
+          (set-face-attribute 'dired-subtree-depth-2-face nil :background even)
+          (set-face-attribute 'dired-subtree-depth-3-face nil :background odd)
+          (set-face-attribute 'dired-subtree-depth-4-face nil :background even)
+          (set-face-attribute 'dired-subtree-depth-5-face nil :background odd)
+          (set-face-attribute 'dired-subtree-depth-6-face nil :background even)))))
 
   :config
   (neh/set-dired-subtree-background))
