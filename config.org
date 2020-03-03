@@ -478,8 +478,11 @@ Not sure where to put everything yet, so this section is a grab bag of stuff tha
   :hook (prog-mode . ws-butler-mode))
 
 (use-package helpful
+  :after (counsel)
   :init
-  (setq helpful-max-buffers 5)
+  (setq helpful-max-buffers 5
+        counsel-describe-function-function #'helpful-callable
+        counsel-describe-variable-function #'helpful-variable)
   :general
   (neh/leader-keys
     "h." '(helpful-at-point :which-key "point help")
