@@ -1551,6 +1551,23 @@ My org config is pretty long, so I've broken it up for easier reading and explan
     (let ((gc-cons-threshold most-positive-fixnum))
       (org-babel-tangle)))
 
+  ;; Original version stolen from https://emacs.stackexchange.com/questions/23870/org-babel-result-to-a-separate-buffer
+  (defun neh/babel-to-buffer ()
+    "A function to efficiently feed babel code block result to a separate buffer"
+    (interactive)
+    (let ((revert-without-query '(".*"))
+          (myframe (selected-frame)))
+      (org-babel-open-src-block-result)
+      (org-babel-remove-result)
+      (sleep-for 0.1)
+      (select-frame-set-input-focus myframe)))
+
+  (defun neh/babel-to-buffer-from-narrow ()
+    (interactive)
+    ;; (org-src-do-key-sequence-at-code-block "<SPC>o!")
+    (org-src-do-at-code-block '(neh/babel-to-buffer))
+    )
+
   (defface org-inprogress
     '((default :inherit org-todo))
     "Face for INPROGRESS org tasks")
