@@ -2280,7 +2280,7 @@ Nice dired filtering, plus it replaces =dired-omit-mode=.
     "rr" '(hydra-reading/body :which-key "plain text"))
 
   :init
-  (setq hydra-hint-display-type 'posframe
+  (setq hydra-hint-display-type 'lv
         hydra--work-around-dedicated nil)
   (setq hydra-posframe-show-params '(:internal-border-width 10
                                      :internal-border-color "grey21"
