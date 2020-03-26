@@ -571,10 +571,21 @@ General settings for programming modes.
 I’ve been liking dark-on-light themes lately, and brutalist with some tweaks has been good.
 
 #+begin_src emacs-lisp
-(setq neh/dark-theme 'gruvbox-dark-hard
-      neh/light-theme 'gruvbox-light-hard)
+(setq neh/dark-theme 'modus-vivendi
+      neh/light-theme 'modus-operandi)
+
+(use-package modus-operandi-theme
+  :config
+  (setq modus-operandi-theme-distinct-org-blocks t)
+  (load-theme neh/light-theme t t))
+(use-package modus-vivendi-theme
+  :config
+  (setq modus-vivendi-theme-distinct-org-blocks t
+        modus-vivendi-theme-slanted-constructs t)
+  (load-theme neh/dark-theme t nil))
 
 (use-package gruvbox-theme
+  :disabled
   :config
   (setq neh/dark-mode t)
   (load-theme neh/dark-theme t))
@@ -661,19 +672,19 @@ And here’s the function where I collect my tweaks to the theme and set up font
 
   (set-face-italic 'font-lock-comment-face t)
 
-  (set-face-attribute 'mode-line nil :height 1.0)
-  (set-face-attribute 'mode-line-inactive nil :height 1.0)
+  ;; (set-face-attribute 'mode-line nil :height 1.0)
+  ;; (set-face-attribute 'mode-line-inactive nil :height 1.0)
 
-  (set-face-attribute 'org-todo nil
-                      :foreground (color-complement-hex
-                                   (face-attribute 'default :background))
-                      :background (color-lighten-name
-                                   (face-attribute 'default :background) 10))
+  ;; (set-face-attribute 'org-todo nil
+  ;;                     :foreground (color-complement-hex
+  ;;                                  (face-attribute 'default :background))
+  ;;                     :background (color-lighten-name
+  ;;                                  (face-attribute 'default :background) 10))
 
-  (set-face-attribute 'ivy-org nil
-                      :inherit 'fixed-pitch
-                      :weight 'bold
-                      :foreground (face-attribute 'org-level-1 :foreground))
+  ;; (set-face-attribute 'ivy-org nil
+  ;;                     :inherit 'fixed-pitch
+  ;;                     :weight 'bold
+  ;;                     :foreground (face-attribute 'org-level-1 :foreground))
 
   (save-current-buffer
     (mapc (lambda (b)
@@ -684,8 +695,9 @@ And here’s the function where I collect my tweaks to the theme and set up font
 
   (neh/enable-scroll-highlight)
 
-  (set-face-attribute 'org-block-begin-line nil :height 0.85 :slant 'italic)
-  (set-face-attribute 'org-block-end-line nil :height 0.85 :slant 'italic))
+  ;; (set-face-attribute 'org-block-begin-line nil :height 0.85 :slant 'italic)
+  ;; (set-face-attribute 'org-block-end-line nil :height 0.85 :slant 'italic)
+  )
 #+end_src
 
 * Modeline
