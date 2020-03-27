@@ -1679,11 +1679,6 @@ My org config is pretty long, so I've broken it up for easier reading and explan
         org-indirect-buffer-display 'current-window
         org-use-sub-superscripts nil)
 
-  (font-lock-add-keywords
-   'org-mode
-   '(("^ *\\([-]\\) "
-      (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
   (setq org-confirm-babel-evaluate nil
         org-src-fontify-natively t
         org-src-window-setup 'current-window
