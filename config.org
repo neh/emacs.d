@@ -1738,10 +1738,10 @@ Add plantuml for nice text-based diagram generation. I’ll mainly use this in o
 Make org-mode prettier.
 
 #+begin_src emacs-lisp
-(use-package org-bullets
+(use-package org-superstar
+  :hook (org-mode . org-superstar-mode)
   :init
-  (setq org-bullets-bullet-list '(" "))
-  :hook (org-mode . org-bullets-mode))
+  (setq org-superstar-headline-bullets-list '(" ")))
 #+end_src
 
 Org export.
