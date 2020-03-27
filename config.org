@@ -2178,9 +2178,20 @@ directory to make multiple eshell windows easier."
    "<tab>" 'dired-subtree-toggle)
 
   :init
+  (defun neh/dark-p ()
+    (let ((bg (face-background 'default)))
+      (if (>= (color-distance "black" bg)
+              (color-distance "white" bg))
+          nil
+        t)))
+
   (defun neh/set-dired-subtree-background ()
-    (let ((even (color-lighten-name (face-attribute 'default :background) 8))
-          (odd (color-lighten-name (face-attribute 'default :background) 4)))
+    (let* ((bg (face-background 'default))
+           (lighten-or-darken (if (neh/dark-p)
+                                  #'color-lighten-name
+                                #'color-darken-name))
+           (even (funcall lighten-or-darken bg 8))
+           (odd (funcall lighten-or-darken bg 4)))
       (set-face-attribute 'dired-subtree-depth-1-face nil :background odd)
       (set-face-attribute 'dired-subtree-depth-2-face nil :background even)
       (set-face-attribute 'dired-subtree-depth-3-face nil :background odd)
