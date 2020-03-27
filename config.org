@@ -2557,7 +2557,7 @@ Another work-in-progress hydra, this one for a general reading/browsing set of c
     ("d" rainbow-delimiters-mode "delimiters" :toggle t))
    "UI"
    (("l" global-hl-line-mode "highlight line" :toggle t)
-    ("k" neh/toggle-dark-mode "dark mode" :toggle neh/dark-mode)
+    ("k" neh/toggle-dark-mode "dark mode" :toggle neh/dark-mode :exit t)
     ("D" auto-dim-other-buffers-mode "dimmer" :toggle t)
     ("O" olivetti-mode "olivetti" :toggle t)
     ("W" writeroom-mode "writeroom" :toggle t)
