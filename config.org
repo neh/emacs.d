@@ -576,11 +576,14 @@ I’ve been liking dark-on-light themes lately, and brutalist with some tweaks h
 
 (use-package modus-operandi-theme
   :config
-  (setq modus-operandi-theme-distinct-org-blocks t)
+  (setq modus-operandi-theme-distinct-org-blocks t
+        modus-operandi-theme-bold-constructs t
+        modus-operandi-theme-slanted-constructs t)
   (load-theme neh/light-theme t t))
 (use-package modus-vivendi-theme
   :config
   (setq modus-vivendi-theme-distinct-org-blocks t
+        modus-vivendi-theme-bold-constructs t
         modus-vivendi-theme-slanted-constructs t)
   (load-theme neh/dark-theme t nil))
 
