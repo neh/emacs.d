@@ -1665,7 +1665,7 @@ My org config is pretty long, so I've broken it up for easier reading and explan
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
   (setq org-todo-keywords '((sequence "TODO(t)"
-                                      "INPROGRESS(i!)"
+                                      "DOING(i!)"
                                       "WAITING(w@/!)"
                                       "|"
                                       "DONE(d!)"
