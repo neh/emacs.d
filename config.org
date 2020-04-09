@@ -1585,12 +1585,12 @@ My org config is pretty long, so I've broken it up for easier reading and explan
     (org-src-do-at-code-block '(neh/babel-to-buffer))
     )
 
-  (defface org-inprogress
-    '((default :inherit org-todo))
-    "Face for INPROGRESS org tasks")
-  (defface org-waiting
-    '((default :inherit org-todo))
-    "Face for WAITING org tasks")
+  ;; (defface org-inprogress
+  ;;   '((default :inherit org-todo))
+  ;;   "Face for INPROGRESS org tasks")
+  ;; (defface org-waiting
+  ;;   '((default :inherit org-todo))
+  ;;   "Face for WAITING org tasks")
 
   (let* ((headline      `(:inherit variable-pitch :weight bold))
          (done          `(:inherit variable-pitch :weight normal :foreground "#7c6f64")))
@@ -1615,28 +1615,28 @@ My org config is pretty long, so I've broken it up for easier reading and explan
      `(org-level-2 ((t (,@headline :height 1.0))))
      `(org-level-1 ((t (,@headline :weight normal :height 1.4))))
 
-     `(org-todo ((t (,@headline
-                     :weight bold
-                     :foreground ,(color-complement-hex
-                                   (face-attribute 'default :background))))))
-     `(org-inprogress ((t (,@headline
-                           :weight bold
-                           :foreground "#eeeeee"
-                           :background "DarkGreen"))))
-     `(org-waiting ((t (,@headline
-                        :weight bold
-                        :foreground "#222222"
-                        :background "gold2"))))
+     ;; `(org-todo ((t (,@headline
+     ;;                 :weight bold
+     ;;                 :foreground ,(color-complement-hex
+     ;;                               (face-attribute 'default :background))))))
+     ;; `(org-inprogress ((t (,@headline
+     ;;                       :weight bold
+     ;;                       :foreground "#eeeeee"
+     ;;                       :background "DarkGreen"))))
+     ;; `(org-waiting ((t (,@headline
+     ;;                    :weight bold
+     ;;                    :foreground "#222222"
+     ;;                    :background "gold2"))))
      `(org-done ((t (,@done :strike-through t))))
      `(org-archived ((t (,@done :strike-through t))))
      `(org-headline-done ((t (,@done))))
 
      `(org-document-title ((t (,@headline :height 1.3 :underline nil))))))
 
-  (setq org-todo-keyword-faces
-        '(("TODO" . org-todo)
-          ("INPROGRESS" . org-inprogress)
-          ("WAITING" . org-waiting)))
+  ;; (setq org-todo-keyword-faces
+  ;;       '(("TODO" . org-todo)
+  ;;         ("INPROGRESS" . org-inprogress)
+  ;;         ("WAITING" . org-waiting)))
 
   (defmacro my-org-in-calendar (command)
     (let ((name (intern (format "my-org-in-calendar-%s" command))))
