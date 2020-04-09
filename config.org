@@ -2195,8 +2195,8 @@ directory to make multiple eshell windows easier."
            (lighten-or-darken (if (neh/dark-p)
                                   #'color-lighten-name
                                 #'color-darken-name))
-           (even (funcall lighten-or-darken bg 8))
-           (odd (funcall lighten-or-darken bg 4)))
+           (even (funcall lighten-or-darken bg 6))
+           (odd (funcall lighten-or-darken bg 3)))
       (set-face-attribute 'dired-subtree-depth-1-face nil :background odd)
       (set-face-attribute 'dired-subtree-depth-2-face nil :background even)
       (set-face-attribute 'dired-subtree-depth-3-face nil :background odd)
