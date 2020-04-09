@@ -2997,7 +2997,9 @@ Try out =org-noter=.
   "My python mode settings."
   (add-to-list 'company-backends 'company-jedi)
   (setq-local fill-column 80)
-  (setq-local python-shell-interpreter "python3"))
+  (setq-local python-shell-interpreter "python3"
+              org-babel-python-command "python3"
+              elpy-rpc-ython-command "python3"))
 (use-package elpy
   :commands elpy-enable
   :init
