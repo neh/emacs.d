@@ -652,7 +652,7 @@ And here’s the function where I collect my tweaks to the theme and set up font
                              :height ,(round (* neh/current-text-size 1.01))))
                           ((x-list-fonts "Noto Sans")
                            `(:font "Noto Sans"
-                             :height ,(round (* neh/current-text-size 0.96))))
+                             :height ,(round (* neh/current-text-size 1.01))))
                           ((x-list-fonts "DejaVu Sans")
                            `(:font "DejaVu Sans"
                              :height ,(round (* neh/current-text-size 0.945))))
