@@ -1929,6 +1929,22 @@ Quick heading movement and task item state changes. I'm getting into the habit o
   "S" 'org-shiftright)
 #+end_src
 
+** Org-roam
+
+#+begin_src emacs-lisp
+(use-package org-roam
+  ;; :hook
+  ;; (after-init . org-roam-mode)
+  :custom
+  (org-roam-directory "~/org/roam")
+  :bind (:map org-roam-mode-map
+         (("C-c n l" . org-roam)
+          ("C-c n f" . org-roam-find-file)
+          ("C-c n g" . org-roam-show-graph))
+         :map org-mode-map
+         (("C-c n i" . org-roam-insert))))
+#+end_src
+
 * Shackle
 
 Let’s try to get some window behaviour under control.
