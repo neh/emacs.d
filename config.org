@@ -3005,6 +3005,11 @@ Try out =org-noter=.
 #+end_src
 
 #+begin_src emacs-lisp
+(use-package scad-mode
+  :mode (("\\.scad__'" . scad-mode)))
+#+end_src
+
+#+begin_src emacs-lisp
 (use-package expand-region
   :general
   (general-define-key
