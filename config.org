@@ -1943,6 +1943,22 @@ Quick heading movement and task item state changes. I'm getting into the habit o
           ("C-c n g" . org-roam-show-graph))
          :map org-mode-map
          (("C-c n i" . org-roam-insert))))
+
+(use-package company-org-roam
+  :config
+  (push 'company-org-roam company-backends))
+
+(use-package org-download
+  :after org
+  :hook (dired-mode . org-download-enable)
+  :general
+  (neh/leader-keys
+    :keymaps 'org-mode-map
+    "nS" #'org-download-screenshot
+    "nD" #'org-download-yank))
+
+(use-package deft
+  :commands (deft))
 #+end_src
 
 * Shackle
