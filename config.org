@@ -1933,16 +1933,28 @@ Quick heading movement and task item state changes. I'm getting into the habit o
 
 #+begin_src emacs-lisp
 (use-package org-roam
-  ;; :hook
-  ;; (after-init . org-roam-mode)
+  :hook
+  (after-init . org-roam-mode)
+
   :custom
   (org-roam-directory "~/org/roam")
-  :bind (:map org-roam-mode-map
-         (("C-c n l" . org-roam)
-          ("C-c n f" . org-roam-find-file)
-          ("C-c n g" . org-roam-show-graph))
-         :map org-mode-map
-         (("C-c n i" . org-roam-insert))))
+
+  :general
+  (general-define-key
+   :keymaps 'org-roam-mode-map
+   :states '(normal insert)
+   :non-normal-prefix "C-SPC"
+   :prefix "SPC"
+    "nl" #'org-roam
+    "no" #'org-roam-find-file
+    "nG" #'org-roam-show-graph)
+
+  (general-define-key
+   :keymaps 'org-mode-map
+   :states '(normal insert)
+   :non-normal-prefix "C-SPC"
+   :prefix "SPC"
+    "ni" #'org-roam-insert))
 
 (use-package company-org-roam
   :config
