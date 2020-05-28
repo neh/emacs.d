@@ -1951,7 +1951,7 @@ Quick heading movement and task item state changes. I'm getting into the habit o
 
   (general-define-key
    :keymaps 'org-mode-map
-   :states '(normal insert)
+   :states '(normal insert visual)
    :non-normal-prefix "C-SPC"
    :prefix "SPC"
     "ni" #'org-roam-insert))
