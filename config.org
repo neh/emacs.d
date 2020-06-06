@@ -2693,7 +2693,8 @@ First, set up =pdf-tools= for nice PDF handling.
 PDF link handling in =org-mode=.
 
 #+begin_src emacs-lisp
-(use-package org-pdfview)
+(use-package org-pdftools
+  :hook (org-load . org-pdftools-setup-link))
 #+end_src
 
 Add =nov.el= for =epub=s.
