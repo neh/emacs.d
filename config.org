@@ -577,13 +577,13 @@ General settings for programming modes.
   (setq modus-operandi-theme-distinct-org-blocks t
         modus-operandi-theme-bold-constructs t
         modus-operandi-theme-slanted-constructs t)
-  (load-theme neh/light-theme t t))
+  (load-theme neh/light-theme t nil))
 (use-package modus-vivendi-theme
   :config
   (setq modus-vivendi-theme-distinct-org-blocks t
         modus-vivendi-theme-bold-constructs t
         modus-vivendi-theme-slanted-constructs t)
-  (load-theme neh/dark-theme t nil))
+  (load-theme neh/dark-theme t t))
 
 (use-package gruvbox-theme
   :disabled
