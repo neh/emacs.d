@@ -136,19 +136,19 @@ First, a hook that reports how long and how many garbage collections the startup
                      gcs-done)))
 #+end_src
 
+Set up ESUP for startup profiling.
+
+#+begin_src emacs-lisp
+(use-package esup
+  :commands (esup))
+#+end_src
+
 * Package management
 
 This =use-package= extension allows declaring dependencies on system commands.
 
 #+begin_src emacs-lisp
 (use-package use-package-ensure-system-package)
-#+end_src
-
-Set up ESUP for startup profiling. In theory. [[https://github.com/jschaf/esup/issues/54][It breaks.]]
-
-#+begin_src emacs-lisp
-(use-package esup
-  :disabled t)
 #+end_src
 
 * Base settings
@@ -568,8 +568,6 @@ General settings for programming modes.
 
 * Pretty it up
 
-I’ve been liking dark-on-light themes lately, and brutalist with some tweaks has been good.
-
 #+begin_src emacs-lisp
 (setq neh/dark-theme 'modus-vivendi
       neh/light-theme 'modus-operandi)
@@ -707,8 +705,6 @@ And here’s the function where I collect my tweaks to the theme and set up font
 
 * Modeline
 
-Trying out doom-modeline.
-
 #+begin_src emacs-lisp
 (use-package doom-modeline
   :hook (after-init . doom-modeline-init)
@@ -812,8 +808,7 @@ And here are just general evil-related bindings.
 
 #+begin_src emacs-lisp :noweb-ref evil-general :tangle no
 (neh/leader-keys
-  "q" '(kill-current-buffer :which-key "delete buffer")
-  "bd" '(kill-current-buffer :which-key "delete buffer"))
+  "q" '(kill-current-buffer :which-key "delete buffer"))
 #+end_src
 
 Put some whitespace around the evil state modeline labels just so they look better.
@@ -991,8 +986,7 @@ Evil-collection helps with setting up evil-friendly bindings all over the place,
         ivy-extra-directories nil
         ivy-height 15
         ivy-use-selectable-prompt t
-        ivy-re-builders-alist '((t . ivy--regex)
-                                (t . ivy--regex-fuzzy))
+        ivy-re-builders-alist '((t . ivy--regex))
         ivy-initial-inputs-alist nil))
 
 (use-package ivy-posframe
@@ -1083,9 +1077,6 @@ Avy is a really handy way to jump around your visible buffer contents. One aspec
 
 #+begin_src emacs-lisp
 (use-package avy
-  :chords (("qj" . avy-goto-char-timer)
-           ("jl" . avy-goto-line))
-
   :general
   (general-define-key
    :states '(normal visual)
@@ -1698,11 +1689,6 @@ My org config is pretty long, so I've broken it up for easier reading and explan
      (css . t)
      (python . t)
      (emacs-lisp . t))))
-
-(use-package org-tempo
-  :disabled
-  :straight nil
-  :after org)
 #+end_src
 
 
@@ -2741,32 +2727,6 @@ Try out =org-noter=.
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package dimmer
-  :disabled
-  :commands (dimmer-mode
-             dimmer-restore-all
-             dimmer-process-all)
-
-  :hook (after-load-theme . neh/reset-dimmer-mode)
-
-  :custom
-  (dimmer-exclusion-regexp "*LV*")
-
-  :init
-  (defun neh/reset-dimmer-mode ()
-    (if neh/dark-mode
-        (setq dimmer-fraction 0.25)
-      (setq dimmer-fraction 0.35))
-
-    (when dimmer-mode
-      (dimmer-restore-all)
-      (dimmer-process-all)))
-
-  :config
-  (neh/reset-dimmer-mode))
-#+end_src
-
-#+begin_src emacs-lisp
 (use-package auto-dim-other-buffers
   :commands (auto-dim-other-buffers-mode)
   :init
@@ -2837,13 +2797,6 @@ Try out =org-noter=.
 #+begin_src emacs-lisp
 (use-package restart-emacs
   :commands (restart-emacs))
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package golden-ratio
-  :commands golden-ratio-mode
-  :config
-  (setq golden-ratio-auto-scale t))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -2944,14 +2897,6 @@ Try out =org-noter=.
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package hl-line+
-  :disabled
-  :config
-  (setq hl-line-inhibit-highlighting-for-modes '(org-mode))
-  (toggle-hl-line-when-idle -1))
-#+end_src
-
-#+begin_src emacs-lisp
 (use-package symbol-overlay
   :general
   (general-def
@@ -3002,8 +2947,12 @@ Try out =org-noter=.
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package clojure-mode)
-(use-package cider)
+(use-package clojure-mode
+  :mode (("\\.clj\\'" . clojure-mode)))
+
+(use-package cider
+  :commands (cider
+             cider-mode))
 #+end_src
 
 #+begin_src emacs-lisp
