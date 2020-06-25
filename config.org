@@ -1780,7 +1780,7 @@ Org export.
   :commands (org-pomodoro))
 #+end_src
 
-#+begin_src elisp
+#+begin_src emacs-lisp
 (use-package org-tanglesync
   :disabled
   :hook ((org-mode . org-tanglesync-mode)
